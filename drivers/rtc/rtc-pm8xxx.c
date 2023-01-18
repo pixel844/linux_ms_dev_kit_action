@@ -65,7 +65,6 @@ struct qcom_uefi_rtc_info {
  * @rtc_info:		qcom uefi rtc-info structure
  * @nvmem_cell:		nvmem cell for offset
  * @offset:		offset from epoch in seconds
- * @offset_dirty:	offset needs to be stored on shutdown
  */
 struct pm8xxx_rtc {
 	struct rtc_device *rtc;
@@ -78,7 +77,6 @@ struct pm8xxx_rtc {
 	struct qcom_uefi_rtc_info rtc_info;
 	struct nvmem_cell *nvmem_cell;
 	u32 offset;
-	bool offset_dirty;
 };
 
 #ifdef CONFIG_EFI
@@ -209,6 +207,17 @@ static int pm8xxx_rtc_write_nvmem_offset(struct pm8xxx_rtc *rtc_dd, u32 offset)
 	return 0;
 }
 
+static int pm8xxx_rtc_read_offset(struct pm8xxx_rtc *rtc_dd)
+{
+	if (!rtc_dd->nvmem_cell && !rtc_dd->use_uefi)
+		return 0;
+
+	if (rtc_dd->nvmem_cell)
+		return pm8xxx_rtc_read_nvmem_offset(rtc_dd);
+	else
+		return pm8xxx_rtc_read_uefi_offset(rtc_dd);
+}
+
 static int pm8xxx_rtc_read_raw(struct pm8xxx_rtc *rtc_dd, u32 *secs)
 {
 	const struct pm8xxx_rtc_regs *regs = rtc_dd->regs;
@@ -258,15 +267,6 @@ static int pm8xxx_rtc_update_offset(struct pm8xxx_rtc *rtc_dd, u32 secs)
 	if (offset == rtc_dd->offset)
 		return 0;
 
-	/*
-	 * Reduce flash wear by deferring updates due to clock drift until
-	 * shutdown.
-	 */
-	if (abs_diff(offset, rtc_dd->offset) < 30) {
-		rtc_dd->offset_dirty = true;
-		goto out;
-	}
-
 	if (rtc_dd->nvmem_cell)
 		rc = pm8xxx_rtc_write_nvmem_offset(rtc_dd, offset);
 	else
@@ -275,8 +275,6 @@ static int pm8xxx_rtc_update_offset(struct pm8xxx_rtc *rtc_dd, u32 secs)
 	if (rc)
 		return rc;
 
-	rtc_dd->offset_dirty = false;
-out:
 	rtc_dd->offset = offset;
 
 	return 0;
@@ -561,30 +559,6 @@ static const struct of_device_id pm8xxx_id_table[] = {
 };
 MODULE_DEVICE_TABLE(of, pm8xxx_id_table);
 
-static int pm8xxx_rtc_probe_offset(struct pm8xxx_rtc *rtc_dd)
-{
-	int rc;
-
-	rtc_dd->nvmem_cell = devm_nvmem_cell_get(rtc_dd->dev, "offset");
-	if (IS_ERR(rtc_dd->nvmem_cell)) {
-		rc = PTR_ERR(rtc_dd->nvmem_cell);
-		if (rc != -ENOENT)
-			return rc;
-		rtc_dd->nvmem_cell = NULL;
-	} else {
-		return pm8xxx_rtc_read_nvmem_offset(rtc_dd);
-	}
-
-	/* Use UEFI storage as fallback if available */
-	if (efivar_is_available()) {
-		rc = pm8xxx_rtc_read_uefi_offset(rtc_dd);
-		if (rc == 0)
-			rtc_dd->use_uefi = true;
-	}
-
-	return 0;
-}
-
 static int pm8xxx_rtc_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *match;
@@ -599,23 +573,41 @@ static int pm8xxx_rtc_probe(struct platform_device *pdev)
 	if (rtc_dd == NULL)
 		return -ENOMEM;
 
-	rtc_dd->regs = match->data;
-	rtc_dd->dev = &pdev->dev;
-
 	rtc_dd->regmap = dev_get_regmap(pdev->dev.parent, NULL);
 	if (!rtc_dd->regmap)
 		return -ENXIO;
 
-	if (!of_property_read_bool(pdev->dev.of_node, "qcom,no-alarm")) {
-		rtc_dd->alarm_irq = platform_get_irq(pdev, 0);
-		if (rtc_dd->alarm_irq < 0)
-			return -ENXIO;
-	}
+	rtc_dd->alarm_irq = platform_get_irq(pdev, 0);
+	if (rtc_dd->alarm_irq < 0)
+		return -ENXIO;
 
 	rtc_dd->allow_set_time = of_property_read_bool(pdev->dev.of_node,
 						      "allow-set-time");
+
+	rtc_dd->nvmem_cell = devm_nvmem_cell_get(&pdev->dev, "offset");
+	if (IS_ERR(rtc_dd->nvmem_cell)) {
+		rc = PTR_ERR(rtc_dd->nvmem_cell);
+		if (rc != -ENOENT)
+			return rc;
+		rtc_dd->nvmem_cell = NULL;
+
+		/* Use UEFI storage as fallback if available */
+		rtc_dd->use_uefi = of_property_read_bool(pdev->dev.of_node,
+							 "qcom,uefi-rtc-info");
+	}
+
+	if (rtc_dd->use_uefi && !efivar_is_available()) {
+		if (IS_ENABLED(CONFIG_EFI))
+			return -EPROBE_DEFER;
+		dev_warn(&pdev->dev, "efivars not available\n");
+		rtc_dd->use_uefi = false;
+	}
+
+	rtc_dd->regs = match->data;
+	rtc_dd->dev = &pdev->dev;
+
 	if (!rtc_dd->allow_set_time) {
-		rc = pm8xxx_rtc_probe_offset(rtc_dd);
+		rc = pm8xxx_rtc_read_offset(rtc_dd);
 		if (rc)
 			return rc;
 	}
@@ -626,6 +618,8 @@ static int pm8xxx_rtc_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, rtc_dd);
 
+	device_init_wakeup(&pdev->dev, true);
+
 	rtc_dd->rtc = devm_rtc_allocate_device(&pdev->dev);
 	if (IS_ERR(rtc_dd->rtc))
 		return PTR_ERR(rtc_dd->rtc);
@@ -633,50 +627,32 @@ static int pm8xxx_rtc_probe(struct platform_device *pdev)
 	rtc_dd->rtc->ops = &pm8xxx_rtc_ops;
 	rtc_dd->rtc->range_max = U32_MAX;
 
-	if (rtc_dd->alarm_irq) {
-		rc = devm_request_any_context_irq(&pdev->dev, rtc_dd->alarm_irq,
-						  pm8xxx_alarm_trigger,
-						  IRQF_TRIGGER_RISING,
-						  "pm8xxx_rtc_alarm", rtc_dd);
-		if (rc < 0)
-			return rc;
+	rc = devm_request_any_context_irq(&pdev->dev, rtc_dd->alarm_irq,
+					  pm8xxx_alarm_trigger,
+					  IRQF_TRIGGER_RISING,
+					  "pm8xxx_rtc_alarm", rtc_dd);
+	if (rc < 0)
+		return rc;
 
-		rc = dev_pm_set_wake_irq(&pdev->dev, rtc_dd->alarm_irq);
-		if (rc)
-			return rc;
+	rc = devm_rtc_register_device(rtc_dd->rtc);
+	if (rc)
+		return rc;
 
-		device_init_wakeup(&pdev->dev, true);
-	} else {
-		clear_bit(RTC_FEATURE_ALARM, rtc_dd->rtc->features);
-	}
+	rc = dev_pm_set_wake_irq(&pdev->dev, rtc_dd->alarm_irq);
+	if (rc)
+		return rc;
 
-	return devm_rtc_register_device(rtc_dd->rtc);
+	return 0;
 }
 
 static void pm8xxx_remove(struct platform_device *pdev)
 {
-	struct pm8xxx_rtc *rtc_dd = platform_get_drvdata(pdev);
-
-	if (rtc_dd->alarm_irq)
-		dev_pm_clear_wake_irq(&pdev->dev);
-}
-
-static void pm8xxx_shutdown(struct platform_device *pdev)
-{
-	struct pm8xxx_rtc *rtc_dd = platform_get_drvdata(pdev);
-
-	if (rtc_dd->offset_dirty) {
-		if (rtc_dd->nvmem_cell)
-			pm8xxx_rtc_write_nvmem_offset(rtc_dd, rtc_dd->offset);
-		else
-			pm8xxx_rtc_write_uefi_offset(rtc_dd, rtc_dd->offset);
-	}
+	dev_pm_clear_wake_irq(&pdev->dev);
 }
 
 static struct platform_driver pm8xxx_rtc_driver = {
 	.probe		= pm8xxx_rtc_probe,
 	.remove		= pm8xxx_remove,
-	.shutdown	= pm8xxx_shutdown,
 	.driver	= {
 		.name		= "rtc-pm8xxx",
 		.of_match_table	= pm8xxx_id_table,
