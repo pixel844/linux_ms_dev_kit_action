@@ -18,14 +18,14 @@
 
 #define DRV_NAME "q6apm-dai"
 
-#define PLAYBACK_MIN_NUM_PERIODS	8
-#define PLAYBACK_MAX_NUM_PERIODS	16
-#define PLAYBACK_MAX_PERIOD_SIZE	65536
-#define PLAYBACK_MIN_PERIOD_SIZE	128
-#define CAPTURE_MIN_NUM_PERIODS		2
-#define CAPTURE_MAX_NUM_PERIODS		8
-#define CAPTURE_MAX_PERIOD_SIZE		65536
-#define CAPTURE_MIN_PERIOD_SIZE		6144
+#define PLAYBACK_MIN_NUM_PERIODS	2
+#define PLAYBACK_MAX_NUM_PERIODS	8
+#define PLAYBACK_MAX_PERIOD_SIZE	6144
+#define PLAYBACK_MIN_PERIOD_SIZE	6144
+#define CAPTURE_MIN_NUM_PERIODS		PLAYBACK_MIN_NUM_PERIODS
+#define CAPTURE_MAX_NUM_PERIODS		PLAYBACK_MAX_NUM_PERIODS
+#define CAPTURE_MAX_PERIOD_SIZE		PLAYBACK_MAX_PERIOD_SIZE
+#define CAPTURE_MIN_PERIOD_SIZE		PLAYBACK_MIN_PERIOD_SIZE
 #define BUFFER_BYTES_MAX (PLAYBACK_MAX_NUM_PERIODS * PLAYBACK_MAX_PERIOD_SIZE)
 #define BUFFER_BYTES_MIN (PLAYBACK_MIN_NUM_PERIODS * PLAYBACK_MIN_PERIOD_SIZE)
 #define COMPR_PLAYBACK_MAX_FRAGMENT_SIZE (128 * 1024)
@@ -69,7 +69,6 @@ struct q6apm_dai_rtd {
 	unsigned int bytes_received;
 	unsigned int copied_total;
 	uint16_t bits_per_sample;
-	snd_pcm_uframes_t queue_ptr;
 	bool next_track;
 	enum stream_state state;
 	struct q6apm_graph *graph;
@@ -130,6 +129,8 @@ static void event_handler(uint32_t opcode, uint32_t token, void *payload, void *
 		break;
 	case APM_CLIENT_EVENT_DATA_WRITE_DONE:
 		snd_pcm_period_elapsed(substream);
+		if (prtd->state == Q6APM_STREAM_RUNNING)
+			q6apm_write_async(prtd->graph, prtd->pcm_count, 0, 0, 0);
 
 		break;
 	case APM_CLIENT_EVENT_DATA_READ_DONE:
@@ -231,6 +232,7 @@ static int q6apm_dai_prepare(struct snd_soc_component *component,
 	cfg.bit_width = prtd->bits_per_sample;
 	cfg.fmt = SND_AUDIOCODEC_PCM;
 	audioreach_set_default_channel_mapping(cfg.channel_map, runtime->channels);
+
 	if (prtd->state) {
 		/* clear the previous setup if any  */
 		q6apm_graph_stop(prtd->graph);
@@ -283,27 +285,6 @@ static int q6apm_dai_prepare(struct snd_soc_component *component,
 	return 0;
 }
 
-static int q6apm_dai_ack(struct snd_soc_component *component, struct snd_pcm_substream *substream)
-{
-	struct snd_pcm_runtime *runtime = substream->runtime;
-	struct q6apm_dai_rtd *prtd = runtime->private_data;
-	int i, ret = 0, avail_periods;
-
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-		avail_periods = (runtime->control->appl_ptr - prtd->queue_ptr)/runtime->period_size;
-		for (i = 0; i < avail_periods; i++) {
-			ret = q6apm_write_async(prtd->graph, prtd->pcm_count, 0, 0, NO_TIMESTAMP);
-			if (ret < 0) {
-				dev_err(component->dev, "Error queuing playback buffer %d\n", ret);
-				return ret;
-			}
-			prtd->queue_ptr += runtime->period_size;
-		}
-	}
-
-	return ret;
-}
-
 static int q6apm_dai_trigger(struct snd_soc_component *component,
 			     struct snd_pcm_substream *substream, int cmd)
 {
@@ -315,6 +296,9 @@ static int q6apm_dai_trigger(struct snd_soc_component *component,
 	case SNDRV_PCM_TRIGGER_START:
 	case SNDRV_PCM_TRIGGER_RESUME:
 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
+		 /* start writing buffers for playback only as we already queued capture buffers */
+		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+			ret = q6apm_write_async(prtd->graph, prtd->pcm_count, 0, 0, 0);
 		break;
 	case SNDRV_PCM_TRIGGER_STOP:
 		/* TODO support be handled via SoftPause Module */
@@ -384,14 +368,13 @@ static int q6apm_dai_open(struct snd_soc_component *component,
 		}
 	}
 
-	/* setup 10ms latency to accomodate DSP restrictions */
-	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
+	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
 	if (ret < 0) {
 		dev_err(dev, "constraint for period bytes step ret = %d\n", ret);
 		goto err;
 	}
 
-	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
+	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
 	if (ret < 0) {
 		dev_err(dev, "constraint for buffer bytes step ret = %d\n", ret);
 		goto err;
@@ -838,7 +821,6 @@ static const struct snd_soc_component_driver q6apm_fe_dai_component = {
 	.hw_params	= q6apm_dai_hw_params,
 	.pointer	= q6apm_dai_pointer,
 	.trigger	= q6apm_dai_trigger,
-	.ack		= q6apm_dai_ack,
 	.compress_ops	= &q6apm_dai_compress_ops,
 	.use_dai_pcm_id = true,
 };
