@@ -329,7 +329,7 @@ endif
 	#
 	# NOTE: need to keep this list in sync with postrm
 	#
-	mkdir $(pkgdir)/lib/modules/$(abi_release)-$*/_
+	mkdir -p $(pkgdir)/lib/modules/$(abi_release)-$*/_
 	mv $(pkgdir)/lib/modules/$(abi_release)-$*/modules.order \
 		$(pkgdir)/lib/modules/$(abi_release)-$*/_
 	if [ -f $(pkgdir)/lib/modules/$(abi_release)-$*/modules.builtin ] ; then \
