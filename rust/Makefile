@@ -44,9 +44,9 @@ libmacros_extension := $(patsubst libmacros.%,%,$(libmacros_name))
 always-$(CONFIG_RUST) += $(libmacros_name)
 
 # `$(rust_flags)` is passed in case the user added `--sysroot`.
-rustc_sysroot := $(shell MAKEFLAGS= $(RUSTC) $(rust_flags) --print sysroot)
+rustc_sysroot := $(shell MAKEFLAGS= $(RUSTC) $(rust_flags) --version | awk '{print "/usr/src/" $$1 "-" $$2}')
 rustc_host_target := $(shell $(RUSTC) --version --verbose | grep -F 'host: ' | cut -d' ' -f2)
-RUST_LIB_SRC ?= $(rustc_sysroot)/lib/rustlib/src/rust/library
+RUST_LIB_SRC ?= $(rustc_sysroot)/library
 
 ifneq ($(quiet),)
 rust_test_quiet=-q
