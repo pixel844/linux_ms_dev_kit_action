@@ -770,7 +770,6 @@
 	};
 };
 
-
 &uart17 {
 	compatible = "qcom,geni-debug-uart";
 
