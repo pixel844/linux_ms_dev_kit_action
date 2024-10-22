@@ -40,20 +40,11 @@ struct ps8830_retimer {
 
 	enum typec_orientation orientation;
 	unsigned long mode;
-	int cfg[3];
+	unsigned int svid;
 };
 
 static void ps8830_write(struct ps8830_retimer *retimer, int cfg0, int cfg1, int cfg2)
 {
-	if (cfg0 == retimer->cfg[0] &&
-	    cfg1 == retimer->cfg[1] &&
-	    cfg2 == retimer->cfg[2])
-		return;
-
-	retimer->cfg[0] = cfg0;
-	retimer->cfg[1] = cfg1;
-	retimer->cfg[2] = cfg2;
-
 	regmap_write(retimer->regmap, 0x0, cfg0);
 	regmap_write(retimer->regmap, 0x1, cfg1);
 	regmap_write(retimer->regmap, 0x2, cfg2);
@@ -79,30 +70,30 @@ static int ps8380_set(struct ps8830_retimer *retimer)
 		return 0;
 	}
 
+	if (retimer->mode != TYPEC_STATE_USB && retimer->svid != USB_TYPEC_DP_SID)
+		return -EINVAL;
+
 	if (retimer->orientation == TYPEC_ORIENTATION_NORMAL)
 		cfg0 = 0x01;
 	else
 		cfg0 = 0x03;
 
 	switch (retimer->mode) {
-	/* USB3 Only */
 	case TYPEC_STATE_USB:
 		cfg0 |= 0x20;
 		break;
 
-	/* DP Only */
 	case TYPEC_DP_STATE_C:
+		cfg1 = 0x85;
+		break;
+
+	case TYPEC_DP_STATE_D:
+		cfg0 |= 0x20;
 		cfg1 = 0x85;
 		break;
 
 	case TYPEC_DP_STATE_E:
 		cfg1 = 0x81;
-		break;
-
-	/* DP + USB */
-	case TYPEC_DP_STATE_D:
-		cfg0 |= 0x20;
-		cfg1 = 0x85;
 		break;
 
 	default:
@@ -148,6 +139,11 @@ static int ps8830_retimer_set(struct typec_retimer *rtmr,
 
 	if (state->mode != retimer->mode) {
 		retimer->mode = state->mode;
+
+		if (state->alt)
+			retimer->svid = state->alt->svid;
+		else
+			retimer->svid = 0; // No SVID
 
 		ret = ps8380_set(retimer);
 	}
@@ -211,16 +207,12 @@ static int ps8830_enable_vregs(struct ps8830_retimer *retimer)
 
 err_vddat_disable:
 	regulator_disable(retimer->vddat_supply);
-
 err_vddar_disable:
 	regulator_disable(retimer->vddar_supply);
-
 err_vdd_disable:
 	regulator_disable(retimer->vdd_supply);
-
 err_vdd33_cap_disable:
 	regulator_disable(retimer->vdd33_cap_supply);
-
 err_vdd33_disable:
 	regulator_disable(retimer->vdd33_supply);
 
@@ -268,6 +260,7 @@ static const struct regmap_config ps8830_retimer_regmap = {
 	.max_register = 0x1f,
 	.reg_bits = 8,
 	.val_bits = 8,
+	.cache_type = REGCACHE_FLAT,
 };
 
 static int ps8830_retimer_probe(struct i2c_client *client)
@@ -276,6 +269,7 @@ static int ps8830_retimer_probe(struct i2c_client *client)
 	struct typec_switch_desc sw_desc = { };
 	struct typec_retimer_desc rtmr_desc = { };
 	struct ps8830_retimer *retimer;
+	bool skip_reset = false;
 	int ret;
 
 	retimer = devm_kzalloc(dev, sizeof(*retimer), GFP_KERNEL);
@@ -286,10 +280,14 @@ static int ps8830_retimer_probe(struct i2c_client *client)
 
 	mutex_init(&retimer->lock);
 
+	if (of_property_read_bool(dev->of_node, "ps8830,boot-on"))
+		skip_reset = true;
+
 	retimer->regmap = devm_regmap_init_i2c(client, &ps8830_retimer_regmap);
 	if (IS_ERR(retimer->regmap)) {
-		dev_err(dev, "failed to allocate register map\n");
-		return PTR_ERR(retimer->regmap);
+		ret = PTR_ERR(retimer->regmap);
+		dev_err(dev, "failed to allocate register map: %d\n", ret);
+		return ret;
 	}
 
 	ret = ps8830_get_vregs(retimer);
@@ -301,20 +299,21 @@ static int ps8830_retimer_probe(struct i2c_client *client)
 		return dev_err_probe(dev, PTR_ERR(retimer->xo_clk),
 				     "failed to get xo clock\n");
 
-	retimer->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+	retimer->reset_gpio = devm_gpiod_get(dev, "reset",
+					     skip_reset ? GPIOD_OUT_LOW : GPIOD_OUT_HIGH);
 	if (IS_ERR(retimer->reset_gpio))
 		return dev_err_probe(dev, PTR_ERR(retimer->reset_gpio),
 				     "failed to get reset gpio\n");
 
 	retimer->typec_switch = fwnode_typec_switch_get(dev->fwnode);
-	if (IS_ERR(retimer->typec_switch)) {
-		dev_err(dev, "failed to acquire orientation-switch\n");
-		return PTR_ERR(retimer->typec_switch);
-	}
+	if (IS_ERR(retimer->typec_switch))
+		return dev_err_probe(dev, PTR_ERR(retimer->typec_switch),
+				     "failed to acquire orientation-switch\n");
 
 	retimer->typec_mux = fwnode_typec_mux_get(dev->fwnode);
 	if (IS_ERR(retimer->typec_mux)) {
-		dev_err(dev, "failed to acquire mode-mux\n");
+		ret = dev_err_probe(dev, PTR_ERR(retimer->typec_mux),
+				    "failed to acquire mode-mux\n");
 		goto err_switch_put;
 	}
 
@@ -328,7 +327,8 @@ static int ps8830_retimer_probe(struct i2c_client *client)
 
 	retimer->sw = typec_switch_register(dev, &sw_desc);
 	if (IS_ERR(retimer->sw)) {
-		dev_err(dev, "failed to register typec switch\n");
+		ret = PTR_ERR(retimer->sw);
+		dev_err(dev, "failed to register typec switch: %d\n", ret);
 		goto err_aux_bridge_unregister;
 	}
 
@@ -338,7 +338,8 @@ static int ps8830_retimer_probe(struct i2c_client *client)
 
 	retimer->retimer = typec_retimer_register(dev, &rtmr_desc);
 	if (IS_ERR(retimer->retimer)) {
-		dev_err(dev, "failed to register typec retimer\n");
+		ret = PTR_ERR(retimer->retimer);
+		dev_err(dev, "failed to register typec retimer: %d\n", ret);
 		goto err_switch_unregister;
 	}
 
@@ -355,26 +356,24 @@ static int ps8830_retimer_probe(struct i2c_client *client)
 	/* delay needed as per datasheet */
 	usleep_range(4000, 14000);
 
-	gpiod_set_value(retimer->reset_gpio, 1);
+	if (!skip_reset)
+		gpiod_set_value(retimer->reset_gpio, 0);
 
 	return 0;
 
 err_clk_disable:
 	clk_disable_unprepare(retimer->xo_clk);
-
 err_retimer_unregister:
 	typec_retimer_unregister(retimer->retimer);
-
 err_switch_unregister:
 	typec_switch_unregister(retimer->sw);
-
 err_aux_bridge_unregister:
-	gpiod_set_value(retimer->reset_gpio, 0);
-	clk_disable_unprepare(retimer->xo_clk);
+	if (!skip_reset)
+		gpiod_set_value(retimer->reset_gpio, 1);
 
+	clk_disable_unprepare(retimer->xo_clk);
 err_mux_put:
 	typec_mux_put(retimer->typec_mux);
-
 err_switch_put:
 	typec_switch_put(retimer->typec_switch);
 
@@ -388,7 +387,7 @@ static void ps8830_retimer_remove(struct i2c_client *client)
 	typec_retimer_unregister(retimer->retimer);
 	typec_switch_unregister(retimer->sw);
 
-	gpiod_set_value(retimer->reset_gpio, 0);
+	gpiod_set_value(retimer->reset_gpio, 1);
 
 	regulator_disable(retimer->vddio_supply);
 	regulator_disable(retimer->vddat_supply);
