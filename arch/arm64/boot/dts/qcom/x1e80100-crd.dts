@@ -303,21 +303,20 @@
 		regulator-boot-on;
 	};
 
-	vreg_misc_3p3: regulator-misc-3p3 {
+	vreg_nvme: regulator-nvme {
 		compatible = "regulator-fixed";
 
-		regulator-name = "VREG_MISC_3P3";
+		regulator-name = "VREG_NVME_3P3";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 
-		gpio = <&pm8550ve_8_gpios 6 GPIO_ACTIVE_HIGH>;
+		gpio = <&tlmm 18 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-0 = <&misc_3p3_reg_en>;
+		pinctrl-0 = <&nvme_reg_en>;
 		pinctrl-names = "default";
 
 		regulator-boot-on;
-		regulator-always-on;
 	};
 
 	vreg_rtmr0_1p15: regulator-rtmr0-1p15 {
@@ -378,8 +377,8 @@
 		gpio = <&tlmm 188 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&rtmr1_1p15_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -394,8 +393,8 @@
 		gpio = <&tlmm 175 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&rtmr1_1p8_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -410,8 +409,8 @@
 		gpio = <&tlmm 186 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&rtmr1_3p3_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -426,8 +425,8 @@
 		gpio = <&tlmm 189 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&rtmr2_1p15_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -442,8 +441,8 @@
 		gpio = <&tlmm 126 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&rtmr2_1p8_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -458,8 +457,8 @@
 		gpio = <&tlmm 187 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&rtmr2_3p3_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -474,8 +473,8 @@
 		gpio = <&tlmm 18 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&nvme_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -1024,10 +1023,15 @@
 		vddat-supply = <&vreg_rtmr2_1p15>;
 		vddio-supply = <&vreg_rtmr2_1p8>;
 
-		reset-gpios = <&tlmm 185 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&tlmm 185 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&rtmr2_default>;
+		pinctrl-names = "default";
 
 		orientation-switch;
 		retimer-switch;
+
+		ps8830,boot-on;
 
 		ports {
 			#address-cells = <1>;
@@ -1079,10 +1083,15 @@
 		vddat-supply = <&vreg_rtmr0_1p15>;
 		vddio-supply = <&vreg_rtmr0_1p8>;
 
-		reset-gpios = <&pm8550_gpios 10 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&pm8550_gpios 10 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&rtmr0_default>;
+		pinctrl-names = "default";
 
 		retimer-switch;
 		orientation-switch;
+
+		ps8830,boot-on;
 
 		ports {
 			#address-cells = <1>;
@@ -1134,10 +1143,15 @@
 		vddat-supply = <&vreg_rtmr1_1p15>;
 		vddio-supply = <&vreg_rtmr1_1p8>;
 
-		reset-gpios = <&tlmm 176 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&tlmm 176 GPIO_ACTIVE_LOW>;
+
+		pinctrl-0 = <&rtmr1_default>;
+		pinctrl-names = "default";
 
 		retimer-switch;
 		orientation-switch;
+
+		ps8830,boot-on;
 
 		ports {
 			#address-cells = <1>;
@@ -1361,10 +1375,16 @@
 };
 
 &pm8550_gpios {
+	rtmr0_default: rtmr0-reset-n-active-state {
+		pins = "gpio10";
+		function = "normal";
+		power-source = <1>; /* 1.8V */
+	};
+
 	rtmr0_3p3_reg_en: rtmr0-3p3-reg-en-state {
 		pins = "gpio11";
 		function = "normal";
-		bias-disable;
+		power-source = <1>; /* 1.8V */
 	};
 };
 
@@ -1385,7 +1405,7 @@
 	rtmr0_1p8_reg_en: rtmr0-1p8-reg-en-state {
 		pins = "gpio8";
 		function = "normal";
-		bias-disable;
+		power-source = <1>; /* 1.8V */
 	};
 };
 
@@ -1403,6 +1423,7 @@
 	rtmr0_1p15_reg_en: rtmr0-1p15-reg-en-state {
 		pins = "gpio8";
 		function = "normal";
+		power-source = <1>; /* 1.8V */
 		bias-disable;
 	};
 };
@@ -1657,6 +1678,13 @@
 		bias-disable;
 	};
 
+	rtmr1_default: rtmr1-reset-n-active-state {
+		pins = "gpio176";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
 	rtmr2_1p15_reg_en: rtmr2-1p15-reg-en-state {
 		pins = "gpio189";
 		function = "gpio";
@@ -1673,6 +1701,13 @@
 
 	rtmr2_3p3_reg_en: rtmr2-3p3-reg-en-state {
 		pins = "gpio187";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	rtmr2_default: rtmr2-reset-n-active-state {
+		pins = "gpio185";
 		function = "gpio";
 		drive-strength = <2>;
 		bias-disable;
