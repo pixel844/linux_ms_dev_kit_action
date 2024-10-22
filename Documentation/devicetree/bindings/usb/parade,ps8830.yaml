@@ -25,6 +25,10 @@ properties:
     items:
       - const: xo
 
+  ps8830,boot-on:
+    description: Left enabled at boot, so skip resetting
+    type: boolean
+
   reset-gpios:
     maxItems: 1
 
@@ -70,11 +74,21 @@ properties:
 required:
   - compatible
   - reg
+  - clocks
+  - clock-names
+  - reset-gpios
+  - vdd-supply
+  - vdd33-supply
+  - vdd33-cap-supply
+  - vddat-supply
+  - vddio-supply
+  - orientation-switch
+  - retimer-switch
 
 allOf:
   - $ref: usb-switch.yaml#
 
-additionalProperties: false
+unevaluatedProperties: false
 
 examples:
   - |
@@ -88,6 +102,9 @@ examples:
             compatible = "parade,ps8830";
             reg = <0x8>;
 
+            clocks = <&clk_rtmr_xo>;
+            clock-names = "xo";
+
             vdd-supply = <&vreg_rtmr_1p15>;
             vdd33-supply = <&vreg_rtmr_3p3>;
             vdd33-cap-supply = <&vreg_rtmr_3p3>;
@@ -95,7 +112,7 @@ examples:
             vddat-supply = <&vreg_rtmr_1p15>;
             vddio-supply = <&vreg_rtmr_1p8>;
 
-            reset-gpios = <&pm8550_gpios 10 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tlmm 10 GPIO_ACTIVE_LOW>;
 
             retimer-switch;
             orientation-switch;
@@ -106,20 +123,24 @@ examples:
 
                 port@0 {
                     reg = <0>;
-                    usb_con_ss: endpoint {
+
+                    endpoint {
                         remote-endpoint = <&typec_con_ss>;
                     };
                 };
+
                 port@1 {
                     reg = <1>;
-                    phy_con_ss: endpoint {
+
+                    endpoint {
                         remote-endpoint = <&usb_phy_ss>;
-                        data-lanes = <3 2 1 0>;
                     };
                 };
+
                 port@2 {
                     reg = <2>;
-                    usb_con_sbu: endpoint {
+
+                    endpoint {
                         remote-endpoint = <&typec_dp_aux>;
                     };
                 };
