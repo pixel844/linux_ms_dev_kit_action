@@ -31,8 +31,8 @@
 	wcd938x: audio-codec {
 		compatible = "qcom,wcd9380-codec";
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&wcd_default>;
+		pinctrl-names = "default";
 
 		reset-gpios = <&tlmm 106 GPIO_ACTIVE_LOW>;
 
@@ -54,9 +54,9 @@
 		#sound-dai-cells = <1>;
 	};
 
-	dp1_connector: connector {
+	dp3_connector: connector {
 		compatible = "dp-connector";
-		label = "DP1";
+		label = "DP-3";
 		type = "mini";
 
 		dp-pwr-supply = <&vreg_misc_3p3>;
@@ -78,6 +78,7 @@
 		orientation-gpios = <&tlmm 166 GPIO_ACTIVE_HIGH>,
 				    <&tlmm 49 GPIO_ACTIVE_HIGH>;
 
+		/* Left-side rear port */
 		connector@0 {
 			compatible = "usb-c-connector";
 			reg = <0>;
@@ -114,6 +115,7 @@
 			};
 		};
 
+		/* Left-side front port */
 		connector@1 {
 			compatible = "usb-c-connector";
 			reg = <1>;
@@ -161,8 +163,8 @@
 		gpio = <&pmc8280_1_gpios 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&misc_3p3_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 		regulator-always-on;
@@ -178,8 +180,8 @@
 		gpio = <&tlmm 135 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&nvme_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -204,8 +206,8 @@
 		gpio = <&pmr735a_gpios 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&hastings_reg_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -220,8 +222,8 @@
 		gpio = <&pmc8280_2_gpios 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&wwan_sw_en>;
+		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -246,8 +248,8 @@
 		enable-gpios = <&tlmm 101 GPIO_ACTIVE_LOW>;
 		select-gpios = <&tlmm 164 GPIO_ACTIVE_HIGH>;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&usb0_sbu_default>;
+		pinctrl-names = "default";
 
 		mode-switch;
 		orientation-switch;
@@ -265,8 +267,8 @@
 		enable-gpios = <&tlmm 48 GPIO_ACTIVE_LOW>;
 		select-gpios = <&tlmm 47 GPIO_ACTIVE_HIGH>;
 
-		pinctrl-names = "default";
 		pinctrl-0 = <&usb1_sbu_default>;
+		pinctrl-names = "default";
 
 		mode-switch;
 		orientation-switch;
@@ -567,7 +569,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "qcom/sc8280xp/MICROSOFT/blackrock/qcdxkmsuc8280.mbn";
+		firmware-name = "qcom/sc8280xp/microsoft/blackrock/qcdxkmsuc8280.mbn";
 	};
 };
 
@@ -629,8 +631,8 @@
 	vddpe-3v3-supply = <&vreg_nvme>;
 	vdda-supply = <&vreg_l7d>;
 
-	pinctrl-names = "default";
 	pinctrl-0 = <&pcie2a_default>;
+	pinctrl-names = "default";
 
 	status = "okay";
 };
@@ -652,8 +654,8 @@
 	vddpe-3v3-supply = <&vreg_wlan>;
 	vdda-supply = <&vreg_l7d>;
 
-	pinctrl-names = "default";
 	pinctrl-0 = <&pcie4_default>;
+	pinctrl-names = "default";
 
 	status = "okay";
 };
@@ -850,13 +852,13 @@
 };
 
 &remoteproc_adsp {
-	firmware-name = "qcom/sc8280xp/MICROSOFT/blackrock/qcadsp8280.mbn";
+	firmware-name = "qcom/sc8280xp/microsoft/blackrock/qcadsp8280.mbn";
 
 	status = "okay";
 };
 
 &remoteproc_nsp0 {
-	firmware-name = "qcom/sc8280xp/MICROSOFT/blackrock/qccdsp8280.mbn";
+	firmware-name = "qcom/sc8280xp/microsoft/blackrock/qccdsp8280.mbn";
 
 	status = "okay";
 };
@@ -867,7 +869,7 @@
 
 &sound {
 	compatible = "qcom,sc8280xp-sndcard";
-	model = "MICROSOFT/blackrock";
+	model = "microsoft/blackrock";
 	audio-routing =
 		"SpkrLeft IN", "WSA_SPK1 OUT",
 		"SpkrRight IN", "WSA_SPK2 OUT",
@@ -884,6 +886,7 @@
 
 	wcd-playback-dai-link {
 		link-name = "WCD Playback";
+
 		cpu {
 			sound-dai = <&q6apmbedai RX_CODEC_DMA_RX_0>;
 		};
@@ -899,6 +902,7 @@
 
 	wcd-capture-dai-link {
 		link-name = "WCD Capture";
+
 		cpu {
 			sound-dai = <&q6apmbedai TX_CODEC_DMA_TX_3>;
 		};
@@ -914,6 +918,7 @@
 
 	wsa-dai-link {
 		link-name = "WSA Playback";
+
 		cpu {
 			sound-dai = <&q6apmbedai WSA_CODEC_DMA_RX_0>;
 		};
@@ -929,6 +934,7 @@
 
 	va-dai-link {
 		link-name = "VA Capture";
+		
 		cpu {
 			sound-dai = <&q6apmbedai VA_CODEC_DMA_TX_0>;
 		};
@@ -1072,8 +1078,8 @@
 };
 
 &usb_2 {
-	pinctrl-names = "default";
 	pinctrl-0 = <&usb2_en_state>;
+	pinctrl-names = "default";
 
 	status = "okay";
 };
@@ -1148,7 +1154,7 @@
 };
 
 &venus {
-	firmware-name = "qcom/sc8280xp/MICROSOFT/blackrock/qcvss8280.mbn";
+	firmware-name = "qcom/sc8280xp/microsoft/blackrock/qcvss8280.mbn";
 	status = "okay";
 };
 
