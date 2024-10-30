@@ -622,14 +622,12 @@
 };
 
 &pcie2a {
-	aspm-no-l0s;
-	max-link-speed = <16>;
+	max-link-speed = <4>;
 
 	perst-gpios = <&tlmm 143 GPIO_ACTIVE_LOW>;
 	wake-gpios = <&tlmm 145 GPIO_ACTIVE_LOW>;
 
 	vddpe-3v3-supply = <&vreg_nvme>;
-	vdda-supply = <&vreg_l7d>;
 
 	pinctrl-0 = <&pcie2a_default>;
 	pinctrl-names = "default";
@@ -645,14 +643,12 @@
 };
 
 &pcie4 {
-	aspm-no-l0s;
 	max-link-speed = <2>;
 
 	perst-gpios = <&tlmm 141 GPIO_ACTIVE_LOW>;
 	wake-gpios = <&tlmm 139 GPIO_ACTIVE_LOW>;
 
 	vddpe-3v3-supply = <&vreg_wlan>;
-	vdda-supply = <&vreg_l7d>;
 
 	pinctrl-0 = <&pcie4_default>;
 	pinctrl-names = "default";
@@ -675,7 +671,7 @@
 		vddrfa1p2-supply = <&vreg_pmu_rfa_1p2>;
 		vddrfa1p8-supply = <&vreg_pmu_rfa_1p7>;
 
-		qcom,ath11k-calibration-variant = "volterra";
+		qcom,ath11k-calibration-variant = "MS_Volterra";
 	};
 };
 
@@ -934,7 +930,7 @@
 
 	va-dai-link {
 		link-name = "VA Capture";
-		
+
 		cpu {
 			sound-dai = <&q6apmbedai VA_CODEC_DMA_TX_0>;
 		};
@@ -1015,7 +1011,6 @@
 
 &usb_0_hsphy {
 	vdda-pll-supply = <&vreg_l9d>;
-	vdda-phy-supply = <&vreg_l4d>;
 	vdda18-supply = <&vreg_l1c>;
 	vdda33-supply = <&vreg_l7d>;
 
@@ -1053,7 +1048,6 @@
 
 &usb_1_hsphy {
 	vdda-pll-supply = <&vreg_l4b>;
-	vdda-phy-supply = <&vreg_l3b>;
 	vdda18-supply = <&vreg_l1c>;
 	vdda33-supply = <&vreg_l13c>;
 
@@ -1094,7 +1088,6 @@
 
 &usb_2_hsphy0 {
 	vdda-pll-supply = <&vreg_l1b>;
-	vdda-phy-supply = <&vreg_l3d>;
 	vdda18-supply = <&vreg_l1c>;
 	vdda33-supply = <&vreg_l7d>;
 
@@ -1103,7 +1096,6 @@
 
 &usb_2_hsphy1 {
 	vdda-pll-supply = <&vreg_l8d>;
-	vdda-phy-supply = <&vreg_l3d>;
 	vdda18-supply = <&vreg_l1c>;
 	vdda33-supply = <&vreg_l7d>;
 
@@ -1112,7 +1104,6 @@
 
 &usb_2_hsphy2 {
 	vdda-pll-supply = <&vreg_l10d>;
-	vdda-phy-supply = <&vreg_l3d>;
 	vdda18-supply = <&vreg_l8c>;
 	vdda33-supply = <&vreg_l2d>;
 
@@ -1121,7 +1112,6 @@
 
 &usb_2_hsphy3 {
 	vdda-pll-supply = <&vreg_l10d>;
-	vdda-phy-supply = <&vreg_l3d>;
 	vdda18-supply = <&vreg_l8c>;
 	vdda33-supply = <&vreg_l2d>;
 
@@ -1138,7 +1128,7 @@
 &usb_2_qmpphy1 {
 	vdda-phy-supply = <&vreg_l8d>;
 	vdda-pll-supply = <&vreg_l4d>;
-	
+
 	status = "okay";
 };
 
