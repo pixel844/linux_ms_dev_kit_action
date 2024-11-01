@@ -288,10 +288,13 @@
 
 		wlan-enable-gpios = <&tlmm 134 GPIO_ACTIVE_HIGH>;
 		bt-enable-gpios = <&tlmm 133 GPIO_ACTIVE_HIGH>;
+		swctrl-gpios = <&tlmm 132 GPIO_ACTIVE_HIGH>;
 
 		vddio-supply = <&vreg_s10b>;
 		vddaon-supply = <&vreg_s12b>;
 		vddpmu-supply = <&vreg_s12b>;
+		vddpmumx-supply = <&vreg_s12b>;
+		vddpmucx-supply = <&vreg_s12b>;
 		vddrfa0p95-supply = <&vreg_s12b>;
 		vddrfa1p3-supply = <&vreg_s11b>;
 		vddrfa1p9-supply = <&vreg_s1c>;
@@ -866,19 +869,6 @@
 &sound {
 	compatible = "qcom,sc8280xp-sndcard";
 	model = "microsoft/blackrock";
-	audio-routing =
-		"SpkrLeft IN", "WSA_SPK1 OUT",
-		"SpkrRight IN", "WSA_SPK2 OUT",
-		"IN1_HPHL", "HPHL_OUT",
-		"IN2_HPHR", "HPHR_OUT",
-		"AMIC2", "MIC BIAS2",
-		"VA DMIC0", "MIC BIAS1",
-		"VA DMIC1", "MIC BIAS1",
-		"VA DMIC2", "MIC BIAS3",
-		"VA DMIC0", "VA MIC BIAS1",
-		"VA DMIC1", "VA MIC BIAS1",
-		"VA DMIC2", "VA MIC BIAS3",
-		"TX SWR_ADC1", "ADC2_OUTPUT";
 
 	wcd-playback-dai-link {
 		link-name = "WCD Playback";
@@ -1078,14 +1068,6 @@
 	status = "okay";
 };
 
-&usb_2_dwc3 {
-	dr_mode = "host";
-	phy-names = "usb2-port0", "usb3-port0";
-	phys = <&usb_2_hsphy0>, <&usb_2_qmpphy0>;
-
-	status = "okay";
-};
-
 &usb_2_hsphy0 {
 	vdda-pll-supply = <&vreg_l1b>;
 	vdda18-supply = <&vreg_l1c>;
@@ -1163,6 +1145,11 @@
 };
 
 &pmc8280_1_gpios {
+	misc_3p3_reg_en: misc-3p3-reg-en-state {
+		pins = "gpio1";
+		function = "normal";
+	};
+
 	edp_bl_en: edp-bl-en-state {
 		pins = "gpio8";
 		function = "normal";
@@ -1170,11 +1157,6 @@
 
 	edp_bl_reg_en: edp-bl-reg-en-state {
 		pins = "gpio9";
-		function = "normal";
-	};
-
-	misc_3p3_reg_en: misc-3p3-reg-en-state {
-		pins = "gpio1";
 		function = "normal";
 	};
 };
@@ -1201,8 +1183,6 @@
 };
 
 &tlmm {
-	gpio-reserved-ranges = <70 2>, <74 6>, <125 2>, <128 2>, <154 4>;
-
 	bt_default: bt-default-state {
 		hstp-bt-en-pins {
 			pins = "gpio133";
