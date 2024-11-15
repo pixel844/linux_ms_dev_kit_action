@@ -1,8 +1,8 @@
-linux (6.12.0-061200rc6-x1e.20241103102505) plucky; urgency=low
+linux (6.12.0-061200rc7-x1e.20241110141935) plucky; urgency=low
 
-  Mainline build at commit: v6.12-rc6
+  Mainline build at commit: v6.12-rc7
 
- -- Mainline Build <jens.glathe@oldschoolsolutions.biz>  Sat, 10 Nov 2024 21:51:00 +0200
+ -- Mainline Build <jens.glathe@oldschoolsolutions.biz>  Fri, 15 Nov 2024 08:53:00 +0200
 
 linux-unstable (6.12.0-1.1) UNRELEASED; urgency=medium
 
