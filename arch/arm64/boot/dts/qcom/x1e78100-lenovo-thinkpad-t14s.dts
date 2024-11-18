@@ -49,6 +49,11 @@
 	backlight: backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pmk8550_pwm 0 5000000>;
+
+		brightness-levels = <0 2048 4096 8192 16384 65535>;
+		num-interpolated-steps = <20>;
+		default-brightness-level = <80>;
+
 		enable-gpios = <&pmc8380_3_gpios 4 GPIO_ACTIVE_HIGH>;
 		power-supply = <&vreg_edp_bl>;
 
