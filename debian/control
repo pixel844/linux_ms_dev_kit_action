@@ -62,42 +62,42 @@ Vcs-Git: git://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/plucky
 XS-Testsuite: autopkgtest
 #XS-Testsuite-Depends: gcc-4.7 binutils
 
-Package: linux-headers-6.12.0-061200rc6-x1e
+Package: linux-headers-6.12.0-061200rc7-x1e
 Build-Profiles: <!stage1>
 Architecture: all
 Multi-Arch: foreign
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, coreutils
-Description: Header files related to Linux kernel version 6.12.0-061200rc6
- This package provides kernel header files for version 6.12.0-061200rc6, for sites
+Description: Header files related to Linux kernel version 6.12.0-061200rc7
+ This package provides kernel header files for version 6.12.0-061200rc7, for sites
  that want the latest kernel headers. Please read
- /usr/share/doc/linux-headers-6.12.0-061200rc6-x1e/debian.README.gz for details
+ /usr/share/doc/linux-headers-6.12.0-061200rc7-x1e/debian.README.gz for details
 
-Package: linux-tools-6.12.0-061200rc6-x1e
+Package: linux-tools-6.12.0-061200rc7-x1e
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}, linux-tools-common
-Description: Linux kernel version specific tools for version 6.12.0-061200rc6-x1e
+Description: Linux kernel version specific tools for version 6.12.0-061200rc7-x1e
  This package provides the architecture dependant parts for kernel
  version locked tools (such as perf and x86_energy_perf_policy) for
- version 6.12.0-061200rc6-x1e on
+ version 6.12.0-061200rc7-x1e on
  ARMv8.
- You probably want to install linux-tools-6.12.0-061200rc6-x1e-<flavour>.
+ You probably want to install linux-tools-6.12.0-061200rc7-x1e-<flavour>.
 
-Package: linux-cloud-tools-6.12.0-061200rc6-x1e
+Package: linux-cloud-tools-6.12.0-061200rc7-x1e
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}, linux-cloud-tools-common
-Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc6-x1e
+Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc7-x1e
  This package provides the architecture dependant parts for kernel
- version locked tools for cloud tools for version 6.12.0-061200rc6-x1e on
+ version locked tools for cloud tools for version 6.12.0-061200rc7-x1e on
  ARMv8.
- You probably want to install linux-cloud-tools-6.12.0-061200rc6-x1e-<flavour>.
+ You probably want to install linux-cloud-tools-6.12.0-061200rc7-x1e-<flavour>.
 
 Package: linux-libc-dev
 Architecture: amd64 armhf arm64 i386 ppc64el riscv64 s390x
@@ -122,10 +122,10 @@ Provides:
  bpftool, 
  linux-cpupower,
 Depends: ${misc:Depends}, lsb-release, hwdata
-Description: Linux kernel version specific tools for version 6.12.0-061200rc6
+Description: Linux kernel version specific tools for version 6.12.0-061200rc7
  This package provides the architecture independent parts for kernel
  version locked tools (such as perf and x86_energy_perf_policy) for
- version 6.12.0-061200rc6.
+ version 6.12.0-061200rc7.
 
 Package: linux-cloud-tools-common
 Build-Profiles: <!stage1>
@@ -134,9 +134,9 @@ Multi-Arch: foreign
 Section: kernel
 Priority: optional
 Depends: ${misc:Depends}
-Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc6
+Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc7
  This package provides the architecture independent parts for kernel
- version locked tools for cloud tools for version 6.12.0-061200rc6.
+ version locked tools for cloud tools for version 6.12.0-061200rc7.
 
 Package: linux-tools-host
 Build-Profiles: <!stage1>
@@ -148,7 +148,7 @@ Depends: ${misc:Depends}, python3
 Description: Linux kernel VM host tools
  This package provides kernel tools useful for VM hosts.
 
-Package: linux-source-6.12.0-061200rc6
+Package: linux-source-6.12.0-061200rc7
 Build-Profiles: <!stage1>
 Architecture: all
 Section: devel
@@ -157,9 +157,9 @@ Provides: linux-source
 Depends: ${misc:Depends}, binutils, bzip2, coreutils
 Recommends: libc-dev, gcc, make
 Suggests: libncurses-dev | ncurses-dev, kernel-package, libqt3-dev
-Description: Linux kernel source for version 6.12.0-061200rc6 with Ubuntu patches
+Description: Linux kernel source for version 6.12.0-061200rc7 with Ubuntu patches
  This package provides the source code for the Linux kernel version
- 6.12.0-061200rc6.
+ 6.12.0-061200rc7.
  .
  This package is mainly meant for other packages to use, in order to build
  custom flavours.
@@ -177,7 +177,7 @@ Build-Profiles: <!stage1>
 Architecture: all
 Section: doc
 Priority: optional
-Description: Linux kernel specific documentation for version 6.12.0-061200rc6
+Description: Linux kernel specific documentation for version 6.12.0-061200rc7
  This package is deprecated and it is temporarily provided only for
  compatibility reasons. It will be dropped in the future.
 
@@ -190,19 +190,19 @@ Description: Headers for BPF development
  programs targeting the packaged kernel.
 
 
-Package: linux-image-unsigned-6.12.0-061200rc6-x1e-generic
+Package: linux-image-unsigned-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
 Provides: linux-image, fuse-module, kvm-api-4, redhat-cluster-modules, ivtv-modules, virtualbox-guest-modules [amd64], ${linux:rprovides}
-Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-6.12.0-061200rc6-x1e-generic
+Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-6.12.0-061200rc7-x1e-generic
 Recommends: grub-pc [amd64] | grub-efi-amd64 [amd64] | grub-efi-ia32 [amd64] | grub [amd64] | lilo [amd64] | flash-kernel [armhf arm64] | grub-efi-arm64 [arm64] | grub-efi-arm [armhf] | grub-ieee1275 [ppc64el], initramfs-tools | linux-initramfs-tool
 Breaks: flash-kernel (<< 3.90ubuntu2) [arm64 armhf], s390-tools (<< 2.3.0-0ubuntu3) [s390x]
-Conflicts: linux-image-6.12.0-061200rc6-x1e-generic
-Suggests: fdutils, linux-tools, linux-headers-6.12.0-061200rc6-x1e-generic, linux-modules-extra-6.12.0-061200rc6-x1e-generic
-Description: Linux kernel image for version 6.12.0-061200rc6 on ARMv8 SMP
- This package contains the unsigned Linux kernel image for version 6.12.0-061200rc6 on
+Conflicts: linux-image-6.12.0-061200rc7-x1e-generic
+Suggests: fdutils, linux-tools, linux-headers-6.12.0-061200rc7-x1e-generic, linux-modules-extra-6.12.0-061200rc7-x1e-generic
+Description: Linux kernel image for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package contains the unsigned Linux kernel image for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  Supports Generic processors.
@@ -213,14 +213,14 @@ Description: Linux kernel image for version 6.12.0-061200rc6 on ARMv8 SMP
  the linux-generic meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-modules-6.12.0-061200rc6-x1e-generic
+Package: linux-modules-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Built-Using: ${linux:BuiltUsing}
-Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SMP
+Description: Linux kernel extra modules for version 6.12.0-061200rc7 on ARMv8 SMP
  Contains the corresponding System.map file, the modules built by the
  packager, and scripts that try to ensure that the system is not left in an
  unbootable state after an update.
@@ -233,14 +233,14 @@ Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SM
  the linux-generic meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-modules-extra-6.12.0-061200rc6-x1e-generic
+Package: linux-modules-extra-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
-Depends: ${misc:Depends}, ${shlibs:Depends}, linux-modules-6.12.0-061200rc6-x1e-generic, wireless-regdb
-Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SMP
- This package contains the Linux kernel extra modules for version 6.12.0-061200rc6 on
+Depends: ${misc:Depends}, ${shlibs:Depends}, linux-modules-6.12.0-061200rc7-x1e-generic, wireless-regdb
+Description: Linux kernel extra modules for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package contains the Linux kernel extra modules for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  Also includes the corresponding System.map file, the modules built by the
@@ -255,40 +255,40 @@ Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SM
  the linux-generic meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-headers-6.12.0-061200rc6-x1e-generic
+Package: linux-headers-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-headers-6.12.0-061200rc6-x1e, ${shlibs:Depends}
+Depends: ${misc:Depends}, linux-headers-6.12.0-061200rc7-x1e, ${shlibs:Depends}
 Provides: linux-headers, linux-headers-3.0
-Description: Linux kernel headers for version 6.12.0-061200rc6 on ARMv8 SMP
- This package provides kernel header files for version 6.12.0-061200rc6 on
+Description: Linux kernel headers for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package provides kernel header files for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  This is for sites that want the latest kernel headers.  Please read
- /usr/share/doc/linux-headers-6.12.0-061200rc6-x1e/debian.README.gz for details.
+ /usr/share/doc/linux-headers-6.12.0-061200rc7-x1e/debian.README.gz for details.
 
-Package: linux-lib-rust-6.12.0-061200rc6-x1e-generic
+Package: linux-lib-rust-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64
 Multi-Arch: foreign
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, coreutils
-Description: Rust library files related to Linux kernel version 6.12.0-061200rc6
- This package provides kernel library files for version 6.12.0-061200rc6, that allow to
+Description: Rust library files related to Linux kernel version 6.12.0-061200rc7
+ This package provides kernel library files for version 6.12.0-061200rc7, that allow to
  compile out-of-tree kernel modules written in Rust.
 
-Package: linux-image-unsigned-6.12.0-061200rc6-x1e-generic-dbgsym
+Package: linux-image-unsigned-6.12.0-061200rc7-x1e-generic-dbgsym
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}
 Provides: linux-debug
-Description: Linux kernel debug image for version 6.12.0-061200rc6 on ARMv8 SMP
- This package provides the unsigned kernel debug image for version 6.12.0-061200rc6 on
+Description: Linux kernel debug image for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package provides the unsigned kernel debug image for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  This is for sites that wish to debug the kernel.
@@ -297,57 +297,57 @@ Description: Linux kernel debug image for version 6.12.0-061200rc6 on ARMv8 SMP
  is uncompressed, and unstripped. This package also includes the
  unstripped modules.
 
-Package: linux-tools-6.12.0-061200rc6-x1e-generic
+Package: linux-tools-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-tools-6.12.0-061200rc6-x1e
-Description: Linux kernel version specific tools for version 6.12.0-061200rc6-x1e
+Depends: ${misc:Depends}, linux-tools-6.12.0-061200rc7-x1e
+Description: Linux kernel version specific tools for version 6.12.0-061200rc7-x1e
  This package provides the architecture dependant parts for kernel
  version locked tools (such as perf and x86_energy_perf_policy) for
- version 6.12.0-061200rc6-x1e on
+ version 6.12.0-061200rc7-x1e on
  ARMv8.
 
-Package: linux-cloud-tools-6.12.0-061200rc6-x1e-generic
+Package: linux-cloud-tools-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-cloud-tools-6.12.0-061200rc6-x1e
-Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc6-x1e
+Depends: ${misc:Depends}, linux-cloud-tools-6.12.0-061200rc7-x1e
+Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc7-x1e
  This package provides the architecture dependant parts for kernel
- version locked tools for cloud for version 6.12.0-061200rc6-x1e on
+ version locked tools for cloud for version 6.12.0-061200rc7-x1e on
  ARMv8.
 
 
-Package: linux-buildinfo-6.12.0-061200rc6-x1e-generic
+Package: linux-buildinfo-6.12.0-061200rc7-x1e-generic
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: kernel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Built-Using: ${linux:BuiltUsing}
-Description: Linux kernel buildinfo for version 6.12.0-061200rc6 on ARMv8 SMP
- This package contains the Linux kernel buildinfo for version 6.12.0-061200rc6 on
+Description: Linux kernel buildinfo for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package contains the Linux kernel buildinfo for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  You likely do not want to install this package.
 
 
-Package: linux-image-unsigned-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-image-unsigned-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
 Priority: optional
 Provides: linux-image, fuse-module, kvm-api-4, redhat-cluster-modules, ivtv-modules, ${linux:rprovides}
-Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-6.12.0-061200rc6-x1e-generic-64k
+Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-6.12.0-061200rc7-x1e-generic-64k
 Recommends: grub-efi-arm64 [arm64] | flash-kernel [arm64], initramfs-tools | linux-initramfs-tool
 Breaks: flash-kernel (<< 3.90ubuntu2) [arm64 armhf], s390-tools (<< 2.3.0-0ubuntu3) [s390x]
-Conflicts: linux-image-6.12.0-061200rc6-x1e-generic-64k
-Suggests: fdutils, linux-tools, linux-headers-6.12.0-061200rc6-x1e-generic-64k, linux-modules-extra-6.12.0-061200rc6-x1e-generic-64k
-Description: Linux kernel image for version 6.12.0-061200rc6 on ARMv8 SMP
- This package contains the unsigned Linux kernel image for version 6.12.0-061200rc6 on
+Conflicts: linux-image-6.12.0-061200rc7-x1e-generic-64k
+Suggests: fdutils, linux-tools, linux-headers-6.12.0-061200rc7-x1e-generic-64k, linux-modules-extra-6.12.0-061200rc7-x1e-generic-64k
+Description: Linux kernel image for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package contains the unsigned Linux kernel image for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  Supports Generic 64K pages processors.
@@ -358,14 +358,14 @@ Description: Linux kernel image for version 6.12.0-061200rc6 on ARMv8 SMP
  the linux-generic-64k meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-modules-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-modules-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Built-Using: ${linux:BuiltUsing}
-Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SMP
+Description: Linux kernel extra modules for version 6.12.0-061200rc7 on ARMv8 SMP
  Contains the corresponding System.map file, the modules built by the
  packager, and scripts that try to ensure that the system is not left in an
  unbootable state after an update.
@@ -378,14 +378,14 @@ Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SM
  the linux-generic-64k meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-modules-extra-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-modules-extra-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
 Priority: optional
-Depends: ${misc:Depends}, ${shlibs:Depends}, linux-modules-6.12.0-061200rc6-x1e-generic-64k, wireless-regdb
-Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SMP
- This package contains the Linux kernel extra modules for version 6.12.0-061200rc6 on
+Depends: ${misc:Depends}, ${shlibs:Depends}, linux-modules-6.12.0-061200rc7-x1e-generic-64k, wireless-regdb
+Description: Linux kernel extra modules for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package contains the Linux kernel extra modules for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  Also includes the corresponding System.map file, the modules built by the
@@ -400,40 +400,40 @@ Description: Linux kernel extra modules for version 6.12.0-061200rc6 on ARMv8 SM
  the linux-generic-64k meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-headers-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-headers-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-headers-6.12.0-061200rc6-x1e, ${shlibs:Depends}
+Depends: ${misc:Depends}, linux-headers-6.12.0-061200rc7-x1e, ${shlibs:Depends}
 Provides: linux-headers, linux-headers-3.0
-Description: Linux kernel headers for version 6.12.0-061200rc6 on ARMv8 SMP
- This package provides kernel header files for version 6.12.0-061200rc6 on
+Description: Linux kernel headers for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package provides kernel header files for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  This is for sites that want the latest kernel headers.  Please read
- /usr/share/doc/linux-headers-6.12.0-061200rc6-x1e/debian.README.gz for details.
+ /usr/share/doc/linux-headers-6.12.0-061200rc7-x1e/debian.README.gz for details.
 
-Package: linux-lib-rust-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-lib-rust-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: amd64
 Multi-Arch: foreign
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, coreutils
-Description: Rust library files related to Linux kernel version 6.12.0-061200rc6
- This package provides kernel library files for version 6.12.0-061200rc6, that allow to
+Description: Rust library files related to Linux kernel version 6.12.0-061200rc7
+ This package provides kernel library files for version 6.12.0-061200rc7, that allow to
  compile out-of-tree kernel modules written in Rust.
 
-Package: linux-image-unsigned-6.12.0-061200rc6-x1e-generic-64k-dbgsym
+Package: linux-image-unsigned-6.12.0-061200rc7-x1e-generic-64k-dbgsym
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}
 Provides: linux-debug
-Description: Linux kernel debug image for version 6.12.0-061200rc6 on ARMv8 SMP
- This package provides the unsigned kernel debug image for version 6.12.0-061200rc6 on
+Description: Linux kernel debug image for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package provides the unsigned kernel debug image for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  This is for sites that wish to debug the kernel.
@@ -442,39 +442,39 @@ Description: Linux kernel debug image for version 6.12.0-061200rc6 on ARMv8 SMP
  is uncompressed, and unstripped. This package also includes the
  unstripped modules.
 
-Package: linux-tools-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-tools-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-tools-6.12.0-061200rc6-x1e
-Description: Linux kernel version specific tools for version 6.12.0-061200rc6-x1e
+Depends: ${misc:Depends}, linux-tools-6.12.0-061200rc7-x1e
+Description: Linux kernel version specific tools for version 6.12.0-061200rc7-x1e
  This package provides the architecture dependant parts for kernel
  version locked tools (such as perf and x86_energy_perf_policy) for
- version 6.12.0-061200rc6-x1e on
+ version 6.12.0-061200rc7-x1e on
  ARMv8.
 
-Package: linux-cloud-tools-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-cloud-tools-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-cloud-tools-6.12.0-061200rc6-x1e
-Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc6-x1e
+Depends: ${misc:Depends}, linux-cloud-tools-6.12.0-061200rc7-x1e
+Description: Linux kernel version specific cloud tools for version 6.12.0-061200rc7-x1e
  This package provides the architecture dependant parts for kernel
- version locked tools for cloud for version 6.12.0-061200rc6-x1e on
+ version locked tools for cloud for version 6.12.0-061200rc7-x1e on
  ARMv8.
 
 
-Package: linux-buildinfo-6.12.0-061200rc6-x1e-generic-64k
+Package: linux-buildinfo-6.12.0-061200rc7-x1e-generic-64k
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Built-Using: ${linux:BuiltUsing}
-Description: Linux kernel buildinfo for version 6.12.0-061200rc6 on ARMv8 SMP
- This package contains the Linux kernel buildinfo for version 6.12.0-061200rc6 on
+Description: Linux kernel buildinfo for version 6.12.0-061200rc7 on ARMv8 SMP
+ This package contains the Linux kernel buildinfo for version 6.12.0-061200rc7 on
  ARMv8 SMP.
  .
  You likely do not want to install this package.
