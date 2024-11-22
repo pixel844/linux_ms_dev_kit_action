@@ -1,0 +1,390 @@
+linux-qcom-x1e (6.11.0-55.55) oracular; urgency=medium
+
+  [ Tobias Heider ]
+  * Revert "arm64: dts: qcom: x1e80100: enable OTG on USB-C controllers"
+
+  [ Srinivas Kandagatla ]
+  * wip: arm64: qcom: x1e78100: add sound support
+
+  [ Krzysztof Kozlowski ]
+  * ASoC: qcom: x1e80100: Support boards with two speakers
+
+  [ Davide Ricci ]
+  * Changes: tweaks to x1e80100 sounds driver to enable T14s two speakers
+  * Change: cracking sound fix
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 20 Nov 2024 13:53:29 +0100
+
+linux-qcom-x1e (6.11.0-53.53) oracular; urgency=medium
+
+  [ Jens Glathe ]
+  * arm64: dts: qcom: x1e80100-hp-x14: fix touchpad enablement
+
+  [ Tobias Heider ]
+  * Revert "arm64: dts: qcom: x1e80100-yoga-slim7x: fix nvme regulator boot glitch"
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 18 Nov 2024 11:51:06 +0100
+
+linux-qcom-x1e (6.11.0-52.52) oracular; urgency=medium
+
+  [ Steev Klimaszewski ]
+  * bluetooth: qca: generate nvm fw name from boardid for WCN6855
+
+  [ Jens Glathe ]
+  * arm64: dts: qcom: x1e80100-hp-x14: fix nvme regulator boot glitch
+  * arm64: dts: qcom: x1e80100-hp-x14: Enable external DP
+  * arm64: dts: qcom: x1e80100-hp-x14: add pwm-backlight functionality
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 18 Nov 2024 02:15:50 +0100
+
+linux-qcom-x1e (6.11.0-51.51) oracular; urgency=medium
+
+  [ Abel Vesa ]
+  * arm64: dts: qcom: x1e78100-t14s: Add display brightness control support
+
+  [ Sibi Sankar ]
+  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Add Left/Right Speakers and Tweeter
+
+  [ Tobias Heider ]
+  * arm64: dts: qcom: Sync Samsung Galaxy Book4 Edge DTS
+  * arm64: dts: qcom: x1e80100-t14s: force 2 data lanes for each DP
+  * Revert "arm64: dts: qcom: x1e80100: Add debug uart to Lenovo Yoga Slim 7x"
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Sat, 16 Nov 2024 19:10:39 +0100
+
+linux-qcom-x1e (6.11.0-50.50) oracular; urgency=medium
+
+  [ Krzysztof Kozlowski ]
+  * arm64: dts: qcom: change labels to lower-case
+
+  [ Rob Herring (Arm) ]
+  * arm64: dts: qcom: Drop undocumented domain "idle-state-name"
+
+  [ Abel Vesa ]
+  * arm64: dts: qcom: x1e80100: Add node uart14
+
+  [ Jonathan Marek ]
+  * arm64: dts: qcom: x1e80100: enable OTG on USB-C controllers
+
+  [ Konrad Dybcio ]
+  * arm64: dts: qcom: x1e80100: Affirm IDR0.CCTW on apps_smmu
+  * arm64: dts: qcom: x1e80100-romulus: Add lid switch
+  * arm64: dts: qcom: x1e80100-romulus: Set up USB Multiport controller
+
+  [ Johan Hovold ]
+  * arm64: dts: qcom: x1e80100-microsoft-romulus: fix nvme regulator boot glitch
+
+  [ Konrad Dybcio ]
+  * dt-bindings: serial: Allow embedded-controller as child node
+  * dt-bindings: platform: Add Surface System Aggregator Module
+  * platform/surface: Add OF support
+
+  [ Maya Matuszczyk ]
+  * arm64: dts: qcom: x1e80100: Add debug uart to Lenovo Yoga Slim 7x
+
+  [ Johan Hovold ]
+  * arm64: dts: qcom: x1e80100-yoga-slim7x: fix nvme regulator boot glitch
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 13 Nov 2024 02:07:53 +0100
+
+linux-qcom-x1e (6.11.0-49.49) oracular; urgency=medium
+
+  * Revert "arm64: dts: qcom: x1e80100-t14s: force 2 data lanes for each DP"
+  * Revert "fixup! arm64: dts: qcom: x1e80100-t14s: Add external DP support"
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Thu, 07 Nov 2024 17:18:50 +0100
+
+linux-qcom-x1e (6.11.0-48.48) oracular; urgency=medium
+
+  [ Tobias Heider ]
+  * fixup! arm64: dts: qcom: x1e80100-t14s: Add external DP support
+
+  [ Abel Vesa ]
+  * arm64: dts: qcom: x1e80100: t14s: Add audio related nodes
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 06 Nov 2024 11:54:18 +0100
+
+linux-qcom-x1e (6.11.0-47.47) oracular; urgency=medium
+
+  * Enable CONFIG_VIDEO_QCOM_IRIS as module
+
+  [ Dikshita Agarwal ]
+  * PM: domains: add device managed version of dev_pm_domain_attach|detach_list()
+  * dt-bindings: media: Add video support for QCOM SM8550 SoC
+  * media: iris: add platform driver for iris video device
+  * media: iris: implement iris v4l2 file ops
+  * media: iris: introduce iris core state management with shared queues
+  * media: iris: implement video firmware load/unload
+  * media: iris: implement boot sequence of the firmware
+  * media: iris: introduce host firmware interface with necessary hooks
+  * media: iris: implement power management
+  * media: iris: implement reqbuf ioctl with vb2_queue_setup
+
+  [ Vedang Nagar ]
+  * media: iris: implement s_fmt, g_fmt and try_fmt ioctls
+  * media: iris: implement g_selection ioctl
+  * media: iris: implement enum_fmt and enum_frameintervals ioctls
+  * media: iris: implement subscribe_event and unsubscribe_event ioctls
+
+  [ Dikshita Agarwal ]
+  * media: iris: implement iris v4l2_ctrl_ops
+
+  [ Vedang Nagar ]
+  * media: iris: implement query_cap, query_ctrl and query_menu ioctls
+
+  [ Dikshita Agarwal ]
+  * media: iris: implement vb2 streaming ops
+
+  [ Vedang Nagar ]
+  * media: iris: implement set properties to firmware during streamon
+  * media: iris: subscribe parameters and properties to firmware for hfi_gen2
+
+  [ Dikshita Agarwal ]
+  * media: iris: allocate, initialize and queue internal buffers
+  * media: iris: implement vb2 ops for buf_queue and firmware response
+  * media: iris: add support for dynamic resolution change
+  * media: iris: handle streamoff/on from client in dynamic resolution change
+  * media: iris: add support for drain sequence
+
+  [ Vedang Nagar ]
+  * media: iris: add check whether the video session is supported or not
+  * media: iris: implement power scaling for vpu2 and vpu3
+  * media: iris: add check to allow sub states transitions
+
+  [ Dikshita Agarwal ]
+  * media: iris: enable video driver probe of SM8250 SoC
+  * media: MAINTAINERS: add Qualcomm iris video accelerator driver
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Sun, 03 Nov 2024 01:05:22 +0100
+
+linux-qcom-x1e (6.11.0-43.43) oracular; urgency=medium
+
+  * arm64: dts: qcom: x1e80100-t14s: force 2 data lanes for each DP
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Thu, 31 Oct 2024 18:16:50 +0100
+
+linux-qcom-x1e (6.11.0-42.42) oracular; urgency=medium
+
+  [ Sibi Sankar ]
+  * firmware: arm_scmi: Ensure that the message-id supports fastchannel
+
+  [ Cristian Marussi ]
+  * firmware: arm_scmi: Skip opp duplicates
+
+  [ Sibi Sankar ]
+  * firmware: arm_scmi: Report duplicate opps as firmware bugs
+  * mailbox: qcom-cpucp: Mark the irq with IRQF_NO_SUSPEND flag
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 30 Oct 2024 20:45:09 +0100
+
+linux-qcom-x1e (6.11.0-41.41) oracular; urgency=medium
+
+  [ Abel Vesa ]
+  * arm64: dts: qcom: x1e80100-t14s: Add external DP support
+
+  [ Johan Hovold ]
+  * fixup: arm64: dts: qcom: x1e78100-t14s: fix usb0 retimer regulators
+  * fixup: arm64: dts: qcom: x1e78100-t14s: fix retimer supplies
+  * fixup: arm64: dts: qcom: x1e78100-t14s: fix retimer regulators
+
+  [ Srinivas Kandagatla ]
+  * arm64: dts: qcom: x1e80100-t14s: add another trackpad support
+
+  [ Johan Hovold ]
+  * arm64: dts: qcom: x1e80100: describe tcsr download mode register
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 30 Oct 2024 16:02:44 +0100
+
+linux-qcom-x1e (6.11.0-38.38) oracular; urgency=medium
+
+  * fixup! HACK: workaround for t14s OLED backlight
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 28 Oct 2024 22:37:51 +0100
+
+linux-qcom-x1e (6.11.0-37.37) oracular; urgency=medium
+
+  [ Tobias Heider ]
+  * Revert "usb: typec: Add support for Parade PS8830 Type-C Retimer"
+
+  [ Abel Vesa ]
+  * usb: typec: Add support for Parade PS8830 Type-C Retimer
+  * clk: qcom: gcc-x1e80100: Add halt_check delay to gpu_memnoc_gfx clock
+  * clk: qcom: gcc-x1e80100: Do not register gpu_cfg_ahb always-on clock
+
+  [ Tobias Heider ]
+  * HACK: workaround for t14s OLED backlight
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Sat, 26 Oct 2024 14:16:52 +0200
+
+linux-qcom-x1e (6.11.0-35.35) oracular; urgency=medium
+
+  [ hogliux ]
+  * Add Bluetooth support for the Lenovo Yoga Slim 7x
+
+  [ Tobias Heider ]
+  * arm64: dts: qcom: x1e78100-lenovo-thinkpad-t14s: Add bluetooth
+  * arm64: dts: qcom: x1e80100-asus-vivobook-s15: Add bluetooth
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 23 Oct 2024 15:16:02 +0200
+
+linux-qcom-x1e (6.11.0-34.34) oracular; urgency=medium
+
+  [ SpieringsAE ]
+  * enable gpu node on qcom asus vivobook s15
+
+  [ Manivannan Sadhasivam ]
+  * phy: qcom: qmp: Add debug prints for register writes
+
+  [ Qiang Yu ]
+  * dt-bindings: phy: qcom,sc8280xp-qmp-pcie-phy: Document the X1E80100 QMP PCIe PHY Gen4 x8
+  * dt-bindings: PCI: qcom: Move OPP table to qcom,pcie-common.yaml
+  * phy: qcom: qmp: Add phy register and clk setting for x1e80100 PCIe3
+  * clk: qcom: gcc-x1e80100: Fix halt_check for pipediv2 clocks
+  * PCI: qcom: Add support for X1E80100 SoC
+  * arm64: dts: qcom: x1e80100: Add support for PCIe3 on x1e80100
+
+  [ Abel Vesa ]
+  * HACK: drm/msm/disp: dpu: Increase the max width
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 23 Oct 2024 00:52:34 +0200
+
+linux-qcom-x1e (6.11.0-33.33) oracular; urgency=medium
+
+  [ SpieringsAE ]
+  * enable gpu node on qcom asus vivobook s15
+
+  [ Tobias Heider ]
+  * Revert "usb: typec: Add support for Parade PS8830 Type-C Retimer"
+  * Revert "dt-bindings: usb: Add Parade PS8830 Type-C retimer bindings"
+
+  [ Abel Vesa ]
+  * dt-bindings: usb: Add Parade PS8830 Type-C retimer bindings
+  * usb: typec: Add support for Parade PS8830 Type-C Retimer
+  * arm64: dts: qcom: x1e80100-crd: Enable external DP
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Tue, 22 Oct 2024 13:08:22 +0200
+
+linux-qcom-x1e (6.11.0-32.32) oracular; urgency=medium
+
+  * fixup! arm64: dts: qcom: x1e80100-hp-x14: add USB4 retimers, Type-A port
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 21 Oct 2024 18:44:33 +0200
+
+linux-qcom-x1e (6.11.0-31.31) oracular; urgency=medium
+
+  [ Tobias Heider ]
+  * firmware: qcom: scm: Allow QSEECOM on HP Omnibook X14
+
+  [ Jens Glathe ]
+  * arm64: dts: qcom: x1e80100-hp-x14: dt definition for HP Omnibook X 14
+  * arm64: dts: qcom: x1e80100-hp-x14: amend bt definition
+  * arm64: dts: qcom: x1e80100-hp-x14: amend keyboard definition
+  * arm64: dts: qcom: x1e80100-hp-x14: add touchscreen definition
+  * arm64: dts: qcom: x1e80100-hp-x14: add lid switch
+  * arm64: dts: qcom: x1e80100-hp-x14: add edp-panel gpios for enable
+  * arm64: dts: qcom: x1e80100-hp-x14: add USB4 retimers, Type-A port
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 21 Oct 2024 15:58:24 +0200
+
+linux-qcom-x1e (6.11.0-30.30) oracular; urgency=medium
+
+  [ Aleksandrs Vinarskis ]
+  * firmware: qcom: scm: Allow QSEECOM on Dell XPS 13 9345
+  * dt-bindings: arm: qcom: Add Dell XPS 13 9345
+  * arm64: dts: qcom: Add support for X1-based Dell XPS 13 9345
+  * drm/edp-panel: Add panels used by Dell XPS 13 9345
+  * arm64: dts: qcom: x1e80100-dell-xps13-9345: route edp-panel enable gpio
+  * arm64: dts: qcom: x1e80100-dell-xps13-9345: fix nvme regulator boot glitch
+
+  [ Stephan Gerhold ]
+  * arm64: dts: qcom: x1e80100: Add QUP power domains and OPPs
+  * arm64: dts: qcom: x1e80100: Add uart14
+  * arm64: dts: qcom: x1e80100-qcp: Add WiFi/BT pwrseq
+
+  [ Aleksandrs Vinarskis ]
+  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Add bluetooth nodes
+
+  [ Tobias Heider ]
+  * Revert "More verbose model name for Dell XPS 13 9345"
+  * Revert "arm64: dts: qcom: x1e80100: add X1E80100 based Dell XPS 13 devicetree"
+  * Revert "arm64: defconfig: Enable squashfs configs needed for snapd"
+  * Revert "firmware: qcom: uefisecapp: Add additional X1E devices"
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Sun, 20 Oct 2024 00:34:14 +0200
+
+linux-qcom-x1e (6.11.0-29.29) oracular; urgency=medium
+
+  * fixup! firmware: qcom: scm: Allow QSEECOM on Surface Laptop 7 models
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Sat, 19 Oct 2024 13:53:30 +0200
+
+linux-qcom-x1e (6.11.0-28.28) oracular; urgency=medium
+
+  [ Konrad Dybcio ]
+  * dt-bindings: arm: qcom: Add Surface Laptop 7 devices
+  * firmware: qcom: scm: Allow QSEECOM on Surface Laptop 7 models
+  * arm64: dts: qcom: x1e80100-pmics: Add PMC8380C PWM
+  * arm64: dts: qcom: x1e80100: Add UART2
+  * arm64: dts: qcom: Add support for X1-based Surface Laptop 7 devices
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Sat, 19 Oct 2024 11:43:32 +0200
+
+linux-qcom-x1e (6.11.0-27.27) oracular; urgency=medium
+
+  * firmware: qcom: scm: Allow QSEECOM on Lenovo Yoga Slim 7x
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Fri, 18 Oct 2024 14:07:48 +0200
+
+linux-qcom-x1e (6.11.0-26.26) oracular; urgency=medium
+
+  * firmware: qcom: scm: Allow QSEECOM on Asus Vivobook S15
+  * firmware: qcom: scm: Allow QSEECOM on Samsung Galaxy Book4 Edge
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Fri, 18 Oct 2024 06:08:32 +0200
+
+linux-qcom-x1e (6.11.0-25.25) oracular; urgency=medium
+
+  [ Marcus Glocker ]
+  * dt-bindings: crypto: Add X1E80100 Crypto Engine
+  * dt-bindings: phy: Add X1E80100 UFS
+  * dt-bindings: ufs: Add X1E80100 UFS
+  * arm64: dts: qcom: Add UFS node
+  * dt-bindings: arm: Add Samsung Galaxy Book4 Edge
+  * arm64: dts: qcom: Add Samsung Galaxy Book4 Edge DTS
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Tue, 15 Oct 2024 22:36:33 +0200
+
+linux-qcom-x1e (6.11.0-24.24) oracular; urgency=medium
+
+  [ Abel Vesa ]
+  * clk: qcom: dispcc-x1e80100: Use non-reset ops for PLLs
+  * arm64: dts: qcom: x1e80100-slim7x: Drop the orientation-switch from USB SS[0-1] QMP PHYs
+  * arm64: dts: qcom: x1e80100-slim7x: Enable external DP support
+  * arm64: dts: qcom: x1e80100-slim7x: Enable external DP support
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Tue, 15 Oct 2024 12:23:05 +0200
+
+linux-qcom-x1e (6.11.0-23.23) oracular; urgency=medium
+
+  * Merge additional patches for XPS 13 support
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Thu, 10 Oct 2024 16:08:47 +0200
+
+linux-qcom-x1e (6.11.0-22.22) oracular; urgency=medium
+
+  * Sync kernel config from -generic
+  * Fix arm-smmu bug on X1E platforms
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 30 Sep 2024 15:22:47 +0200
+
+linux-qcom-x1e (6.11.0-12.12) oracular; urgency=medium
+
+  * Merge USB-A support from linaro tree
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Fri, 27 Sep 2024 21:17:43 +0200
+
+linux-qcom-x1e (6.11.0-8.8) oracular; urgency=medium
+
+  * Merge jhovold/wip/x1e80100-6.11
+
+ -- Tobias Heider <me@tobhe.de>  Sat, 20 Jul 2024 16:59:42 +0200
