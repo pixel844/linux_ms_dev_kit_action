@@ -279,8 +279,8 @@
 				idle-state-name = "ret";
 				arm,psci-suspend-param = <0x00000004>;
 				entry-latency-us = <180>;
-				exit-latency-us = <320>;
-				min-residency-us = <1000>;
+				exit-latency-us = <500>;
+				min-residency-us = <600>;
 			};
 		};
 
@@ -299,7 +299,7 @@
 				idle-state-name = "ret-pll-off";
 				arm,psci-suspend-param = <0x01000054>;
 				entry-latency-us = <2200>;
-				exit-latency-us = <2500>;
+				exit-latency-us = <4000>;
 				min-residency-us = <7000>;
 			};
 		};
@@ -310,6 +310,7 @@
 			compatible = "qcom,scm-x1e80100", "qcom,scm";
 			interconnects = <&aggre2_noc MASTER_CRYPTO QCOM_ICC_TAG_ALWAYS
 					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
+			qcom,dload-mode = <&tcsr 0x19000>;
 		};
 	};
 
@@ -2933,6 +2934,8 @@
 			linux,pci-domain = <6>;
 			num-lanes = <4>;
 
+			msi-map = <0x0 &gic_its 0xe0000 0x10000>;
+
 			interrupts = <GIC_SPI 773 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 774 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 837 IRQ_TYPE_LEVEL_HIGH>,
@@ -3181,6 +3184,8 @@
 
 			linux,pci-domain = <4>;
 			num-lanes = <2>;
+
+			msi-map = <0x0 &gic_its 0xc0000 0x10000>;
 
 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
@@ -5747,12 +5752,14 @@
 
 			#iommu-cells = <2>;
 			#global-interrupts = <1>;
+
+			dma-coherent;
 		};
 
 		intc: interrupt-controller@17000000 {
 			compatible = "arm,gic-v3";
 			reg = <0 0x17000000 0 0x10000>,     /* GICD */
-			      <0 0x17080000 0 0x480000>;    /* GICR * 12 */
+			      <0 0x17080000 0 0x300000>;    /* GICR * 12 */
 
 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
 
@@ -5772,8 +5779,6 @@
 
 				msi-controller;
 				#msi-cells = <1>;
-
-				status = "disabled";
 			};
 		};
 
