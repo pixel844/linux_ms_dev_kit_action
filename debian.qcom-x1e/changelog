@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.12.0-16.16) oracular; urgency=medium
+
+  [ Johan Hovold ]
+  * hack: efi/libstub: fix t14s exit_boot_services() failure
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Thu, 28 Nov 2024 13:47:12 +0100
+
 linux-qcom-x1e (6.12.0-15.15) oracular; urgency=medium
 
   [ Victorien ]
