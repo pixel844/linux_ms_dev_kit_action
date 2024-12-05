@@ -2,14 +2,14 @@
 
 set -ex
 
-if ! diff -u debian/changelog debian.master/changelog
+if ! diff -u debian/changelog debian.qcom-x1e/changelog
 then
     fakeroot debian/rules clean
 fi
 
 dh_clean
 
-rm -rf debian/build/build-generic/_____________________________________dkms/
+rm -rf debian/build/build-qcom-x1e/_____________________________________dkms/
 
 export LLVM=1
 
