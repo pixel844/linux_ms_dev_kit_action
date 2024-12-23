@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-rc4-0) oracular; urgency=medium
+
+  * rebased to torvalds 6.13-rc4, added jg specific patches
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 23 Dec 2024 08:02:54 +0100
+
 linux-qcom-x1e (6.13-rc3.0) oracular; urgency=medium
 
   * initial setup of build env without further patches, only jhovold/wip/x1e80100-6.13-rc3
