@@ -1108,7 +1108,7 @@ CONFIG_AS_HAS_MOPS                              policy<{'arm64': 'y'}>
 CONFIG_AS_HAS_NON_CONST_ULEB128                 policy<{'arm64': 'y'}>
 CONFIG_AS_HAS_SHA3                              policy<{'arm64': 'y'}>
 CONFIG_AS_IS_GNU                                policy<{'arm64': 'y'}>
-CONFIG_AS_VERSION                               policy<{'arm64': '24301'}>
+CONFIG_AS_VERSION                               policy<{'arm64': '24200'}>
 CONFIG_AT76C50X_USB                             policy<{'arm64': 'm'}>
 CONFIG_AT803X_PHY                               policy<{'arm64': 'y'}>
 CONFIG_ATA                                      policy<{'arm64': 'y'}>
@@ -1764,7 +1764,7 @@ CONFIG_CC_NO_ARRAY_BOUNDS                       policy<{'arm64': 'y'}>
 CONFIG_CC_NO_STRINGOP_OVERFLOW                  policy<{'arm64': 'y'}>
 CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE              policy<{'arm64': 'y'}>
 CONFIG_CC_OPTIMIZE_FOR_SIZE                     policy<{'arm64': 'n'}>
-CONFIG_CC_VERSION_TEXT                          policy<{'arm64': '"aarch64-linux-gnu-gcc-14 (Ubuntu 14.2.0-4ubuntu2) 14.2.0"'}>
+CONFIG_CC_VERSION_TEXT                          policy<{'arm64': '"aarch64-linux-gnu-gcc-14 (Ubuntu 14.2.0-4ubuntu2~24.04) 14.2.0"'}>
 CONFIG_CDNS_I3C_MASTER                          policy<{'arm64': 'm'}>
 CONFIG_CDROM                                    policy<{'arm64': 'y'}>
 CONFIG_CDROM_PKTCDVD                            policy<{'arm64': 'n'}>
@@ -1913,6 +1913,7 @@ CONFIG_CLK_X1E80100_DISPCC                      policy<{'arm64': 'm'}>
 CONFIG_CLK_X1E80100_GCC                         policy<{'arm64': 'y'}>
 CONFIG_CLK_X1E80100_GPUCC                       policy<{'arm64': 'm'}>
 CONFIG_CLK_X1E80100_TCSRCC                      policy<{'arm64': 'm'}>
+CONFIG_CLK_X1P42100_GPUCC                       policy<{'arm64': 'm'}>
 CONFIG_CLONE_BACKWARDS                          policy<{'arm64': 'y'}>
 CONFIG_CLOSURES                                 policy<{'arm64': 'y'}>
 CONFIG_CLS_U32_MARK                             policy<{'arm64': 'y'}>
@@ -2756,6 +2757,7 @@ CONFIG_DRM_MSM_HDMI_HDCP                        policy<{'arm64': 'y'}>
 CONFIG_DRM_MSM_MDP4                             policy<{'arm64': 'y'}>
 CONFIG_DRM_MSM_MDP5                             policy<{'arm64': 'y'}>
 CONFIG_DRM_MSM_MDSS                             policy<{'arm64': 'y'}>
+CONFIG_DRM_MSM_VALIDATE_XML                     policy<{'arm64': 'n'}>
 CONFIG_DRM_NOUVEAU                              policy<{'arm64': 'm'}>
 CONFIG_DRM_NOUVEAU_BACKLIGHT                    policy<{'arm64': 'y'}>
 CONFIG_DRM_NOUVEAU_GSP_DEFAULT                  policy<{'arm64': 'n'}>
@@ -3335,7 +3337,7 @@ CONFIG_FB_ATY_BACKLIGHT                         policy<{'arm64': 'y'}>
 CONFIG_FB_ATY_CT                                policy<{'arm64': 'y'}>
 CONFIG_FB_ATY_GENERIC_LCD                       policy<{'arm64': 'n'}>
 CONFIG_FB_ATY_GX                                policy<{'arm64': 'y'}>
-CONFIG_FB_BACKLIGHT                             policy<{'arm64': 'm'}>
+CONFIG_FB_BACKLIGHT                             policy<{'arm64': 'y'}>
 CONFIG_FB_CARMINE                               policy<{'arm64': 'm'}>
 CONFIG_FB_CARMINE_DRAM_EVAL                     policy<{'arm64': 'y'}>
 CONFIG_FB_CFB_COPYAREA                          policy<{'arm64': 'y'}>
@@ -3932,6 +3934,7 @@ CONFIG_HAVE_PREEMPT_DYNAMIC_KEY                 policy<{'arm64': 'y'}>
 CONFIG_HAVE_PWRCTL                              policy<{'arm64': 'y'}>
 CONFIG_HAVE_REGS_AND_STACK_ACCESS_API           policy<{'arm64': 'y'}>
 CONFIG_HAVE_RSEQ                                policy<{'arm64': 'y'}>
+CONFIG_HAVE_RUST                                policy<{'arm64': 'y'}>
 CONFIG_HAVE_SAMPLE_FTRACE_DIRECT                policy<{'arm64': 'y'}>
 CONFIG_HAVE_SAMPLE_FTRACE_DIRECT_MULTI          policy<{'arm64': 'y'}>
 CONFIG_HAVE_SETUP_PER_CPU_AREA                  policy<{'arm64': 'y'}>
@@ -5131,7 +5134,7 @@ CONFIG_LDM_PARTITION                            policy<{'arm64': 'y'}>
 CONFIG_LD_IS_BFD                                policy<{'arm64': 'y'}>
 CONFIG_LD_ORPHAN_WARN                           policy<{'arm64': 'y'}>
 CONFIG_LD_ORPHAN_WARN_LEVEL                     policy<{'arm64': '"warn"'}>
-CONFIG_LD_VERSION                               policy<{'arm64': '24301'}>
+CONFIG_LD_VERSION                               policy<{'arm64': '24200'}>
 CONFIG_LEDS_88PM860X                            policy<{'arm64': 'm'}>
 CONFIG_LEDS_AAT1290                             policy<{'arm64': 'm'}>
 CONFIG_LEDS_ADP5520                             policy<{'arm64': 'm'}>
@@ -6936,7 +6939,7 @@ CONFIG_PAGE_SIZE_LESS_THAN_64KB                 policy<{'arm64': 'y'}>
 CONFIG_PAGE_TABLE_CHECK                         policy<{'arm64': 'n'}>
 CONFIG_PAHOLE_HAS_LANG_EXCLUDE                  policy<{'arm64': 'y'}>
 CONFIG_PAHOLE_HAS_SPLIT_BTF                     policy<{'arm64': 'y'}>
-CONFIG_PAHOLE_VERSION                           policy<{'arm64': '127'}>
+CONFIG_PAHOLE_VERSION                           policy<{'arm64': '125'}>
 CONFIG_PALMAS_GPADC                             policy<{'arm64': 'm'}>
 CONFIG_PANEL                                    policy<{'arm64': 'm'}>
 CONFIG_PANEL_CHANGE_MESSAGE                     policy<{'arm64': 'n'}>
@@ -7888,7 +7891,6 @@ CONFIG_REGULATOR_WM8400                         policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_WM8994                         policy<{'arm64': 'm'}>
 CONFIG_RELAY                                    policy<{'arm64': 'y'}>
 CONFIG_RELOCATABLE                              policy<{'arm64': 'y'}>
-CONFIG_RELR                                     policy<{'arm64': 'y'}>
 CONFIG_REMOTEPROC                               policy<{'arm64': 'y'}>
 CONFIG_REMOTEPROC_CDEV                          policy<{'arm64': 'y'}>
 CONFIG_REMOTE_TARGET                            policy<{'arm64': 'm'}>
@@ -8209,8 +8211,10 @@ CONFIG_RTW89_PCI                                policy<{'arm64': 'm'}>
 CONFIG_RT_GROUP_SCHED                           policy<{'arm64': 'n'}>
 CONFIG_RT_MUTEXES                               policy<{'arm64': 'y'}>
 CONFIG_RUNTIME_TESTING_MENU                     policy<{'arm64': 'y'}>
-CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '0'}>
-CONFIG_RUSTC_VERSION                            policy<{'arm64': '0'}>
+CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '190101'}>
+CONFIG_RUSTC_SUPPORTS_ARM64                     policy<{'arm64': 'y'}>
+CONFIG_RUSTC_VERSION                            policy<{'arm64': '108200'}>
+CONFIG_RUST_IS_AVAILABLE                        policy<{'arm64': 'y'}>
 CONFIG_RV                                       policy<{'arm64': 'y'}>
 CONFIG_RVU_ESWITCH                              policy<{'arm64': 'm'}>
 CONFIG_RV_MON_WWNR                              policy<{'arm64': 'y'}>
@@ -10022,7 +10026,6 @@ CONFIG_TMPFS                                    policy<{'arm64': 'y'}>
 CONFIG_TMPFS_INODE64                            policy<{'arm64': 'y'}>
 CONFIG_TMPFS_QUOTA                              policy<{'arm64': 'y'}>
 CONFIG_TMPFS_XATTR                              policy<{'arm64': 'y'}>
-CONFIG_TOOLS_SUPPORT_RELR                       policy<{'arm64': 'y'}>
 CONFIG_TOUCHSCREEN_88PM860X                     policy<{'arm64': 'm'}>
 CONFIG_TOUCHSCREEN_AD7877                       policy<{'arm64': 'm'}>
 CONFIG_TOUCHSCREEN_AD7879                       policy<{'arm64': 'm'}>
