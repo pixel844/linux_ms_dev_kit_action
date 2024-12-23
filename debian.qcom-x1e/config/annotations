@@ -668,7 +668,6 @@ CONFIG_ADIS16460                                policy<{'arm64': 'm'}>
 CONFIG_ADIS16475                                policy<{'arm64': 'm'}>
 CONFIG_ADIS16480                                policy<{'arm64': 'm'}>
 CONFIG_ADI_AXI_ADC                              policy<{'arm64': 'm'}>
-CONFIG_ADI_AXI_DAC                              policy<{'arm64': 'm'}>
 CONFIG_ADJD_S311                                policy<{'arm64': 'm'}>
 CONFIG_ADM8211                                  policy<{'arm64': 'm'}>
 CONFIG_ADMFM2000                                policy<{'arm64': 'm'}>
