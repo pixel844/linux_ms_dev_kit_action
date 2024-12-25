@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-rc5-el2-3) oracular; urgency=medium
+
+  * EL2 variant of 6.13-rc5
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Thu, 05 Jan 2025 12:06:30 +0100
+
 linux-qcom-x1e (6.13-rc5-2) oracular; urgency=medium
 
   * Merge remote-tracking branch 'qcom/for-next'
