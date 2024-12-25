@@ -1,7 +1,12 @@
+linux-qcom-x1e (6.13-rc6-el2-2) oracular; urgency=medium
+
+  * EL2 variant
+
+ -- Jens Glathe <jens.glathe@oldschoolsolutions.biz>  Thu, 19 Jan 2025 21:05:00 +0100
+
 linux-qcom-x1e (6.13-rc6-1) oracular; urgency=medium
 
   * sc8280xp: disable gic-its msi interrupts
-  * x1e001dev: add UHS parameters to card reader
 
  -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 11 Jan 2025 18:50:37 +0100
 
@@ -21,7 +26,6 @@ linux-qcom-x1e (6.13-rc5-2) oracular; urgency=medium
 linux-qcom-x1e (6.13-rc5-0) oracular; urgency=medium
 
   * rebase to v6.13-rc5
-
  -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 01 Jan 2025 11:04:18 +0100
 
 linux-qcom-x1e (6.13-rc4-3) oracular; urgency=medium
