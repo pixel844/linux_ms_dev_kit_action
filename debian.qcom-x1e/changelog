@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-rc4-2) oracular; urgency=medium
+
+  * add device tree for SnapDragon Dev Kit
+
+ -- Jens Glathe <jens.glathe@oldschoolsolutions.biz>  Sat, 28 Dec 2024 06:49:15 +0000
+
 linux-qcom-x1e (6.13-rc4-0) oracular; urgency=medium
 
   * rebased to torvalds 6.13-rc4, added jg specific patches
