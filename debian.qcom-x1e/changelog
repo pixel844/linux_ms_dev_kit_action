@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-rc5-0) oracular; urgency=medium
+
+  * rebase to 6.13-rc5
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 01 Jan 2025 11:04:18 +0100
+
 linux-qcom-x1e (6.13-rc4-3) oracular; urgency=medium
 
   * add qcom GDSC feature patches - multiple power domains for one device (CAMCC)
