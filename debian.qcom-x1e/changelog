@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.13-rc5-2) oracular; urgency=medium
+
+  * Merge remote-tracking branch 'qcom/for-next'
+  * Merge tag 'tags/qcom-arm64-fixes-for-6.13'
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 04 Jan 2025 08:58:11 +0100
+
 linux-qcom-x1e (6.13-rc5-0) oracular; urgency=medium
 
   * rebase to 6.13-rc5
