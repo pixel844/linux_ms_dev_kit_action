@@ -62,7 +62,7 @@ Vcs-Git: git://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/oracul
 XS-Testsuite: autopkgtest
 #XS-Testsuite-Depends: gcc-4.7 binutils
 
-Package: linux-qcom-x1e-headers-6.13-rc5-0
+Package: linux-qcom-x1e-headers-6.13-rc5-3
 Build-Profiles: <!stage1>
 Architecture: all
 Multi-Arch: foreign
@@ -72,45 +72,45 @@ Depends: ${misc:Depends}, coreutils
 Description: Header files related to Linux kernel version 6.13-rc5
  This package provides kernel header files for version 6.13-rc5, for sites
  that want the latest kernel headers. Please read
- /usr/share/doc/linux-qcom-x1e-headers-6.13-rc5-0/debian.README.gz for details
+ /usr/share/doc/linux-qcom-x1e-headers-6.13-rc5-3/debian.README.gz for details
 
-Package: linux-qcom-x1e-tools-6.13-rc5-0
+Package: linux-qcom-x1e-tools-6.13-rc5-3
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf arm64 ppc64el s390x
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}, linux-tools-common
-Description: Linux kernel version specific tools for version 6.13-rc5-0
+Description: Linux kernel version specific tools for version 6.13-rc5-3
  This package provides the architecture dependant parts for kernel
  version locked tools (such as perf and x86_energy_perf_policy) for
- version 6.13-rc5-0 on
+ version 6.13-rc5-3 on
  ARMv8.
- You probably want to install linux-tools-6.13-rc5-0-<flavour>.
+ You probably want to install linux-tools-6.13-rc5-3-<flavour>.
 
-Package: linux-qcom-x1e-cloud-tools-6.13-rc5-0
+Package: linux-qcom-x1e-cloud-tools-6.13-rc5-3
 Build-Profiles: <!stage1>
 Architecture: amd64 armhf
 Section: devel
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}, linux-cloud-tools-common
-Description: Linux kernel version specific cloud tools for version 6.13-rc5-0
+Description: Linux kernel version specific cloud tools for version 6.13-rc5-3
  This package provides the architecture dependant parts for kernel
- version locked tools for cloud tools for version 6.13-rc5-0 on
+ version locked tools for cloud tools for version 6.13-rc5-3 on
  ARMv8.
- You probably want to install linux-cloud-tools-6.13-rc5-0-<flavour>.
+ You probably want to install linux-cloud-tools-6.13-rc5-3-<flavour>.
 
 
-Package: linux-image-unsigned-6.13-rc5-0-qcom-x1e
+Package: linux-image-unsigned-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
 Priority: optional
 Provides: linux-image, fuse-module, kvm-api-4, ${linux:rprovides}
-Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-6.13-rc5-0-qcom-x1e
+Depends: ${misc:Depends}, ${shlibs:Depends}, kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-6.13-rc5-3-qcom-x1e
 Recommends: grub-efi-arm64 [arm64], initramfs-tools | linux-initramfs-tool
 Breaks: flash-kernel (<< 3.90ubuntu2) [arm64 armhf], s390-tools (<< 2.3.0-0ubuntu3) [s390x]
-Conflicts: linux-image-6.13-rc5-0-qcom-x1e
-Suggests: fdutils, linux-qcom-x1e-tools, linux-headers-6.13-rc5-0-qcom-x1e, linux-modules-extra-6.13-rc5-0-qcom-x1e
+Conflicts: linux-image-6.13-rc5-3-qcom-x1e
+Suggests: fdutils, linux-qcom-x1e-tools, linux-headers-6.13-rc5-3-qcom-x1e, linux-modules-extra-6.13-rc5-3-qcom-x1e
 Description: Linux kernel image for version 6.13-rc5 on ARMv8 SMP
  This package contains the unsigned Linux kernel image for version 6.13-rc5 on
  ARMv8 SMP.
@@ -123,7 +123,7 @@ Description: Linux kernel image for version 6.13-rc5 on ARMv8 SMP
  the linux-qcom-x1e meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-modules-6.13-rc5-0-qcom-x1e
+Package: linux-modules-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
@@ -143,12 +143,12 @@ Description: Linux kernel extra modules for version 6.13-rc5 on ARMv8 SMP
  the linux-qcom-x1e meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-modules-extra-6.13-rc5-0-qcom-x1e
+Package: linux-modules-extra-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
 Priority: optional
-Depends: ${misc:Depends}, ${shlibs:Depends}, linux-modules-6.13-rc5-0-qcom-x1e, wireless-regdb
+Depends: ${misc:Depends}, ${shlibs:Depends}, linux-modules-6.13-rc5-3-qcom-x1e, wireless-regdb
 Description: Linux kernel extra modules for version 6.13-rc5 on ARMv8 SMP
  This package contains the Linux kernel extra modules for version 6.13-rc5 on
  ARMv8 SMP.
@@ -165,21 +165,21 @@ Description: Linux kernel extra modules for version 6.13-rc5 on ARMv8 SMP
  the linux-qcom-x1e meta-package, which will ensure that upgrades work
  correctly, and that supporting packages are also installed.
 
-Package: linux-headers-6.13-rc5-0-qcom-x1e
+Package: linux-headers-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-qcom-x1e-headers-6.13-rc5-0, ${shlibs:Depends}
+Depends: ${misc:Depends}, linux-qcom-x1e-headers-6.13-rc5-3, ${shlibs:Depends}
 Provides: linux-headers, linux-headers-3.0
 Description: Linux kernel headers for version 6.13-rc5 on ARMv8 SMP
  This package provides kernel header files for version 6.13-rc5 on
  ARMv8 SMP.
  .
  This is for sites that want the latest kernel headers.  Please read
- /usr/share/doc/linux-headers-6.13-rc5-0/debian.README.gz for details.
+ /usr/share/doc/linux-headers-6.13-rc5-3/debian.README.gz for details.
 
-Package: linux-qcom-x1e-lib-rust-6.13-rc5-0-qcom-x1e
+Package: linux-qcom-x1e-lib-rust-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: amd64
 Multi-Arch: foreign
@@ -190,7 +190,7 @@ Description: Rust library files related to Linux kernel version 6.13-rc5
  This package provides kernel library files for version 6.13-rc5, that allow to
  compile out-of-tree kernel modules written in Rust.
 
-Package: linux-image-unsigned-6.13-rc5-0-qcom-x1e-dbgsym
+Package: linux-image-unsigned-6.13-rc5-3-qcom-x1e-dbgsym
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
@@ -207,31 +207,31 @@ Description: Linux kernel debug image for version 6.13-rc5 on ARMv8 SMP
  is uncompressed, and unstripped. This package also includes the
  unstripped modules.
 
-Package: linux-tools-6.13-rc5-0-qcom-x1e
+Package: linux-tools-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-qcom-x1e-tools-6.13-rc5-0
-Description: Linux kernel version specific tools for version 6.13-rc5-0
+Depends: ${misc:Depends}, linux-qcom-x1e-tools-6.13-rc5-3
+Description: Linux kernel version specific tools for version 6.13-rc5-3
  This package provides the architecture dependant parts for kernel
  version locked tools (such as perf and x86_energy_perf_policy) for
- version 6.13-rc5-0 on
+ version 6.13-rc5-3 on
  ARMv8.
 
-Package: linux-cloud-tools-6.13-rc5-0-qcom-x1e
+Package: linux-cloud-tools-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: devel
 Priority: optional
-Depends: ${misc:Depends}, linux-qcom-x1e-cloud-tools-6.13-rc5-0
-Description: Linux kernel version specific cloud tools for version 6.13-rc5-0
+Depends: ${misc:Depends}, linux-qcom-x1e-cloud-tools-6.13-rc5-3
+Description: Linux kernel version specific cloud tools for version 6.13-rc5-3
  This package provides the architecture dependant parts for kernel
- version locked tools for cloud for version 6.13-rc5-0 on
+ version locked tools for cloud for version 6.13-rc5-3 on
  ARMv8.
 
 
-Package: linux-buildinfo-6.13-rc5-0-qcom-x1e
+Package: linux-buildinfo-6.13-rc5-3-qcom-x1e
 Build-Profiles: <!stage1>
 Architecture: arm64
 Section: kernel
