@@ -1777,7 +1777,7 @@
 			linux,pci-domain = <6>;
 			num-lanes = <1>;
 
-			msi-map = <0x0 &its 0xe0000 0x10000>;
+//			msi-map = <0x0 &its 0xe0000 0x10000>;
 
 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
@@ -1891,7 +1891,7 @@
 			linux,pci-domain = <5>;
 			num-lanes = <2>;
 
-			msi-map = <0x0 &its 0xd0000 0x10000>;
+//			msi-map = <0x0 &its 0xd0000 0x10000>;
 
 			interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
@@ -2003,7 +2003,7 @@
 			linux,pci-domain = <4>;
 			num-lanes = <4>;
 
-			msi-map = <0x0 &its 0xc0000 0x10000>;
+//			msi-map = <0x0 &its 0xc0000 0x10000>;
 
 			interrupts = <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
@@ -2118,7 +2118,7 @@
 			linux,pci-domain = <3>;
 			num-lanes = <2>;
 
-			msi-map = <0x0 &its 0xb0000 0x10000>;
+//			msi-map = <0x0 &its 0xb0000 0x10000>;
 
 			interrupts = <GIC_SPI 306 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
@@ -2230,7 +2230,7 @@
 			linux,pci-domain = <2>;
 			num-lanes = <4>;
 
-			msi-map = <0x0 &its 0xa0000 0x10000>;
+//			msi-map = <0x0 &its 0xa0000 0x10000>;
 
 			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 523 IRQ_TYPE_LEVEL_HIGH>,
@@ -5025,7 +5025,7 @@
 					  "gerror",
 					  "priq",
 					  "cmdq-sync";
-			msi-parent = <&its 0x40000>;
+//			msi-parent = <&its 0x40000>;
 			#iommu-cells = <1>;
 			dma-coherent;
 
