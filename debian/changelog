@@ -1,4 +1,10 @@
-linux-qcom-x1e (6.13-rc5-3) oracular; urgency=medium
+linux-qcom-x1e (6.13-rc7-0) oracular; urgency=medium
+
+  * rebase to v6.13-rc7
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 13 Jan 2025 11:39:48 +0100
+
+linux-qcom-x1e (6.13-rc6-0) oracular; urgency=medium
 
   * rebase to v6.13-rc6
 
