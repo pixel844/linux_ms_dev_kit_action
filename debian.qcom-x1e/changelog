@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-rc7-1) oracular; urgency=medium
+
+  * sc8280xp: disable msi-map on pcie4
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Tue, 14 Jan 2025 15:39:02 +0100
+
 linux-qcom-x1e (6.13-rc7-0) oracular; urgency=medium
 
   * rebase to v6.13-rc7
