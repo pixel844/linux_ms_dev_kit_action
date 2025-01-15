@@ -680,6 +680,18 @@ static void pm8xxx_shutdown(struct platform_device *pdev)
 	}
 }
 
+static void pm8xxx_shutdown(struct platform_device *pdev)
+{
+	struct pm8xxx_rtc *rtc_dd = platform_get_drvdata(pdev);
+
+	if (rtc_dd->offset_dirty) {
+		if (rtc_dd->nvmem_cell)
+			pm8xxx_rtc_write_nvmem_offset(rtc_dd, rtc_dd->offset);
+		else
+			pm8xxx_rtc_write_uefi_offset(rtc_dd, rtc_dd->offset);
+	}
+}
+
 static struct platform_driver pm8xxx_rtc_driver = {
 	.probe		= pm8xxx_rtc_probe,
 	.remove		= pm8xxx_remove,
