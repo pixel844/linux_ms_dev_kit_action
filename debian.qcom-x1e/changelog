@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.13-rc7-3) oracular; urgency=medium
+
+  * handle smb2360 activation now necessary
+  * fine-tuning on Acer Swift 14 SF-11
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sun, 19 Jan 2025 19:49:05 +0100
+
 linux-qcom-x1e (6.13-rc7-2) oracular; urgency=medium
 
   * added PR #28 from @victorien-a: Support Device Tree - Acer Swift 14 SF-11
