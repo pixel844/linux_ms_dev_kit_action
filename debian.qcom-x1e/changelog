@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-1) oracular; urgency=medium
+
+  * integrate official RTC patchwork for x1e / sc8280xp
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 20 Jan 2025 16:56:29 +0100
+
 linux-qcom-x1e (6.13-0) oracular; urgency=medium
 
   * rebase to release v6.13
