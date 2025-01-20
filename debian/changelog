@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-0) oracular; urgency=medium
+
+  * rebase to release v6.13
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 20 Jan 2025 14:46:56 +0100
+
 linux-qcom-x1e (6.13-rc7-3) oracular; urgency=medium
 
   * handle smb2360 activation now necessary
