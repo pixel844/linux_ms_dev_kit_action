@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13-3) oracular; urgency=medium
+
+  * HACK: workaround for t14s OLED backlight
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Tue, 21 Jan 2025 16:04:56 +0100
+
 linux-qcom-x1e (6.13-2) oracular; urgency=medium
 
   * rebase to jhovold/wip/x1e80100-6.13
