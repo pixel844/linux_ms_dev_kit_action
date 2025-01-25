@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.13-4) oracular; urgency=medium
+
+  * add current avilable X1P42100 patches
+  * amend Lenovo Thinkbook 16 definition to use it
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 25 Jan 2025 12:56:25 +0100
+
 linux-qcom-x1e (6.13-3) oracular; urgency=medium
 
   * HACK: workaround for t14s OLED backlight
