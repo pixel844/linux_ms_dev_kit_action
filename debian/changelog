@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.13-6) oracular; urgency=medium
+
+  * remove 0143bc8b7fbfa254cb049deb16967e009ccd869d hack: efi/libstub: mitigate t14s exit_boot_services() failure
+    according to https://lore.kernel.org/all/Z0gn1N3IsP8r3gTA@hovoldconsulting.com/ this doesn't solve the issue
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 29 Jan 2025 21:15:07 +0100
+
 linux-qcom-x1e (6.13-5) oracular; urgency=medium
 
   * enable SMB2360 eUSB2 repeaters on Thinkbook 16
