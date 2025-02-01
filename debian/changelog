@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.13-8) oracular; urgency=medium
+
+  * enable pcie3 and mdss_dp3 on Snapdragon Dev Kit
+  * add pwm backlight to Lenovo Thinkbook 16
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 01 Feb 2025 10:09:51 +0100
+
 linux-qcom-x1e (6.13-7) oracular; urgency=medium
 
   * amend i2c devices for Thinkbook 16
