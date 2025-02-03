@@ -2818,11 +2818,11 @@ int drm_dp_lttpr_max_link_rate(const u8 caps[DP_LTTPR_COMMON_CAP_SIZE])
 EXPORT_SYMBOL(drm_dp_lttpr_max_link_rate);
 
 /**
- * drm_dp_lttpr_set_transparent_mode - set the LTTPR in transparent mode
+ * drm_dp_lttpr_set_transparent_mode() - set the LTTPR in transparent mode
  * @aux: DisplayPort AUX channel
  * @enable: Enable or disable transparent mode
  *
- * Returns 0 on success or a negative error code on failure.
+ * Returns: 0 on success or a negative error code on failure.
  */
 int drm_dp_lttpr_set_transparent_mode(struct drm_dp_aux *aux, bool enable)
 {
@@ -2838,14 +2838,13 @@ int drm_dp_lttpr_set_transparent_mode(struct drm_dp_aux *aux, bool enable)
 EXPORT_SYMBOL(drm_dp_lttpr_set_transparent_mode);
 
 /**
- * drm_dp_lttpr_init - init LTTPR transparency mode according to DP standard
- *
+ * drm_dp_lttpr_init() - init LTTPR transparency mode according to DP standard
  * @aux: DisplayPort AUX channel
  * @lttpr_count: Number of LTTPRs. Between 0 and 8, according to DP standard.
  *               Negative error code for any non-valid number.
  *               See drm_dp_lttpr_count().
  *
- * Returns 0 on success or a negative error code on failure.
+ * Returns: 0 on success or a negative error code on failure.
  */
 int drm_dp_lttpr_init(struct drm_dp_aux *aux, int lttpr_count)
 {
@@ -2866,10 +2865,11 @@ int drm_dp_lttpr_init(struct drm_dp_aux *aux, int lttpr_count)
 	if (lttpr_count < 0)
 		return -ENODEV;
 
-	/*
-	 * Roll-back to tranparent mode if setting non-tranparent mode failed
-	 */
 	if (drm_dp_lttpr_set_transparent_mode(aux, false)) {
+		/*
+		 * Roll-back to transparent mode if setting non-transparent
+		 * mode has failed
+		 */
 		drm_dp_lttpr_set_transparent_mode(aux, true);
 		return -EINVAL;
 	}
