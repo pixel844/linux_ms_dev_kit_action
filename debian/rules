@@ -47,18 +47,16 @@ do_cloud_tools=$(sort $(filter-out false,$(do_tools_hyperv)))
 do_tools_perf_jvmti?=false
 do_tools_perf_python?=false
 
-# Indep tools packages may only be built for the main linux and
-# linux-unstable source packages
-ifeq ($(DEB_SOURCE),$(filter $(DEB_SOURCE),linux linux-unstable))
+# Indep tools packages may only be built for the main linux source package
+ifeq ($(DEB_SOURCE),linux)
 	do_tools_common = true
 	do_tools_host = true
 endif
 
-# The linux-source package may only be built for the main linux and
-# linux-unstable source packages
+# The linux-source package may only be built for the linux source package
 # We need to explicitly turn this off here to override any (incorrect)
 # statement in any of the above included makefile snippets
-ifneq ($(DEB_SOURCE),$(filter $(DEB_SOURCE),linux linux-unstable))
+ifneq ($(DEB_SOURCE),linux)
 	do_source_package = false
 endif
 
@@ -164,7 +162,7 @@ include debian/rules.d/2-binary-arch.mk
 include debian/rules.d/3-binary-indep.mk
 
 control_files := $(DEBIAN)/control.stub.in
-ifeq ($(DEB_SOURCE),$(filter $(DEB_SOURCE),linux linux-unstable))
+ifeq ($(DEB_SOURCE),linux)
 	control_files += debian/control.d/linux-libc-dev.stub
 	control_files += debian/control.d/linux-tools-common.stub
 	control_files += debian/control.d/linux-cloud-tools-common.stub
