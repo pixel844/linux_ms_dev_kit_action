@@ -48,20 +48,20 @@ struct pdc_pin_region {
 
 static DEFINE_RAW_SPINLOCK(pdc_lock);
 static void __iomem *pdc_base;
-static void __iomem *pdc_prev_base;
+static void __iomem *pdc_drv1;
 static struct pdc_pin_region *pdc_region;
 static int pdc_region_cnt;
 static unsigned int pdc_version;
 static bool pdc_x1e_quirk;
 
-static void pdc_base_reg_write(void __iomem *base, int reg, u32 i, u32 val)
+static void _pdc_reg_write(void __iomem *base, int reg, u32 i, u32 val)
 {
 	writel_relaxed(val, base + reg + i * sizeof(u32));
 }
 
 static void pdc_reg_write(int reg, u32 i, u32 val)
 {
-	pdc_base_reg_write(pdc_base, reg, i, val);
+	_pdc_reg_write(pdc_base, reg, i, val);
 }
 
 static u32 pdc_reg_read(int reg, u32 i)
@@ -71,30 +71,22 @@ static u32 pdc_reg_read(int reg, u32 i)
 
 static void pdc_x1e_irq_enable_write(u32 bank, u32 enable)
 {
-	void __iomem *base;
+	void __iomem *base = pdc_base; /* DRV2 */
 
-	/* Remap the write access to work around a hardware bug on X1E */
-	switch (bank) {
-	case 0 ... 1:
-		/* Use previous DRV (client) region and shift to bank 3-4 */
-		base = pdc_prev_base;
+	/*
+	 * Workaround hardware bug in the register logic on X1E80100:
+	 *  - For bank 0-1, writes need to be made to DRV1, bank 3 and 4.
+	 *  - For bank 2-4, writes need to be made to DRV2, bank 0-2.
+	 *  - Bank 5 works as expected.
+	 */
+	if (bank <= 1) {
+		base = pdc_drv1;
 		bank += 3;
-		break;
-	case 2 ... 4:
-		/* Use our own region and shift to bank 0-2 */
-		base = pdc_base;
+	} else if (bank <= 4) {
 		bank -= 2;
-		break;
-	case 5:
-		/* No fixup required for bank 5 */
-		base = pdc_base;
-		break;
-	default:
-		WARN_ON(1);
-		return;
 	}
 
-	pdc_base_reg_write(base, IRQ_ENABLE_BANK, bank, enable);
+	_pdc_reg_write(base, IRQ_ENABLE_BANK, bank, enable);
 }
 
 static void __pdc_enable_intr(int pin_out, bool on)
@@ -365,18 +357,10 @@ static int qcom_pdc_init(struct device_node *node, struct device_node *parent)
 	if (res_size > resource_size(&res))
 		pr_warn("%pOF: invalid reg size, please fix DT\n", node);
 
-	/*
-	 * PDC has multiple DRV regions, each one provides the same set of
-	 * registers for a particular client in the system. Due to a hardware
-	 * bug on X1E, some writes to the IRQ_ENABLE_BANK register must be
-	 * issued inside the previous region. This region belongs to
-	 * a different client and is not described in the device tree. Map the
-	 * region with the expected offset to preserve support for old DTs.
-	 */
 	if (of_device_is_compatible(node, "qcom,x1e80100-pdc")) {
-		pdc_prev_base = ioremap(res.start - PDC_DRV_OFFSET, IRQ_ENABLE_BANK_MAX);
-		if (!pdc_prev_base) {
-			pr_err("%pOF: unable to map previous PDC DRV region\n", node);
+		pdc_drv1 = ioremap(res.start - PDC_DRV_OFFSET, IRQ_ENABLE_BANK_MAX);
+		if (!pdc_drv1) {
+			pr_err("%pOF: unable to map PDC DRV1 region\n", node);
 			return -ENXIO;
 		}
 
@@ -423,7 +407,7 @@ static int qcom_pdc_init(struct device_node *node, struct device_node *parent)
 fail:
 	kfree(pdc_region);
 	iounmap(pdc_base);
-	iounmap(pdc_prev_base);
+	iounmap(pdc_drv1);
 	return ret;
 }
 
