@@ -1,43 +1,67 @@
-linux-qcom-x1e (6.13.0-4.4) oracular; urgency=medium
+linux-qcom-x1e (6.14.0-3.3) oracular; urgency=medium
 
-  [ Srinivas Kandagatla ]
-  * wip: arm64: qcom: x1e78100: add sound support
+  [ Sibi Sankar ]
+  * arm64: dts: qcom: x1e80100: Add cpucp mailbox and sram nodes
+  * arm64: dts: qcom: x1e80100: Enable cpufreq
+
+  [ Abel Vesa ]
+  * arm64: dts: qcom: x1e80100: Add node uart14
+  * clk: qcom: gcc-x1e80100: Do not register gpu_cfg_ahb always-on clock
+  * clk: qcom: gcc-x1e80100: Add halt_check delay to gpu_memnoc_gfx clock
+  * dt-bindings: usb: Add Parade PS8830 Type-C retimer bindings
+  * usb: typec: Add support for Parade PS8830 Type-C Retimer
+
+  [ Johan Hovold ]
+  * dt-bindings: rtc: qcom-pm8xxx: add uefi-variable offset
+
+  [ Jonathan Marek ]
+  * dt-bindings: rtc: qcom-pm8xxx: document qcom,no-alarm flag
+  * rtc: pm8xxx: implement qcom,no-alarm flag for non-HLOS owned alarm
+
+  [ Johan Hovold ]
+  * rtc: pm8xxx: add support for uefi offset
+  * rtc: pm8xxx: mitigate flash wear
+  * arm64: dts: qcom: sc8280xp-x13s: switch to uefi rtc offset
+  * arm64: dts: qcom: x1e80100: enable rtc
+
+  [ Mark Kettenis ]
+  * arm64: dts: qcom: x1e80100: Mark usb_2 as dma-coherent
+
+  [ Maya Matuszczyk ]
+  * dt-bindings: platform: Add bindings for Qcom's EC on IT8987
+  * platform: arm64: Add driver for EC found in most X1E laptops
+
+  [ Rajendra Nayak ]
+  * arm64: dts: qcom: x1e80100: Add the watchdog device
+
+  [ Mukesh Ojha ]
+  * soc: qcom: pdr: Fix the potential deadlock
+
+  [ Manivannan Sadhasivam ]
+  * bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
+
+  [ Johan Hovold ]
+  * firmware: qcom: uefisecapp: fix efivars registration race
 
   [ Abel Vesa ]
   * arm64: dts: qcom: x1e80100-t14s: Describe the Parade PS8830 retimers
   * arm64: dts: qcom: x1e80100-t14s: Enable external DisplayPort support
-  * arm64: dts: qcom: x1e78100-t14s: Enable support for both Type-A USB ports
-  * arm64: dts: qcom: x1e78100-t14s: Add display brightness control support
-
-  [ Tobias Heider ]
-  * Revert "arm64: dts: qcom: x1e78100-t14s: Add display brightness control support"
-  * HACK: workaround for t14s OLED backlight
-  * arm64: dts: qcom: x1e78100-lenovo-thinkpad-t14s: Add bluetooth
-
-  [ Davide Ricci ]
-  * Changes: tweaks to x1e80100 sounds driver to enable T14s two speakers
 
   [ Aleksandrs Vinarskis ]
   * arm64: dts: qcom: x1e80100-t14s: Enable HBR3 on external DPs
 
-  [ Abel Vesa ]
-  * arm64: dts: qcom: x1e78100-t14s: Enable fingerprint reader
+  [ Tobias Heider ]
+  * HACK: workaround for t14s OLED backlight
 
   [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Introduce retimer support
   * arm64: dts: qcom: x1e80100-dell-xps13-9345: Add bluetooth nodes
 
   [ Sibi Sankar ]
   * arm64: dts: qcom: x1e80100-dell-xps13-9345: Add Left/Right Speakers and Tweeter
 
   [ Aleksandrs Vinarskis ]
-  * HID: i2c-hid: introduce re-power-on quirk
-  * HID: i2c-hid: introduce qtec vendor, enable re-power-on quirk
   * arm64: dts: qcom: x1e80100-dell-xps13-9345: Enable external DP support
   * arm64: dts: qcom: x1e80100-dell-xps13-9345: Enable HBR3 on external DPs
-
-  [ Anthony Ruhier ]
-  * arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: Add lid switch
 
   [ Abel Vesa ]
   * arm64: dts: qcom: x1e80100-slim7x: Enable external DP support
@@ -52,12 +76,10 @@ linux-qcom-x1e (6.13.0-4.4) oracular; urgency=medium
   * arm64: dts: qcom: Sync Samsung Galaxy Book4 Edge DTS
   * firmware: qcom: scm: Allow QSEECOM on Samsung Galaxy Book4 Edge
 
+  [ Aleksandrs Vinarskis ]
+  * arm64: dts: qcom: x1e80100-hp-x14: Enable HBR3 on external DPs
+
   [ Maud Spierings ]
-  * firmware: qcom: scm: Allow QSEECOM on the asus vivobook s15
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Enable the gpu
-  * dt-bindings: display: panel: samsung,atna56ac03: Document ATNA56AC03
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Use the samsung,atna33xc20 panel driver
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Add lid switch
   * arm64: dts: qcom: x1e80100-vivobook-s15: Add bluetooth
 
   [ Tobias Heider ]
@@ -65,18 +87,6 @@ linux-qcom-x1e (6.13.0-4.4) oracular; urgency=medium
 
   [ Aleksandrs Vinarskis ]
   * arm64: dts: qcom: x1e80100-vivobook-s15: Enable HBR3 on external DPs
-
-  [ Stephan Gerhold ]
-  * arm64: dts: qcom: x1e80100-asus-vivobook-s15: Fix USB QMP PHY supplies
-
-  [ Jens Glathe ]
-  * drm/panel-edp: Add unknown BOE panel for HP Omnibook X14
-  * firmware: qcom: scm: Allow QSEECOM for HP Omnibook X14
-  * dt-bindings: arm: qcom: Add HP Omnibook X 14
-  * arm64: dts: qcom: x1e80100-hp-x14: dt for HP Omnibook X Laptop 14
-
-  [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-hp-x14: Enable HBR3 on external DPs
 
   [ Victorien ]
   * arm64: dts: qcom: x1p64100-acer-swift-sf14-11 dt for Acer Swift 14 SF14-11 (touchpad fix)
@@ -94,25 +104,18 @@ linux-qcom-x1e (6.13.0-4.4) oracular; urgency=medium
   [ Kirill A. Korinsky ]
   * arm64: dts: qcom: x1e80100: add HONOR MagicBook Art 14 devicetree
 
-  [ Sibi Sankar ]
-  * arm64: dts: qcom: Add X1E001DE Snapdragon Devkit for Windows
-  * dt-bindings: arm: qcom: Add Snapdragon Devkit for Windows
-  * arm64: dts: qcom: x1e001de-devkit: Add audio related nodes
-  * arm64: dts: qcom: x1e001de-devkit: Enable external DP support
-
   [ Aleksandrs Vinarskis ]
   * arm64: dts: qcom: x1e001de-devkit: Enable HBR3 on external DPs
 
-  [ Dmitry Baryshkov ]
-  * drm/msm/dpu1: don't choke on disabling the writeback connector
+  [ Abel Vesa ]
+  * drm/dp: Add helper to set LTTPRs in transparent mode
+  * drm/msm/dp: Add support for LTTPR handling
 
   [ Davide Ricci ]
   * Change: cracking sound fix
 
   [ Tobias Heider ]
-  * UBUNTU: Audio support on X Elite is currently experimental and comes
-    with a risk of permanently damaging hardware. Add an explicit kernel
-    command line flag to make sure it doesn't get enabled by accident.
+  * UBUNTU: Audio support on X Elite is currently experimental and comes with a risk of permanently damaging hardware. Add an explicit kernel command line flag to make sure it doesn't get enabled by accident.
 
   [ Johan Hovold ]
   * hack: efi/libstub: fix t14s exit_boot_services() failure
@@ -175,133 +178,38 @@ linux-qcom-x1e (6.13.0-4.4) oracular; urgency=medium
 
   [ Tobias Heider ]
   * UBUNTU: Add qcom-x1e as default flavour
+  * UBUNTU: update config for 6.14
+  * UBUNTU: install efi bootable vmlinuz.efi
 
-  [ Sibi Sankar ]
-  * arm64: dts: qcom: x1e80100: Add cpucp mailbox and sram nodes
-  * arm64: dts: qcom: x1e80100: Enable cpufreq
+ -- Tobias Heider <tobias.heider@canonical.com>  Fri, 14 Feb 2025 15:17:26 +0100
 
-  [ Stephan Gerhold ]
-  * arm64: dts: qcom: x1e80100: Add QUP power domains and OPPs
-  * arm64: dts: qcom: x1e80100: Add uart14
+linux-unstable (6.14.0-2.2) plucky; urgency=medium
 
-  [ Abel Vesa ]
-  * arm64: dts: qcom: x1e80100: Add node uart14
+  * plucky/linux-unstable: 6.14.0-2.2 -proposed tracker (LP: #2097828)
 
-  [ Qiang Yu ]
-  * arm64: dts: qcom: x1e80100: Add support for PCIe3 on x1e80100
+  * Miscellaneous Ubuntu changes
+    - [Config] updateconfigs following v6.14-rc2 rebase
 
-  [ Marcus Glocker ]
-  * arm64: dts: qcom: Add UFS node
+  * Miscellaneous upstream changes
+    - Revert "UBUNTU: [Packaging] Build all packages for linux-unstable"
 
-  [ Abel Vesa ]
-  * clk: qcom: gcc-x1e80100: Do not register gpu_cfg_ahb always-on clock
-  * clk: qcom: gcc-x1e80100: Add halt_check delay to gpu_memnoc_gfx clock
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Tue, 11 Feb 2025 10:11:13 +0100
 
-  [ Marcus Glocker ]
-  * dt-bindings: crypto: Add X1E80100 Crypto Engine
-  * dt-bindings: phy: Add X1E80100 UFS
-  * dt-bindings: ufs: Add X1E80100 UFS
+linux-unstable (6.14.0-1.1) plucky; urgency=medium
 
-  [ Krzysztof Kozlowski ]
-  * arm64: dts: qcom: sm8350: Fix CDSP memory base and length
-  * arm64: dts: qcom: sm8350: Fix MPSS memory length
-  * arm64: dts: qcom: sm8450: Fix ADSP memory base and length
-  * arm64: dts: qcom: sm8450: Fix CDSP memory length
-  * arm64: dts: qcom: sm8450: Fix MPSS memory length
-  * arm64: dts: qcom: sm8550: Fix ADSP memory base and length
-  * arm64: dts: qcom: sm8550: Fix CDSP memory length
-  * arm64: dts: qcom: sm8550: Fix MPSS memory length
-  * arm64: dts: qcom: sm8650: Fix ADSP memory base and length
-  * arm64: dts: qcom: sm8650: Fix CDSP memory length
-  * arm64: dts: qcom: sm8650: Fix MPSS memory length
-  * arm64: dts: qcom: x1e80100: Fix ADSP memory base and length
-  * arm64: dts: qcom: x1e80100: Fix CDSP memory length
-  * arm64: dts: qcom: sm6350: Fix ADSP memory length
-  * arm64: dts: qcom: sm6350: Fix MPSS memory length
-  * arm64: dts: qcom: sm6375: Fix ADSP memory length
-  * arm64: dts: qcom: sm6375: Fix CDSP memory base and length
-  * arm64: dts: qcom: sm6375: Fix MPSS memory base and length
+  * [25.04 FEAT] In-kernel crypto support MSA 11 HMAC (LP: #2096812)
+    - [Config] Change CONFIG_CRYPTO_HMAC_S390 to m for s390x
 
-  [ Yuvaraj Ranganathan ]
-  * soc: qcom: ice: Prevent UFS probe deferral on ICE probe failure
+  * Miscellaneous Ubuntu changes
+    - Update dropped.txt (MODVERSION patches for Rust)
+    - [Config] updateconfigs following v6.14-rc1 rebase
+    - SAUCE: binder: turn into module - list_lru_add()/list_lru_del()
+    - SAUCE: binder: turn into module - lock_vma_under_rcu()
+    - [Config] temporarily disable DRM_HISI_HIBMC, FTBFS
+    - dkms: remove zfs, FTBFS
+    - [Config] armhf: disable TEGRA210_ADMA, FTBFS
 
-  [ Abel Vesa ]
-  * dt-bindings: usb: Add Parade PS8830 Type-C retimer bindings
-  * usb: typec: Add support for Parade PS8830 Type-C Retimer
-
-  [ Johan Hovold ]
-  * dt-bindings: rtc: qcom-pm8xxx: add uefi-variable offset
-
-  [ Jonathan Marek ]
-  * dt-bindings: rtc: qcom-pm8xxx: document qcom,no-alarm flag
-
-  [ Johan Hovold ]
-  * rtc: pm8xxx: add support for uefi offset
-  * rtc: pm8xxx: mitigate flash wear
-
-  [ Jonathan Marek ]
-  * rtc: pm8xxx: implement qcom,no-alarm flag for non-HLOS owned alarm
-
-  [ Johan Hovold ]
-  * arm64: dts: qcom: sc8280xp-x13s: switch to uefi rtc offset
-  * arm64: dts: qcom: x1e80100: enable rtc
-
-  [ Krishna Kurapati ]
-  * arm64: dts: qcom: sm8350: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sm8450: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sm8150: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sm6125: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sm8250: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sm6350: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sc7280: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sa8775p: Disable USB U1/U2 entry
-
-  [ Prashanth K ]
-  * arm64: dts: qcom: sdm630: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sdm845: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sdx75: Disable USB U1/U2 entry
-  * arm64: dts: qcom: qcs404: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sc7180: Disable USB U1/U2 entry
-  * arm64: dts: qcom: x1e80100: Disable USB U1/U2 entry
-  * arm64: dts: qcom: qdu1000: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sc8280xp: Disable USB U1/U2 entry
-  * arm64: dts: qcom: sc8180x: Disable USB U1/U2 entry
-
-  [ Abel Vesa ]
-  * arm64: dts: qcom: x1e80100: Fix usb_2 controller interrupts
-
-  [ Mark Kettenis ]
-  * arm64: dts: qcom: x1e80100: Mark usb_2 as dma-coherent
-
-  [ Dmitry Baryshkov ]
-  * arm64: dts: qcom: x1e80100: correct sleep clock frequency
-
-  [ Abel Vesa ]
-  * clk: qcom: gcc-x1e80100: Do not turn off usb_2 controller GDSC
-
-  [ Maya Matuszczyk ]
-  * dt-bindings: platform: Add bindings for Qcom's EC on IT8987
-  * platform: arm64: Add driver for EC found in most X1E laptops
-
-  [ Abel Vesa ]
-  * drm/dp: Add helper to set LTTPRs in transparent mode
-  * drm/nouveau/dp: Use the generic helper to control LTTPR transparent mode
-  * drm/i915/dp: Use the generic helper to control LTTPR transparent mode
-  * drm/msm/dp: Add support for LTTPR handling
-
-  [ Stephan Gerhold ]
-  * drm/msm/dpu: fix x1e80100 intf_6 underrun/vsync interrupt
-
-  [ Tobias Heider ]
-  * UBUNTU: update configs, sync changelog
-
- -- Tobias Heider <tobias.heider@canonical.com>  Wed, 12 Feb 2025 11:16:40 +0100
-
-linux-qcom-x1e (6.13.0-3.3) oracular; urgency=medium
-
-  * x1e
-
- -- Tobias Heider <tobias.heider@canonical.com>  Mon, 10 Feb 2025 23:37:28 +0100
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Fri, 07 Feb 2025 09:41:02 +0100
 
 linux-unstable (6.13.0-2.2) plucky; urgency=medium
 
