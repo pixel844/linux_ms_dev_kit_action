@@ -10,13 +10,13 @@ CONFIG_ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE         policy<{'arm64': 'y'}>
 CONFIG_ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE         note<'LP: #2051835'>
 
 CONFIG_ARCH_MMAP_RND_BITS                       policy<{'arm64': '18'}>
-CONFIG_ARCH_MMAP_RND_BITS                       note<'TODO: update note'>
+CONFIG_ARCH_MMAP_RND_BITS                       note<'LP: #1983357'>
 
 CONFIG_ARCH_MMAP_RND_COMPAT_BITS                policy<{'arm64': '16'}>
 CONFIG_ARCH_MMAP_RND_COMPAT_BITS                note<'LP: #1983357'>
 
 CONFIG_ARCH_ROCKCHIP                            policy<{'arm64': 'y'}>
-CONFIG_ARCH_ROCKCHIP                            note<'TODO: update note'>
+CONFIG_ARCH_ROCKCHIP                            note<'LP: #1825222'>
 
 CONFIG_ARM64_ERRATUM_843419                     policy<{'arm64': 'y'}>
 CONFIG_ARM64_ERRATUM_843419                     note<'LP: #1647793'>
@@ -30,8 +30,8 @@ CONFIG_ARM64_USE_LSE_ATOMICS                    note<'LP: #1691614'>
 CONFIG_ARMV8_DEPRECATED                         policy<{'arm64': 'y'}>
 CONFIG_ARMV8_DEPRECATED                         note<'LP: #1545542'>
 
-CONFIG_ARM_SMMU_DISABLE_BYPASS_BY_DEFAULT       policy<{'arm64': 'y'}>
-CONFIG_ARM_SMMU_DISABLE_BYPASS_BY_DEFAULT       note<'TODO: update note'>
+CONFIG_ARM_SMMU_DISABLE_BYPASS_BY_DEFAULT       policy<{'arm64': 'n'}>
+CONFIG_ARM_SMMU_DISABLE_BYPASS_BY_DEFAULT       note<'LP: #1845820'>
 
 CONFIG_ASYMMETRIC_KEY_TYPE                      policy<{'arm64': 'y'}>
 CONFIG_ASYMMETRIC_KEY_TYPE                      note<'module signing'>
@@ -162,6 +162,12 @@ CONFIG_DVB_DUMMY_FE                             note<'expert use only'>
 CONFIG_ECRYPT_FS                                policy<{'arm64': 'y'}>
 CONFIG_ECRYPT_FS                                note<'not autoloadable'>
 
+CONFIG_EFIVAR_FS                                policy<{'arm64': 'y'}>
+CONFIG_EFIVAR_FS                                note<'needed for variable EFI update'>
+
+CONFIG_EFI_ZBOOT                                policy<{'arm64': 'y'}>
+CONFIG_EFI_ZBOOT                                note<'LP: #2002226'>
+
 CONFIG_EVM                                      policy<{'arm64': 'y'}>
 CONFIG_EVM                                      note<'LP: #1643652'>
 
@@ -247,7 +253,7 @@ CONFIG_MODVERSIONS                              policy<{'arm64': 'y'}>
 CONFIG_MODVERSIONS                              note<'required as we have a livepatch/drivers modules signing key'>
 
 CONFIG_MTD                                      policy<{'arm64': 'm'}>
-CONFIG_MTD                                      note<'TODO: update note'>
+CONFIG_MTD                                      note<'boot essential on arm'>
 
 CONFIG_MTD_BLOCK                                policy<{'arm64': 'm'}>
 CONFIG_MTD_BLOCK                                note<'boot essential on arm'>
@@ -572,9 +578,9 @@ CONFIG_AD2S90                                   policy<{'arm64': 'm'}>
 CONFIG_AD3552R                                  policy<{'arm64': 'm'}>
 CONFIG_AD3552R_HS                               policy<{'arm64': 'm'}>
 CONFIG_AD3552R_LIB                              policy<{'arm64': 'm'}>
-CONFIG_AD4000                                   policy<{'arm64': 'n'}>
+CONFIG_AD4000                                   policy<{'arm64': 'm'}>
 CONFIG_AD4130                                   policy<{'arm64': 'm'}>
-CONFIG_AD4695                                   policy<{'arm64': 'n'}>
+CONFIG_AD4695                                   policy<{'arm64': 'm'}>
 CONFIG_AD5064                                   policy<{'arm64': 'm'}>
 CONFIG_AD5110                                   policy<{'arm64': 'm'}>
 CONFIG_AD525X_DPOT                              policy<{'arm64': 'm'}>
@@ -694,8 +700,9 @@ CONFIG_ADXL367_SPI                              policy<{'arm64': 'm'}>
 CONFIG_ADXL372                                  policy<{'arm64': 'm'}>
 CONFIG_ADXL372_I2C                              policy<{'arm64': 'm'}>
 CONFIG_ADXL372_SPI                              policy<{'arm64': 'm'}>
-CONFIG_ADXL380_I2C                              policy<{'arm64': 'n'}>
-CONFIG_ADXL380_SPI                              policy<{'arm64': 'n'}>
+CONFIG_ADXL380                                  policy<{'arm64': 'm'}>
+CONFIG_ADXL380_I2C                              policy<{'arm64': 'm'}>
+CONFIG_ADXL380_SPI                              policy<{'arm64': 'm'}>
 CONFIG_ADXRS290                                 policy<{'arm64': 'm'}>
 CONFIG_ADXRS450                                 policy<{'arm64': 'm'}>
 CONFIG_AD_SIGMA_DELTA                           policy<{'arm64': 'm'}>
@@ -1481,7 +1488,7 @@ CONFIG_BCM_NET_PHYPTP                           policy<{'arm64': 'm'}>
 CONFIG_BCM_SBA_RAID                             policy<{'arm64': 'm'}>
 CONFIG_BCM_VK                                   policy<{'arm64': 'm'}>
 CONFIG_BCM_VK_TTY                               policy<{'arm64': 'y'}>
-CONFIG_BD79703                                  policy<{'arm64': 'n'}>
+CONFIG_BD79703                                  policy<{'arm64': 'm'}>
 CONFIG_BD957XMUF_WATCHDOG                       policy<{'arm64': 'm'}>
 CONFIG_BD96801_WATCHDOG                         policy<{'arm64': 'm'}>
 CONFIG_BE2ISCSI                                 policy<{'arm64': 'm'}>
@@ -1497,7 +1504,7 @@ CONFIG_BERLIN2_ADC                              policy<{'arm64': 'm'}>
 CONFIG_BFQ_CGROUP_DEBUG                         policy<{'arm64': 'n'}>
 CONFIG_BFQ_GROUP_IOSCHED                        policy<{'arm64': 'y'}>
 CONFIG_BFS_FS                                   policy<{'arm64': 'm'}>
-CONFIG_BH1745                                   policy<{'arm64': 'n'}>
+CONFIG_BH1745                                   policy<{'arm64': 'm'}>
 CONFIG_BH1750                                   policy<{'arm64': 'm'}>
 CONFIG_BH1780                                   policy<{'arm64': 'm'}>
 CONFIG_BINARY_PRINTF                            policy<{'arm64': 'y'}>
@@ -1971,7 +1978,7 @@ CONFIG_CHARGER_SURFACE                          policy<{'arm64': 'm'}>
 CONFIG_CHARGER_TPS65090                         policy<{'arm64': 'm'}>
 CONFIG_CHARGER_TPS65217                         policy<{'arm64': 'm'}>
 CONFIG_CHARGER_TWL4030                          policy<{'arm64': 'm'}>
-CONFIG_CHARGER_TWL6030                          policy<{'arm64': 'n'}>
+CONFIG_CHARGER_TWL6030                          policy<{'arm64': 'm'}>
 CONFIG_CHARGER_UCS1002                          policy<{'arm64': 'm'}>
 CONFIG_CHARLCD                                  policy<{'arm64': 'm'}>
 CONFIG_CHARLCD_BL_FLASH                         policy<{'arm64': 'y'}>
@@ -3096,8 +3103,9 @@ CONFIG_DRM_CIRRUS_QEMU                          policy<{'arm64': 'm'}>
 CONFIG_DRM_CLIENT                               policy<{'arm64': 'y'}>
 CONFIG_DRM_CLIENT_DEFAULT                       policy<{'arm64': '"fbdev"'}>
 CONFIG_DRM_CLIENT_DEFAULT_FBDEV                 policy<{'arm64': 'y'}>
+CONFIG_DRM_CLIENT_DEFAULT_LOG                   policy<{'arm64': 'n'}>
 CONFIG_DRM_CLIENT_LIB                           policy<{'arm64': 'y'}>
-CONFIG_DRM_CLIENT_LOG                           policy<{'arm64': 'n'}>
+CONFIG_DRM_CLIENT_LOG                           policy<{'arm64': 'y'}>
 CONFIG_DRM_CLIENT_SELECTION                     policy<{'arm64': 'y'}>
 CONFIG_DRM_CLIENT_SETUP                         policy<{'arm64': 'y'}>
 CONFIG_DRM_CROS_EC_ANX7688                      policy<{'arm64': 'm'}>
@@ -3702,7 +3710,6 @@ CONFIG_EEPROM_EE1004                            policy<{'arm64': 'm'}>
 CONFIG_EEPROM_IDT_89HPESX                       policy<{'arm64': 'm'}>
 CONFIG_EEPROM_MAX6875                           policy<{'arm64': 'm'}>
 CONFIG_EFI                                      policy<{'arm64': 'y'}>
-CONFIG_EFIVAR_FS                                policy<{'arm64': 'y'}>
 CONFIG_EFI_ARMSTUB_DTB_LOADER                   policy<{'arm64': 'n'}>
 CONFIG_EFI_BOOTLOADER_CONTROL                   policy<{'arm64': 'm'}>
 CONFIG_EFI_CAPSULE_LOADER                       policy<{'arm64': 'm'}>
@@ -3721,7 +3728,6 @@ CONFIG_EFI_STUB                                 policy<{'arm64': 'y'}>
 CONFIG_EFI_TEST                                 policy<{'arm64': 'm'}>
 CONFIG_EFI_VARS_PSTORE                          policy<{'arm64': 'm'}>
 CONFIG_EFI_VARS_PSTORE_DEFAULT_DISABLE          policy<{'arm64': 'n'}>
-CONFIG_EFI_ZBOOT                                policy<{'arm64': 'n'}>
 CONFIG_EFS_FS                                   policy<{'arm64': 'm'}>
 CONFIG_EINT_MTK                                 policy<{'arm64': 'y'}>
 CONFIG_ELFCORE                                  policy<{'arm64': 'y'}>
@@ -3738,7 +3744,7 @@ CONFIG_ENIC                                     policy<{'arm64': 'm'}>
 CONFIG_ENS160                                   policy<{'arm64': 'm'}>
 CONFIG_ENS160_I2C                               policy<{'arm64': 'm'}>
 CONFIG_ENS160_SPI                               policy<{'arm64': 'm'}>
-CONFIG_ENS210                                   policy<{'arm64': 'n'}>
+CONFIG_ENS210                                   policy<{'arm64': 'm'}>
 CONFIG_ENVELOPE_DETECTOR                        policy<{'arm64': 'm'}>
 CONFIG_EPIC100                                  policy<{'arm64': 'm'}>
 CONFIG_EPOLL                                    policy<{'arm64': 'y'}>
@@ -3783,7 +3789,7 @@ CONFIG_EXTCON                                   policy<{'arm64': 'y'}>
 CONFIG_EXTCON_ADC_JACK                          policy<{'arm64': 'm'}>
 CONFIG_EXTCON_FSA9480                           policy<{'arm64': 'm'}>
 CONFIG_EXTCON_GPIO                              policy<{'arm64': 'm'}>
-CONFIG_EXTCON_LC824206XA                        policy<{'arm64': 'n'}>
+CONFIG_EXTCON_LC824206XA                        policy<{'arm64': 'm'}>
 CONFIG_EXTCON_MAX14577                          policy<{'arm64': 'm'}>
 CONFIG_EXTCON_MAX3355                           policy<{'arm64': 'm'}>
 CONFIG_EXTCON_MAX77693                          policy<{'arm64': 'm'}>
@@ -3798,8 +3804,9 @@ CONFIG_EXTCON_SM5502                            policy<{'arm64': 'm'}>
 CONFIG_EXTCON_USBC_CROS_EC                      policy<{'arm64': 'm'}>
 CONFIG_EXTCON_USBC_TUSB320                      policy<{'arm64': 'm'}>
 CONFIG_EXTCON_USB_GPIO                          policy<{'arm64': 'm'}>
-CONFIG_EXTENDED_MODVERSIONS                     policy<{'arm64': 'n'}>
+CONFIG_EXTENDED_MODVERSIONS                     policy<{'arm64': 'y'}>
 CONFIG_EXTRA_FIRMWARE                           policy<{'arm64': '""'}>
+CONFIG_EXT_GROUP_SCHED                          policy<{'arm64': 'y'}>
 CONFIG_EZCHIP_NPS_MANAGEMENT_ENET               policy<{'arm64': 'm'}>
 CONFIG_EZX_PCAP                                 policy<{'arm64': 'y'}>
 CONFIG_F2FS_CHECK_FS                            policy<{'arm64': 'n'}>
@@ -4471,6 +4478,8 @@ CONFIG_HAVE_IMA_KEXEC                           policy<{'arm64': 'y'}>
 CONFIG_HAVE_IOREMAP_PROT                        policy<{'arm64': 'y'}>
 CONFIG_HAVE_IRQ_TIME_ACCOUNTING                 policy<{'arm64': 'y'}>
 CONFIG_HAVE_KCSAN_COMPILER                      policy<{'arm64': 'y'}>
+CONFIG_HAVE_KERNEL_GZIP                         policy<{'arm64': 'y'}>
+CONFIG_HAVE_KERNEL_ZSTD                         policy<{'arm64': 'y'}>
 CONFIG_HAVE_KPROBES                             policy<{'arm64': 'y'}>
 CONFIG_HAVE_KRETPROBES                          policy<{'arm64': 'y'}>
 CONFIG_HAVE_KVM_CPU_RELAX_INTERCEPT             policy<{'arm64': 'y'}>
@@ -4498,6 +4507,7 @@ CONFIG_HAVE_PREEMPT_DYNAMIC_KEY                 policy<{'arm64': 'y'}>
 CONFIG_HAVE_PWRCTL                              policy<{'arm64': 'y'}>
 CONFIG_HAVE_REGS_AND_STACK_ACCESS_API           policy<{'arm64': 'y'}>
 CONFIG_HAVE_RSEQ                                policy<{'arm64': 'y'}>
+CONFIG_HAVE_RUST                                policy<{'arm64': 'y'}>
 CONFIG_HAVE_SAMPLE_FTRACE_DIRECT                policy<{'arm64': 'y'}>
 CONFIG_HAVE_SAMPLE_FTRACE_DIRECT_MULTI          policy<{'arm64': 'y'}>
 CONFIG_HAVE_SETUP_PER_CPU_AREA                  policy<{'arm64': 'y'}>
@@ -5679,7 +5689,9 @@ CONFIG_KEBA_CP500                               policy<{'arm64': 'm'}>
 CONFIG_KEBA_LAN9252                             policy<{'arm64': 'n'}>
 CONFIG_KEEMBAY_WATCHDOG                         policy<{'arm64': 'm'}>
 CONFIG_KEMPLD_WDT                               policy<{'arm64': 'm'}>
+CONFIG_KERNEL_GZIP                              policy<{'arm64': 'n'}>
 CONFIG_KERNEL_MODE_NEON                         policy<{'arm64': 'y'}>
+CONFIG_KERNEL_ZSTD                              policy<{'arm64': 'y'}>
 CONFIG_KERNFS                                   policy<{'arm64': 'y'}>
 CONFIG_KEXEC                                    policy<{'arm64': 'y'}>
 CONFIG_KEXEC_CORE                               policy<{'arm64': 'y'}>
@@ -5924,7 +5936,7 @@ CONFIG_LED_TRIGGER_PHY                          policy<{'arm64': 'y'}>
 CONFIG_LEGACY_DIRECT_IO                         policy<{'arm64': 'y'}>
 CONFIG_LEGACY_PTYS                              policy<{'arm64': 'y'}>
 CONFIG_LEGACY_PTY_COUNT                         policy<{'arm64': '0'}>
-CONFIG_LEGACY_TIOCSTI                           policy<{'arm64': 'y'}>
+CONFIG_LEGACY_TIOCSTI                           policy<{'arm64': 'n'}>
 CONFIG_LIBCRC32C                                policy<{'arm64': 'm'}>
 CONFIG_LIBERTAS                                 policy<{'arm64': 'm'}>
 CONFIG_LIBERTAS_DEBUG                           policy<{'arm64': 'n'}>
@@ -5963,7 +5975,7 @@ CONFIG_LMK04832                                 policy<{'arm64': 'm'}>
 CONFIG_LMP91000                                 policy<{'arm64': 'm'}>
 CONFIG_LOAD_UEFI_KEYS                           policy<{'arm64': 'y'}>
 CONFIG_LOCALVERSION                             policy<{'arm64': '""'}>
-CONFIG_LOCALVERSION_AUTO                        policy<{'arm64': 'y'}>
+CONFIG_LOCALVERSION_AUTO                        policy<{'arm64': 'n'}>
 CONFIG_LOCKD                                    policy<{'arm64': 'm'}>
 CONFIG_LOCKDEP_SUPPORT                          policy<{'arm64': 'y'}>
 CONFIG_LOCKD_V4                                 policy<{'arm64': 'y'}>
@@ -9449,9 +9461,10 @@ CONFIG_RTW89_PCI                                policy<{'arm64': 'm'}>
 CONFIG_RT_GROUP_SCHED                           policy<{'arm64': 'n'}>
 CONFIG_RT_MUTEXES                               policy<{'arm64': 'y'}>
 CONFIG_RUNTIME_TESTING_MENU                     policy<{'arm64': 'y'}>
+CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '190105'}>
+CONFIG_RUSTC_SUPPORTS_ARM64                     policy<{'arm64': 'y'}>
+CONFIG_RUSTC_VERSION                            policy<{'arm64': '108300'}>
 CONFIG_RUST_IS_AVAILABLE                        policy<{'arm64': 'y'}>
-CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '180108'}>
-CONFIG_RUSTC_VERSION                            policy<{'arm64': '108001'}>
 CONFIG_RV                                       policy<{'arm64': 'y'}>
 CONFIG_RVU_ESWITCH                              policy<{'arm64': 'm'}>
 CONFIG_RV_MON_WWNR                              policy<{'arm64': 'y'}>
@@ -9532,7 +9545,7 @@ CONFIG_SCD4X                                    policy<{'arm64': 'm'}>
 CONFIG_SCF_TORTURE_TEST                         policy<{'arm64': 'n'}>
 CONFIG_SCHEDSTATS                               policy<{'arm64': 'y'}>
 CONFIG_SCHED_AUTOGROUP                          policy<{'arm64': 'y'}>
-CONFIG_SCHED_CLASS_EXT                          policy<{'arm64': 'n'}>
+CONFIG_SCHED_CLASS_EXT                          policy<{'arm64': 'y'}>
 CONFIG_SCHED_CLUSTER                            policy<{'arm64': 'y'}>
 CONFIG_SCHED_CORE                               policy<{'arm64': 'y'}>
 CONFIG_SCHED_DEBUG                              policy<{'arm64': 'y'}>
@@ -11074,7 +11087,7 @@ CONFIG_SPI_ALTERA_CORE                          policy<{'arm64': 'm'}>
 CONFIG_SPI_ALTERA_DFL                           policy<{'arm64': 'm'}>
 CONFIG_SPI_AMD                                  policy<{'arm64': 'm'}>
 CONFIG_SPI_AMLOGIC_SPIFC_A1                     policy<{'arm64': 'm'}>
-CONFIG_SPI_APPLE                                policy<{'arm64': 'n'}>
+CONFIG_SPI_APPLE                                policy<{'arm64': 'm'}>
 CONFIG_SPI_ARMADA_3700                          policy<{'arm64': 'm'}>
 CONFIG_SPI_AX88796C                             policy<{'arm64': 'm'}>
 CONFIG_SPI_AX88796C_COMPRESSION                 policy<{'arm64': 'n'}>
@@ -11169,7 +11182,7 @@ CONFIG_SPMI                                     policy<{'arm64': 'y'}>
 CONFIG_SPMI_HISI3670                            policy<{'arm64': 'n'}>
 CONFIG_SPMI_MSM_PMIC_ARB                        policy<{'arm64': 'y'}>
 CONFIG_SPMI_MTK_PMIF                            policy<{'arm64': 'y'}>
-CONFIG_SPMI_PMIC_CLKDIV                         policy<{'arm64': 'n'}>
+CONFIG_SPMI_PMIC_CLKDIV                         policy<{'arm64': 'm'}>
 CONFIG_SPRD_COMMON_CLK                          policy<{'arm64': 'm'}>
 CONFIG_SPRD_DMA                                 policy<{'arm64': 'm'}>
 CONFIG_SPRD_IOMMU                               policy<{'arm64': 'm'}>
@@ -11538,7 +11551,7 @@ CONFIG_TEXTSEARCH_BM                            policy<{'arm64': 'm'}>
 CONFIG_TEXTSEARCH_FSM                           policy<{'arm64': 'm'}>
 CONFIG_TEXTSEARCH_KMP                           policy<{'arm64': 'm'}>
 CONFIG_THERMAL                                  policy<{'arm64': 'y'}>
-CONFIG_THERMAL_CORE_TESTING                     policy<{'arm64': 'n'}>
+CONFIG_THERMAL_CORE_TESTING                     policy<{'arm64': 'm'}>
 CONFIG_THERMAL_DEBUGFS                          policy<{'arm64': 'n'}>
 CONFIG_THERMAL_DEFAULT_GOV_BANG_BANG            policy<{'arm64': 'n'}>
 CONFIG_THERMAL_DEFAULT_GOV_FAIR_SHARE           policy<{'arm64': 'n'}>
@@ -11583,7 +11596,7 @@ CONFIG_TINYDRM_ILI9341                          policy<{'arm64': 'm'}>
 CONFIG_TINYDRM_ILI9486                          policy<{'arm64': 'm'}>
 CONFIG_TINYDRM_MI0283QT                         policy<{'arm64': 'm'}>
 CONFIG_TINYDRM_REPAPER                          policy<{'arm64': 'm'}>
-CONFIG_TINYDRM_SHARP_MEMORY                     policy<{'arm64': 'n'}>
+CONFIG_TINYDRM_SHARP_MEMORY                     policy<{'arm64': 'm'}>
 CONFIG_TINYDRM_ST7586                           policy<{'arm64': 'm'}>
 CONFIG_TINYDRM_ST7735R                          policy<{'arm64': 'm'}>
 CONFIG_TIPC                                     policy<{'arm64': 'm'}>
@@ -11850,7 +11863,7 @@ CONFIG_TYPEC_QCOM_PMIC                          policy<{'arm64': 'm'}>
 CONFIG_TYPEC_RT1711H                            policy<{'arm64': 'm'}>
 CONFIG_TYPEC_RT1719                             policy<{'arm64': 'm'}>
 CONFIG_TYPEC_STUSB160X                          policy<{'arm64': 'm'}>
-CONFIG_TYPEC_TBT_ALTMODE                        policy<{'arm64': 'n'}>
+CONFIG_TYPEC_TBT_ALTMODE                        policy<{'arm64': 'm'}>
 CONFIG_TYPEC_TCPCI                              policy<{'arm64': 'm'}>
 CONFIG_TYPEC_TCPCI_MAXIM                        policy<{'arm64': 'm'}>
 CONFIG_TYPEC_TCPCI_MT6370                       policy<{'arm64': 'm'}>
