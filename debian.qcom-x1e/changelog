@@ -1,4 +1,4 @@
-linux-qcom-x1e (6.14.0-4.4) oracular; urgency=medium
+linux-qcom-x1e (6.14.0-5.5) oracular; urgency=medium
 
   [ Marcus Glocker ]
   * arm64: dts: qcom: Add UFS node
