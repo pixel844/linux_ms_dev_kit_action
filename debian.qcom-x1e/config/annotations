@@ -4507,7 +4507,6 @@ CONFIG_HAVE_PREEMPT_DYNAMIC_KEY                 policy<{'arm64': 'y'}>
 CONFIG_HAVE_PWRCTL                              policy<{'arm64': 'y'}>
 CONFIG_HAVE_REGS_AND_STACK_ACCESS_API           policy<{'arm64': 'y'}>
 CONFIG_HAVE_RSEQ                                policy<{'arm64': 'y'}>
-CONFIG_HAVE_RUST                                policy<{'arm64': 'y'}>
 CONFIG_HAVE_SAMPLE_FTRACE_DIRECT                policy<{'arm64': 'y'}>
 CONFIG_HAVE_SAMPLE_FTRACE_DIRECT_MULTI          policy<{'arm64': 'y'}>
 CONFIG_HAVE_SETUP_PER_CPU_AREA                  policy<{'arm64': 'y'}>
@@ -9461,9 +9460,8 @@ CONFIG_RTW89_PCI                                policy<{'arm64': 'm'}>
 CONFIG_RT_GROUP_SCHED                           policy<{'arm64': 'n'}>
 CONFIG_RT_MUTEXES                               policy<{'arm64': 'y'}>
 CONFIG_RUNTIME_TESTING_MENU                     policy<{'arm64': 'y'}>
-CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '190105'}>
-CONFIG_RUSTC_SUPPORTS_ARM64                     policy<{'arm64': 'y'}>
-CONFIG_RUSTC_VERSION                            policy<{'arm64': '108300'}>
+CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '180108'}>
+CONFIG_RUSTC_VERSION                            policy<{'arm64': '108001'}>
 CONFIG_RUST_IS_AVAILABLE                        policy<{'arm64': 'y'}>
 CONFIG_RV                                       policy<{'arm64': 'y'}>
 CONFIG_RVU_ESWITCH                              policy<{'arm64': 'm'}>
