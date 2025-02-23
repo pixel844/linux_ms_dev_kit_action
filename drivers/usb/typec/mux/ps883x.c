@@ -156,7 +156,7 @@ static int ps883x_retimer_set(struct typec_retimer *rtmr,
 		if (state->alt)
 			retimer->svid = state->alt->svid;
 		else
-			retimer->svid = 0;
+			retimer->svid = 0; // No SVID
 
 		ret = ps883x_set(retimer);
 	}
@@ -352,8 +352,8 @@ static int ps883x_retimer_probe(struct i2c_client *client)
 
 	retimer->sw = typec_switch_register(dev, &sw_desc);
 	if (IS_ERR(retimer->sw)) {
-		ret = PTR_ERR(retimer->sw);
-		dev_err(dev, "failed to register typec switch: %d\n", ret);
+		ret = dev_err_probe(dev, PTR_ERR(retimer->sw),
+				    "failed to register typec switch\n");
 		goto err_clk_disable;
 	}
 
@@ -363,15 +363,15 @@ static int ps883x_retimer_probe(struct i2c_client *client)
 
 	retimer->retimer = typec_retimer_register(dev, &rtmr_desc);
 	if (IS_ERR(retimer->retimer)) {
-		ret = PTR_ERR(retimer->retimer);
-		dev_err(dev, "failed to register typec retimer: %d\n", ret);
+		ret = dev_err_probe(dev, PTR_ERR(retimer->sw),
+				    "failed to register typec retimer\n");
 		goto err_switch_unregister;
 	}
 
 	/* skip resetting if already configured */
 	if (regmap_test_bits(retimer->regmap, REG_USB_PORT_CONN_STATUS_0,
-			     CONN_STATUS_0_CONNECTION_PRESENT) == 1)
-		return gpiod_direction_output(retimer->reset_gpio, 0);
+			     CONN_STATUS_0_CONNECTION_PRESENT))
+		return 0;
 
 	gpiod_direction_output(retimer->reset_gpio, 1);
 
