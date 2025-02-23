@@ -1,3 +1,22 @@
+linux-qcom-x1e (6.14-rc3-1) oracular; urgency=medium
+
+  * revert e390e4258cacbb4b9fac5634608b8c11308a502b
+    usb: typec: Add support for Parade PS8830 Type-C Retimer
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sun, 23 Feb 2025 21:45:27 +0100
+
+linux-qcom-x1e (6.14-rc3-0) oracular; urgency=medium
+
+  * rebase to jhovold's 6.14-rc3
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Fri, 21 Feb 2025 21:24:40 +0100
+
+linux-qcom-x1e (6.14-rc2-1) oracular; urgency=medium
+
+  * add 20250212034225.2565069-1-james.a.macinnes@gmail.com
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 12 Feb 2025 09:52:09 +0100
+
 linux-qcom-x1e (6.14-rc2-0) oracular; urgency=medium
 
   * rebase to 6.14-rc2
