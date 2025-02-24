@@ -1,3 +1,28 @@
+linux-qcom-x1e (6.14.0-14.14) oracular; urgency=medium
+
+  [ Konrad Dybcio ]
+  * clk: qcom: gcc-x1e80100: Unregister GCC_GPU_CFG_AHB_CLK/GCC_DISP_XO_CLK
+  * arm64: dts: qcom: x1e80100: Set CPU interconnect paths as ACTIVE_ONLY
+
+  [ Sebastian Reichel ]
+  * drm/edp-panel: Add panel used by T14s Gen6 Snapdragon
+
+  [ Johan Hovold ]
+  * usb: typec: ps883x: fix probe error handling
+  * usb: typec: ps883x: fix registration race
+  * usb: typec: ps883x: fix missing accessibility check
+  * usb: typec: ps883x: fix configuration error handling
+
+  [ Stephan Gerhold ]
+  * arm64: dts: qcom: x1e80100: Fix video thermal zone
+  * arm64: dts: qcom: x1e80100: Apply consistent critical thermal shutdown
+  * arm64: dts: qcom: x1e80100: Drop unused passive thermal trip points for CPU
+
+  [ Tobias Heider ]
+  * arm64: dts: qcom: x1e001de-devkit: Set ps8830 reset-gpios active low
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 24 Feb 2025 15:28:32 +0100
+
 linux-qcom-x1e (6.14.0-13.13) oracular; urgency=medium
 
   * arm64: dts: qcom: x1e78100-lenovo-thinkpad-t14s: Add bluetooth
