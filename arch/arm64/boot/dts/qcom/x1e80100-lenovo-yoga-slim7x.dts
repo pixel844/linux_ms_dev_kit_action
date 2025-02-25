@@ -1303,7 +1303,6 @@
 		vddrfa1p8-supply = <&vreg_pmu_rfa_1p8>;
 		vddpcie0p9-supply = <&vreg_pmu_pcie_0p9>;
 		vddpcie1p8-supply = <&vreg_pmu_pcie_1p8>;
-		qcom,ath12k-calibration-variant = "LES790";
 	};
 };
 
