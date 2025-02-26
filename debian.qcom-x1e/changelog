@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.14-rc4-2) oracular; urgency=medium
+
+  * add sound patches 20250220162847.11994-1-srinivas.kandagatla@linaro.org
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 26 Feb 2025 10:31:50 +0100
+
 linux-qcom-x1e (6.14-rc4-1) oracular; urgency=medium
 
   * experimental sc8280xp wcn6855 hacks
