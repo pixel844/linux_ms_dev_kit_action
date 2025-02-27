@@ -5,7 +5,7 @@ build_image  = Image
 kernel_file  = arch/$(build_arch)/boot/Image
 install_file = vmlinuz
 
-vds          = vdso_install
+vdso         = vdso_install
 no_dumpfile  = true
 
 do_extras_package    = false
