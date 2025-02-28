@@ -8,6 +8,7 @@ install_file = vmlinuz
 vdso         = vdso_install
 no_dumpfile  = true
 
+do_flavour_image_package = false
 do_extras_package    = false
 do_tools_usbip       = true
 do_tools_cpupower    = true
