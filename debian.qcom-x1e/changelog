@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.14-rc4-4) oracular; urgency=medium
+
+  * integrate 20250227081357.25971-1-johan+linaro@kernel.org
+  * amend/re-check HP Omnibook X14 dt
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Fri, 28 Feb 2025 20:09:06 +0100
+
 linux-qcom-x1e (6.14-rc4-3) oracular; urgency=medium
 
   * remove all possibly masking sc8280xp wcn6855 reverts
