@@ -1497,27 +1497,19 @@
 		output-low;
 	};
 
-	wcn_bt_en: wcn-bt-en-state {
-		pins = "gpio116";
-		function = "gpio";
-		drive-strength = <16>;
-		output-low;
-		bias-pull-down;
-	};
+    wcn_sw_en: wcn-sw-en-state {
+            pins = "gpio214";
+            function = "gpio";
+            drive-strength = <2>;
+            bias-disable;
+    };
 
-	wcn_sw_en: wcn-sw-en-state {
-		pins = "gpio214";
-		function = "gpio";
-		drive-strength = <16>;
-		bias-disable;
-	};
-
-	wcn_wlan_en: wcn-wlan-en-state {
-		pins = "gpio117";
-		function = "gpio";
-		drive-strength = <16>;
-		bias-disable;
-	};
+    wcn_wlan_bt_en: wcn-wlan-bt-en-state {
+            pins = "gpio116", "gpio117";
+            function = "gpio";
+            drive-strength = <2>;
+            bias-disable;
+    };
 };
 
 &uart14 {
