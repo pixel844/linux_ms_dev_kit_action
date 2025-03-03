@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.14.0-17-jg-2) oracular; urgency=medium
+
+  * x1e80100-hp-x14: remove i2c7 ps8830
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 03 Mar 2025 10:28:22 +0100
+
 linux-qcom-x1e (6.14.0-17-jg-1) oracular; urgency=medium
 
   * rebase onto 6.14.0-17-17
