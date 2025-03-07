@@ -1,3 +1,46 @@
+linux-qcom-x1e (6.14.0-21.21) oracular; urgency=medium
+
+  [ Tobias Heider ]
+  * UBUNTU: rebase onto Ubuntu-6.14.0-7.7
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 05 Mar 2025 13:30:32 +0100
+
+
+linux-qcom-x1e (6.14.0-20.20) oracular; urgency=medium
+
+  [ Johan Hovold ]
+  * arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
+  * arm64: dts: qcom: x1e78100-t14s: mark l12b and l15b always-on
+  * arm64: dts: qcom: x1e001de-devkit: mark l12b and l15b always-on
+  * arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on
+  * arm64: dts: qcom: x1e80100-hp-x14: mark l12b and l15b always-on
+  * arm64: dts: qcom: x1e80100-yoga-slim7x: mark l12b and l15b always-on
+  * arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
+
+  [ Marcus Glocker ]
+  * arm64: dts: qcom: Add UFS node
+  * dt-bindings: phy: Add X1E80100 UFS
+  * dt-bindings: ufs: Add X1E80100 UFS
+  * dt-bindings: crypto: Add X1E80100 Crypto Engine
+
+  [ Abel Vesa ]
+  * arm64: dts: qcom: x1e80100-t14s: Describe the Parade PS8830 retimers
+  * arm64: dts: qcom: x1e80100-t14s: Enable external DisplayPort support
+
+  [ Johan Hovold ]
+  * wip: arm64: dts: qcom: x1e78100-t14s: enable bluetooth
+  * arm64: dts: qcom: x1e78100-t14s: fix missing HID supplies
+
+  [ Maud Spierings ]
+  * arm64: dts: qcom: x1e80100-vivobook-s15: Enable USB-A ports
+  * arm64: dts: qcom: x1e80100-vivobook-s15: Enable micro-sd card reader
+
+  [ Tobias Heider ]
+  * UBUNTU: revert some config changes
+  * UBUNTU: drop iris for now
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Wed, 05 Mar 2025 13:30:32 +0100
+
 linux-qcom-x1e (6.14.0-17.17) oracular; urgency=medium
 
   [ Maya Matuszczyk ]
