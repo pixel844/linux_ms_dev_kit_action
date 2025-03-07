@@ -9720,6 +9720,7 @@ CONFIG_SECURITY_APPARMOR_HASH                   policy<{'arm64': 'y'}>
 CONFIG_SECURITY_APPARMOR_HASH_DEFAULT           policy<{'arm64': 'y'}>
 CONFIG_SECURITY_APPARMOR_INTROSPECT_POLICY      policy<{'arm64': 'y'}>
 CONFIG_SECURITY_APPARMOR_PARANOID_LOAD          policy<{'arm64': 'y'}>
+CONFIG_SECURITY_APPARMOR_RESTRICT_USERNS        policy<{'arm64': 'y'}>
 CONFIG_SECURITY_DMESG_RESTRICT                  policy<{'arm64': 'y'}>
 CONFIG_SECURITY_INFINIBAND                      policy<{'arm64': 'y'}>
 CONFIG_SECURITY_IPE                             policy<{'arm64': 'n'}>
