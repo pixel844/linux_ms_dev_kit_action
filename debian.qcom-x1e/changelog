@@ -1,4 +1,4 @@
-linux-qcom-x1e (6.14.0-24.24) oracular; urgency=medium
+linux-qcom-x1e (6.14.0-25.25) oracular; urgency=medium
 
   [ Konrad Dybcio ]
   * arm64: dts: qcom: Add X1P42100 SoC and CRD
