@@ -28,7 +28,7 @@ upstream_patchlevel := $(shell sed -n 's/^PATCHLEVEL = \(.*\)$$/\1/p' Makefile)
 upstream_tag := "v$(upstream_version).$(upstream_patchlevel)"
 
 # Get the kernels own extra version to be added to the release signature.
-raw_kernelversion=$(shell make kernelversion)
+raw_kernelversion := $(shell make -s kernelversion)
 
 packages_enabled := $(shell dh_listpackages 2>/dev/null)
 define if_package
@@ -62,7 +62,6 @@ ifeq ($(filter $(DEB_BUILD_OPTIONS),noautodbgsym),noautodbgsym)
 endif
 
 abinum		:= $(firstword $(subst .,$(space),$(DEB_REVISION)))
-prev_abinum	:= $(firstword $(subst .,$(space),$(prev_revision)))
 abi_release	:= $(DEB_VERSION_UPSTREAM)-$(abinum)
 
 uploadnum	:= $(patsubst $(abinum).%,%,$(DEB_REVISION))
@@ -95,10 +94,6 @@ export rustfmt?=rustfmt
 export bindgen?=bindgen
 GCC_BUILD_DEPENDS=\ $(gcc), $(gcc)-aarch64-linux-gnu [arm64] <cross>, $(gcc)-arm-linux-gnueabihf [armhf] <cross>, $(gcc)-powerpc64le-linux-gnu [ppc64el] <cross>, $(gcc)-riscv64-linux-gnu [riscv64] <cross>, $(gcc)-s390x-linux-gnu [s390x] <cross>, $(gcc)-x86-64-linux-gnu [amd64] <cross>,
 
-abidir		:= $(CURDIR)/$(DEBIAN)/__abi.current/$(arch)
-commonconfdir	:= $(CURDIR)/$(DEBIAN)/config
-archconfdir	:= $(CURDIR)/$(DEBIAN)/config/$(arch)
-sharedconfdir	:= $(CURDIR)/debian.master/config
 builddir	:= $(CURDIR)/debian/build
 stampdir	:= $(CURDIR)/debian/stamps
 
@@ -113,9 +108,8 @@ mods_pkg_name=linux-modules-$(abi_release)
 mods_extra_pkg_name=linux-modules-extra-$(abi_release)
 bldinfo_pkg_name=linux-buildinfo-$(abi_release)
 hdrs_pkg_name=linux-headers-$(abi_release)
-rust_pkg_name=$(DEB_SOURCE)-lib-rust-$(abi_release)
+rust_pkg_name=linux-lib-rust-$(abi_release)
 indep_hdrs_pkg_name=$(DEB_SOURCE)-headers-$(abi_release)
-indep_lib_rust_pkg_name=$(DEB_SOURCE)-lib-rust-$(abi_release)
 
 #
 # Similarly with the linux-source package, you need not build it as a developer. Its
@@ -198,7 +192,7 @@ PYTHON ?= $(firstword $(wildcard /usr/bin/python3) $(wildcard /usr/bin/python2) 
 
 HOSTCC ?= $(DEB_BUILD_GNU_TYPE)-$(gcc)
 
-# target_flavour is filled in for each step
+# $* is the flavour name which is filled in for each step
 kmake = make ARCH=$(build_arch) \
 	CROSS_COMPILE=$(CROSS_COMPILE) \
 	HOSTCC=$(HOSTCC) \
@@ -207,7 +201,7 @@ kmake = make ARCH=$(build_arch) \
 	HOSTRUSTC=$(rustc) \
 	RUSTFMT=$(rustfmt) \
 	BINDGEN=$(bindgen) \
-	KERNELRELEASE=$(abi_release)-$(target_flavour) \
+	KERNELRELEASE=$(abi_release)-$* \
 	CONFIG_DEBUG_SECTION_MISMATCH=y \
 	KBUILD_BUILD_VERSION="$(uploadnum)" \
 	CFLAGS_MODULE="-DPKG_ABI=$(abinum)" \

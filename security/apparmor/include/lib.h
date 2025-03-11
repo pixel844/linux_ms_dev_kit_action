@@ -18,23 +18,42 @@
 
 extern struct aa_dfa *stacksplitdfa;
 
-/*
- * DEBUG remains global (no per profile flag) since it is mostly used in sysctl
- * which is not related to profile accesses.
- */
+#define list_add_entry(ent, list, member) list_add(&(ent)->member, (list))
+#define list_add_tail_entry(ent, list, member) list_add_tail(&(ent)->member, (list))
 
-#define DEBUG_ON (aa_g_debug)
 /*
  * split individual debug cases out in preparation for finer grained
  * debug controls in the future.
  */
-#define AA_DEBUG_LABEL DEBUG_ON
 #define dbg_printk(__fmt, __args...) pr_debug(__fmt, ##__args)
-#define AA_DEBUG(fmt, args...)						\
+
+#define DEBUG_PROMPT 2
+
+#define DEBUG_NONE 0
+#define DEBUG_LABEL_ABS_ROOT 1
+#define DEBUG_LABEL 2
+#define DEBUG_DOMAIN 4
+#define DEBUG_POLICY 8
+#define DEBUG_INTERFACE 0x10
+#define DEBUG_UPCALL 0x20
+
+#define DEBUG_ALL 0x3f		/* update if new DEBUG_X added */
+#define DEBUG_PARSE_ERROR (-1)
+
+#define DEBUG_ON (aa_g_debug != DEBUG_NONE)
+#define DEBUG_ABS_ROOT (aa_g_debug & DEBUG_LABEL_ABS_ROOT)
+
+#define AA_DEBUG(opt, fmt, args...)					\
 	do {								\
-		if (DEBUG_ON)						\
-			pr_debug_ratelimited("AppArmor: " fmt, ##args);	\
+		if (aa_g_debug & opt)					\
+			pr_warn("%s: " fmt, __func__, ##args); \
 	} while (0)
+#define AA_DEBUG_ON(C, args...) do { if (C) AA_DEBUG(args); } while (0)
+#define AA_DEBUG_LABEL(LAB, X, fmt, args)				\
+do {									\
+	if ((LAB)->flags & FLAG_DEBUG1)					\
+		AA_DEBUG(X, fmt, args);					\
+} while (0)
 
 #define AA_WARN(X) WARN((X), "APPARMOR WARN %s: %s\n", __func__, #X)
 
@@ -48,8 +67,15 @@ extern struct aa_dfa *stacksplitdfa;
 #define AA_BUG_FMT(X, fmt, args...)					\
 	WARN((X), "AppArmor WARN %s: (" #X "): " fmt, __func__, ##args)
 #else
-#define AA_BUG_FMT(X, fmt, args...) no_printk(fmt, ##args)
+#define AA_BUG_FMT(X, fmt, args...)					\
+	do {								\
+		BUILD_BUG_ON_INVALID(X);				\
+		no_printk(fmt, ##args);					\
+	} while (0)
 #endif
+
+int aa_parse_debug_params(const char *str);
+int aa_print_debug_params(char *buffer);
 
 #define AA_ERROR(fmt, args...)						\
 	pr_err_ratelimited("AppArmor: " fmt, ##args)
@@ -93,6 +119,14 @@ static inline aa_state_t aa_dfa_null_transition(struct aa_dfa *dfa,
 {
 	/* the null transition only needs the string's null terminator byte */
 	return aa_dfa_next(dfa, start, 0);
+}
+
+static inline aa_state_t aa_dfa_match_u16(struct aa_dfa *dfa, aa_state_t state,
+					  u16 data)
+{
+	__be16 buffer = cpu_to_be16(data);
+
+	return aa_dfa_match_len(dfa, state, (char *) &buffer, 2);
 }
 
 static inline bool path_mediated_fs(struct dentry *dentry)
@@ -281,7 +315,7 @@ __do_cleanup:								\
 	}								\
 __done:									\
 	if (!__new_)							\
-		AA_DEBUG("label build failed\n");			\
+		AA_DEBUG(DEBUG_LABEL, "label build failed\n");		\
 	(__new_);							\
 })
 

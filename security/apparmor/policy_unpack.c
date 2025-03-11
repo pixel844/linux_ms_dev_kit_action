@@ -29,6 +29,7 @@
 #include "include/policy.h"
 #include "include/policy_unpack.h"
 #include "include/policy_compat.h"
+#include "include/signal.h"
 
 /* audit callback for unpack fields */
 static void audit_cb(struct audit_buffer *ab, void *va)
@@ -268,6 +269,19 @@ static bool unpack_u8(struct aa_ext *e, u8 *data, const char *name)
 fail:
 	e->pos = pos;
 	return false;
+}
+
+VISIBLE_IF_KUNIT bool unpack_u16(struct aa_ext *e, u16 *data, const char *name)
+{
+	if (aa_unpack_nameX(e, AA_U16, name)) {
+		if (!aa_inbounds(e, sizeof(u16)))
+			return 0;
+		if (data)
+			*data = le16_to_cpu(get_unaligned((__le16 *) e->pos));
+		e->pos += sizeof(u16);
+		return 1;
+	}
+	return 0;
 }
 
 VISIBLE_IF_KUNIT bool aa_unpack_u32(struct aa_ext *e, u32 *data, const char *name)
@@ -716,6 +730,7 @@ static int unpack_pdb(struct aa_ext *e, struct aa_policydb **policy,
 	void *pos = e->pos;
 	int i, flags, error = -EPROTO;
 	ssize_t size;
+	u32 version = 0;
 
 	pdb = aa_alloc_pdb(GFP_KERNEL);
 	if (!pdb)
@@ -733,6 +748,9 @@ static int unpack_pdb(struct aa_ext *e, struct aa_policydb **policy,
 	if (pdb->perms) {
 		/* perms table present accept is index */
 		flags = TO_ACCEPT1_FLAG(YYTD_DATA32);
+		if (aa_unpack_u32(e, &version, "permsv") && version > 2)
+			/* accept2 used for dfa flags */
+			flags |= TO_ACCEPT2_FLAG(YYTD_DATA32);
 	} else {
 		/* packed perms in accept1 and accept2 */
 		flags = TO_ACCEPT1_FLAG(YYTD_DATA32) |
@@ -770,6 +788,20 @@ static int unpack_pdb(struct aa_ext *e, struct aa_policydb **policy,
 		}
 	}
 
+	if (pdb->perms && version <= 2) {
+		/* add dfa flags table missing in v2 */
+		u32 noents = pdb->dfa->tables[YYTD_ID_ACCEPT]->td_lolen;
+		u16 tdflags = pdb->dfa->tables[YYTD_ID_ACCEPT]->td_flags;
+		size_t tsize = table_size(noents, tdflags);
+
+		pdb->dfa->tables[YYTD_ID_ACCEPT2] = kvzalloc(tsize, GFP_KERNEL);
+		if (!pdb->dfa->tables[YYTD_ID_ACCEPT2]) {
+			*info = "failed to alloc dfa flags table";
+			goto out;
+		}
+		pdb->dfa->tables[YYTD_ID_ACCEPT2]->td_lolen = noents;
+		pdb->dfa->tables[YYTD_ID_ACCEPT2]->td_flags = tdflags;
+	}
 	/*
 	 * Unfortunately due to a bug in earlier userspaces, a
 	 * transition table may be present even when the dfa is
@@ -785,7 +817,7 @@ static int unpack_pdb(struct aa_ext *e, struct aa_policydb **policy,
 
 	/* TODO: move compat mapping here, requires dfa merging first */
 	/* TODO: move verify here, it has to be done after compat mappings */
-
+out:
 	*policy = pdb;
 	return 0;
 
@@ -823,6 +855,7 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
 	struct aa_profile *profile = NULL;
 	const char *tmpname, *tmpns = NULL, *name = NULL;
 	const char *info = "failed to unpack profile";
+	u16 size = 0;
 	size_t ns_len;
 	struct rhashtable_params params = { 0 };
 	char *key = NULL, *disconnected = NULL;
@@ -862,7 +895,7 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
 		error = -ENOMEM;
 		goto fail;
 	}
-	rules = list_first_entry(&profile->rules, typeof(*rules), list);
+	rules = profile->label.rules[0];
 
 	/* profile renaming is optional */
 	(void) aa_unpack_str(e, &profile->rename, "rename");
@@ -898,6 +931,12 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
 	(void) aa_unpack_strdup(e, &disconnected, "disconnected");
 	profile->disconnected = disconnected;
 
+	/* optional */
+	(void) aa_unpack_u32(e, &profile->signal, "kill");
+	if (profile->signal < 1 && profile->signal > MAXMAPPED_SIG) {
+		info = "profile kill.signal invalid value";
+		goto fail;
+	}
 	/* per profile debug flags (complain, audit) */
 	if (!aa_unpack_nameX(e, AA_STRUCT, "flags")) {
 		info = "profile missing flags";
@@ -912,6 +951,8 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
 		profile->label.flags |= FLAG_DEBUG1;
 	if (tmp & PACKED_FLAG_DEBUG2)
 		profile->label.flags |= FLAG_DEBUG2;
+	if (tmp & PACKED_FLAG_INTERRUPTIBLE)
+		profile->label.flags |= FLAG_INTERRUPTIBLE;
 	if (!aa_unpack_u32(e, &tmp, NULL))
 		goto fail;
 	if (tmp == PACKED_MODE_COMPLAIN || (e->version & FORCE_COMPLAIN_FLAG)) {
@@ -993,6 +1034,45 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
 	if (!unpack_secmark(e, rules)) {
 		info = "failed to unpack profile secmark rules";
 		goto fail;
+	}
+
+	if (aa_unpack_array(e, "net_allowed_af", &size) ||
+	    VERSION_LT(e->version, v8)) {
+		u16 i;
+
+		profile->net_compat = kzalloc(sizeof(struct aa_net_compat),
+					      GFP_KERNEL);
+		if (!profile->net_compat) {
+			info = "out of memory";
+			goto fail;
+		}
+		for (i = 0; i < size; i++) {
+			/* discard extraneous rules that this kernel will
+			 * never request
+			 */
+			if (i >= AF_MAX) {
+				u16 tmp;
+
+				if (!unpack_u16(e, &tmp, NULL) ||
+				    !unpack_u16(e, &tmp, NULL) ||
+				    !unpack_u16(e, &tmp, NULL))
+					goto fail;
+				continue;
+			}
+			if (!unpack_u16(e, &profile->net_compat->allow[i], NULL))
+				goto fail;
+			if (!unpack_u16(e, &profile->net_compat->audit[i], NULL))
+				goto fail;
+			if (!unpack_u16(e, &profile->net_compat->quiet[i], NULL))
+				goto fail;
+		}
+		if (size && !aa_unpack_nameX(e, AA_ARRAYEND, NULL))
+			goto fail;
+		if (VERSION_LT(e->version, v7)) {
+			/* pre v7 policy always allowed these */
+			profile->net_compat->allow[AF_UNIX] = 0xffff;
+			profile->net_compat->allow[AF_NETLINK] = 0xffff;
+		}
 	}
 
 	if (aa_unpack_nameX(e, AA_STRUCT, "policydb")) {
@@ -1100,6 +1180,8 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
 		info = "failed to unpack end of profile";
 		goto fail;
 	}
+
+	aa_compute_profile_mediates(profile);
 
 	return profile;
 
@@ -1243,8 +1325,8 @@ static bool verify_perms(struct aa_policydb *pdb)
  */
 static int verify_profile(struct aa_profile *profile)
 {
-	struct aa_ruleset *rules = list_first_entry(&profile->rules,
-						    typeof(*rules), list);
+	struct aa_ruleset *rules = profile->label.rules[0];
+
 	if (!rules)
 		return 0;
 
