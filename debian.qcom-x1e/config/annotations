@@ -3679,7 +3679,6 @@ CONFIG_ECRYPT_FS_MESSAGING                      policy<{'arm64': 'y'}>
 CONFIG_EC_ACER_ASPIRE1                          policy<{'arm64': 'm'}>
 CONFIG_EC_LENOVO_YOGA_C630                      policy<{'arm64': 'm'}>
 CONFIG_EC_LENOVO_YOGA_SLIM7X                    policy<{'arm64': 'm'}>
-CONFIG_EC_QCOM_X1E_IT8987                       policy<{'arm64': 'm'}>
 CONFIG_EDAC                                     policy<{'arm64': 'y'}>
 CONFIG_EDAC_ALTERA                              policy<{'arm64': 'y'}>
 CONFIG_EDAC_ALTERA_ETHERNET                     policy<{'arm64': 'y'}>
@@ -7150,6 +7149,7 @@ CONFIG_NET_DSA_REALTEK                          policy<{'arm64': 'm'}>
 CONFIG_NET_DSA_REALTEK_MDIO                     policy<{'arm64': 'y'}>
 CONFIG_NET_DSA_REALTEK_RTL8365MB                policy<{'arm64': 'm'}>
 CONFIG_NET_DSA_REALTEK_RTL8366RB                policy<{'arm64': 'm'}>
+CONFIG_NET_DSA_REALTEK_RTL8366RB_LEDS           policy<{'arm64': 'y'}>
 CONFIG_NET_DSA_REALTEK_SMI                      policy<{'arm64': 'y'}>
 CONFIG_NET_DSA_SJA1105                          policy<{'arm64': 'm'}>
 CONFIG_NET_DSA_SJA1105_PTP                      policy<{'arm64': 'y'}>
