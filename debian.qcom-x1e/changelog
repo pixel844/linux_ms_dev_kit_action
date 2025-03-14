@@ -1,4 +1,4 @@
-linux-qcom-x1e (6.14.0-26.26) oracular; urgency=medium
+linux-qcom-x1e (6.14.0-27.27) oracular; urgency=medium
 
   [ Johan Hovold ]
   * firmware: qcom: uefisecapp: fix efivars registration race
