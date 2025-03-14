@@ -84,7 +84,9 @@ description: |
         sm8450
         sm8550
         sm8650
+        x1e78100
         x1e80100
+        x1p42100
 
   There are many devices in the list below that run the standard ChromeOS
   bootloader setup and use the open source depthcharge bootloader to boot the
