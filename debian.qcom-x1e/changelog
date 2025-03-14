@@ -1,88 +1,18 @@
-linux-qcom-x1e (6.14.0-25.25) oracular; urgency=medium
-
-  [ Konrad Dybcio ]
-  * arm64: dts: qcom: Add X1P42100 SoC and CRD
-
-  [ Aleksandrs Vinarskis ]
-  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-microsoft-romulus: Enable external DP support
-  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-asus-vivobook: Introduce retimers, external DP
-  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-dell-xps-9345: Add WiFi/BT pwrseq
-  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-dell-xps13-9345: Add bluetooth nodes
-  * UBUNTU: SAUCE: drm/msm/dp: Fix support of LTTPR handling
-  * UBUNTU: SAUCE: drm/msm/dp: Introduce link training per-segment for LTTPRs
-
- -- Tobias Heider <tobias.heider@canonical.com>  Mon, 10 Mar 2025 15:16:13 +0100
-
-linux-qcom-x1e (6.14.0-23.23) oracular; urgency=medium
-
-  [ Tobias Heider ]
-  * UBUNTU: rebase onto Ubuntu-6.14.0-7.7
-
- -- Tobias Heider <tobias.heider@canonical.com>  Wed, 05 Mar 2025 13:30:32 +0100
-
-
-linux-qcom-x1e (6.14.0-20.20) oracular; urgency=medium
+linux-qcom-x1e (6.14.0-26.26) oracular; urgency=medium
 
   [ Johan Hovold ]
-  * arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
-  * arm64: dts: qcom: x1e78100-t14s: mark l12b and l15b always-on
-  * arm64: dts: qcom: x1e001de-devkit: mark l12b and l15b always-on
-  * arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on
-  * arm64: dts: qcom: x1e80100-hp-x14: mark l12b and l15b always-on
-  * arm64: dts: qcom: x1e80100-yoga-slim7x: mark l12b and l15b always-on
-  * arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
+  * firmware: qcom: uefisecapp: fix efivars registration race
 
-  [ Marcus Glocker ]
-  * arm64: dts: qcom: Add UFS node
-  * dt-bindings: phy: Add X1E80100 UFS
-  * dt-bindings: ufs: Add X1E80100 UFS
-  * dt-bindings: crypto: Add X1E80100 Crypto Engine
-
-  [ Abel Vesa ]
-  * arm64: dts: qcom: x1e80100-t14s: Describe the Parade PS8830 retimers
-  * arm64: dts: qcom: x1e80100-t14s: Enable external DisplayPort support
-
-  [ Johan Hovold ]
-  * wip: arm64: dts: qcom: x1e78100-t14s: enable bluetooth
-  * arm64: dts: qcom: x1e78100-t14s: fix missing HID supplies
-
-  [ Maud Spierings ]
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Enable USB-A ports
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Enable micro-sd card reader
-
-  [ Tobias Heider ]
-  * UBUNTU: revert some config changes
-  * UBUNTU: drop iris for now
-
- -- Tobias Heider <tobias.heider@canonical.com>  Wed, 05 Mar 2025 13:30:32 +0100
-
-linux-qcom-x1e (6.14.0-17.17) oracular; urgency=medium
-
-  [ Maya Matuszczyk ]
-  * dt-bindings: platform: Add bindings for Lenovo Yoga Slim 7x EC
-  * platform: arm64: Add driver for Lenovo Yoga Slim 7x's EC
-  * arm64: dts: qcom: Add EC to Lenovo Yoga Slim 7x
-
-  [ Tobias Heider ]
-  * UBUNTU: enable Yoga Slim EC
-
- -- Tobias Heider <tobias.heider@canonical.com>  Thu, 27 Feb 2025 18:04:47 +0100
-
-linux-qcom-x1e (6.14.0-15.15) oracular; urgency=medium
-
-  [ Stephan Gerhold ]
-  * arm64: dts: qcom: x1e80100: Add GPU cooling
-
- -- Tobias Heider <tobias.heider@canonical.com>  Thu, 27 Feb 2025 14:07:47 +0100
-
-linux-qcom-x1e (6.14.0-14.14) oracular; urgency=medium
+  [ Saranya R ]
+  * soc: qcom: pdr: Fix the potential deadlock
 
   [ Konrad Dybcio ]
   * clk: qcom: gcc-x1e80100: Unregister GCC_GPU_CFG_AHB_CLK/GCC_DISP_XO_CLK
   * arm64: dts: qcom: x1e80100: Set CPU interconnect paths as ACTIVE_ONLY
 
-  [ Sebastian Reichel ]
-  * drm/edp-panel: Add panel used by T14s Gen6 Snapdragon
+  [ Abel Vesa ]
+  * dt-bindings: usb: Add Parade PS8830 Type-C retimer bindings
+  * usb: typec: Add support for Parade PS8830 Type-C Retimer
 
   [ Johan Hovold ]
   * usb: typec: ps883x: fix probe error handling
@@ -90,219 +20,366 @@ linux-qcom-x1e (6.14.0-14.14) oracular; urgency=medium
   * usb: typec: ps883x: fix missing accessibility check
   * usb: typec: ps883x: fix configuration error handling
 
-  [ Stephan Gerhold ]
-  * arm64: dts: qcom: x1e80100: Fix video thermal zone
-  * arm64: dts: qcom: x1e80100: Apply consistent critical thermal shutdown
-  * arm64: dts: qcom: x1e80100: Drop unused passive thermal trip points for CPU
-
-  [ Tobias Heider ]
-  * arm64: dts: qcom: x1e001de-devkit: Set ps8830 reset-gpios active low
-
- -- Tobias Heider <tobias.heider@canonical.com>  Mon, 24 Feb 2025 15:28:32 +0100
-
-linux-qcom-x1e (6.14.0-13.13) oracular; urgency=medium
-
-  * arm64: dts: qcom: x1e78100-lenovo-thinkpad-t14s: Add bluetooth
-  * irqchip/qcom-pdc: Workaround hardware register bug on X1E80100
-  * UBUNTU: Update dependencies from Ubuntu-unstable-6.14-2.2
-  * UBUNTU: sync config from Ubuntu-unstable-6.14-2.2
-
- -- Tobias Heider <tobias.heider@canonical.com>  Fri, 21 Feb 2025 12:29:24 +0100
-
-linux-qcom-x1e (6.14.0-5.5) oracular; urgency=medium
-
-  [ Marcus Glocker ]
-  * arm64: dts: qcom: Add UFS node
-  * dt-bindings: phy: Add X1E80100 UFS
-  * dt-bindings: ufs: Add X1E80100 UFS
-  * dt-bindings: crypto: Add X1E80100 Crypto Engine
-
- -- Tobias Heider <tobias.heider@canonical.com>  Fri, 14 Feb 2025 17:07:49 +0100
-
-linux-qcom-x1e (6.14.0-3.3) oracular; urgency=medium
-
-  [ Sibi Sankar ]
-  * arm64: dts: qcom: x1e80100: Add cpucp mailbox and sram nodes
-  * arm64: dts: qcom: x1e80100: Enable cpufreq
-
   [ Abel Vesa ]
-  * arm64: dts: qcom: x1e80100: Add node uart14
-  * clk: qcom: gcc-x1e80100: Do not register gpu_cfg_ahb always-on clock
-  * clk: qcom: gcc-x1e80100: Add halt_check delay to gpu_memnoc_gfx clock
-  * dt-bindings: usb: Add Parade PS8830 Type-C retimer bindings
-  * usb: typec: Add support for Parade PS8830 Type-C Retimer
-
-  [ Johan Hovold ]
-  * dt-bindings: rtc: qcom-pm8xxx: add uefi-variable offset
-
-  [ Jonathan Marek ]
-  * dt-bindings: rtc: qcom-pm8xxx: document qcom,no-alarm flag
-  * rtc: pm8xxx: implement qcom,no-alarm flag for non-HLOS owned alarm
-
-  [ Johan Hovold ]
-  * rtc: pm8xxx: add support for uefi offset
-  * rtc: pm8xxx: mitigate flash wear
-  * arm64: dts: qcom: sc8280xp-x13s: switch to uefi rtc offset
-  * arm64: dts: qcom: x1e80100: enable rtc
-
-  [ Mark Kettenis ]
-  * arm64: dts: qcom: x1e80100: Mark usb_2 as dma-coherent
-
-  [ Maya Matuszczyk ]
-  * dt-bindings: platform: Add bindings for Qcom's EC on IT8987
-  * platform: arm64: Add driver for EC found in most X1E laptops
+  * drm/dp: Add helper to set LTTPRs in transparent mode
+  * drm/msm/dp: Add support for LTTPR handling
 
   [ Rajendra Nayak ]
   * arm64: dts: qcom: x1e80100: Add the watchdog device
 
-  [ Mukesh Ojha ]
-  * soc: qcom: pdr: Fix the potential deadlock
+  [ Mark Kettenis ]
+  * arm64: dts: qcom: x1e80100: Mark usb_2 as dma-coherent
 
-  [ Manivannan Sadhasivam ]
-  * bus: mhi: host: pci_generic: Use pci_try_reset_function() to avoid deadlock
+  [ Konrad Dybcio ]
+  * arm64: dts: qcom: x1e80100: Wire up PCIe PHY NOCSR resets
+  * arm64: dts: qcom: Commonize X1 CRD DTSI
+  * arm64: dts: qcom: Add X1P42100 SoC and CRD
 
-  [ Johan Hovold ]
-  * firmware: qcom: uefisecapp: fix efivars registration race
-
-  [ Abel Vesa ]
-  * arm64: dts: qcom: x1e80100-t14s: Describe the Parade PS8830 retimers
-  * arm64: dts: qcom: x1e80100-t14s: Enable external DisplayPort support
+  [ Stephan Gerhold ]
+  * arm64: dts: qcom: x1e80100: Fix video thermal zone
+  * arm64: dts: qcom: x1e80100: Apply consistent critical thermal shutdown
+  * arm64: dts: qcom: x1e80100: Add GPU cooling
+  * arm64: dts: qcom: x1e80100: Drop unused passive thermal trip points for CPU
 
   [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-t14s: Enable HBR3 on external DPs
+  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Enable external DP support
+  * arm64: dts: qcom: x1e001de-devkit: Enable HBR3 on external DPs
+  * arm64: dts: qcom: x1e80100-hp-x14: Enable HBR3 on external DPs
+  * arm64: dts: qcom: x1e80100-qcp: Enable HBR3 on external DPs
+
+  [ Sebastian Reichel ]
+  * drm/edp-panel: Add panel used by T14s Gen6 Snapdragon
+
+  [ Krzysztof Kozlowski ]
+  * arm64: dts: qcom: x1e80100-slim7x: Drop incorrect qcom,ath12k-calibration-variant
 
   [ Tobias Heider ]
-  * HACK: workaround for t14s OLED backlight
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
+
+  [ Johan Hovold ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e78100-t14s: mark l12b and l15b always-on
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e001de-devkit: mark l12b and l15b always-on
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-hp-x14: mark l12b and l15b always-on
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-yoga-slim7x: mark l12b and l15b always-on
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e78100-t14s: fix missing HID supplies
+
+  [ Sibi Sankar ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100: Add cpucp mailbox and sram nodes
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100: Enable cpufreq
+
+  [ Abel Vesa ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-t14s: Describe the Parade PS8830 retimers
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-t14s: Enable external DisplayPort support
 
   [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Add bluetooth nodes
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-t14s: Enable HBR3 on external DPs
+
+  [ Johan Hovold ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e78100-t14s: enable bluetooth
+
+  [ hogliux ]
+  * UBUNTU: SAUCE: Add Bluetooth support for the Lenovo Yoga Slim 7x
+
+  [ Maya Matuszczyk ]
+  * UBUNTU: SAUCE: dt-bindings: platform: Add bindings for Lenovo Yoga Slim 7x EC
+  * UBUNTU: SAUCE: platform: arm64: Add driver for Lenovo Yoga Slim 7x's EC
+  * UBUNTU: SAUCE: arm64: dts: qcom: Add EC to Lenovo Yoga Slim 7x
+
+  [ Maud Spierings ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-vivobook-s15: Add bluetooth
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-vivobook-s15: Enable USB-A ports
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-vivobook-s15: Enable micro-sd card reader
+
+  [ Victorien ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1p64100-acer-swift-sf14-11 dt for Acer Swift 14 SF14-11 (touchpad fix)
+
+  [ Tobias Heider ]
+  * UBUNTU: SAUCE: dt-bindings: arm: qcom: Add Acer Swift 14 AI
+
+  [ Aleksandrs Vinarskis ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-acer-swift-sf14-11: Enable HBR3 on external DPs
+
+  [ Tobias Heider ]
+  * UBUNTU: SAUCE: firmware: qcom: scm: Allow QSEECOM on Acer Swift 14 models
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e001de-devkit: Set ps8830 reset-gpios active low
+
+  [ Davide Ricci ]
+  * UBUNTU: SAUCE: Change: cracking sound fix
+
+  [ Johan Hovold ]
+  * UBUNTU: SAUCE: rtc: pm8xxx: add support for uefi offset
+  * UBUNTU: SAUCE: rtc: pm8xxx: mitigate flash wear
+  * UBUNTU: SAUCE: arm64: dts: qcom: sc8280xp-x13s: switch to uefi rtc offset
+
+  [ Jonathan Marek ]
+  * UBUNTU:SAUCE: dt-bindings: rtc: qcom-pm8xxx: document qcom,no-alarm flag
+  * UBUNTU: SAUCE: rtc: pm8xxx: implement qcom,no-alarm flag for non-HLOS owned alarm
+
+  [ Johan Hovold ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100: enable rtc
+
+  [ Aleksandrs Vinarskis ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-microsoft-romulus: Enable external DP support
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-asus-vivobook: Introduce retimers, external DP
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-dell-xps-9345: Add WiFi/BT pwrseq
+
+  [ Abel Vesa ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e78100-t14s: Add LCD variant with backlight support
+
+  [ Johan Hovold ]
+  * UBUNTU: SAUCE: hack: efi/libstub: mitigate t14s exit_boot_services() failure
+
+  [ Tobias Heider ]
+  * UBUNTU: [Config] Enable X Elite modules on arm64
+  * Revert "UBUNTU: SAUCE: arm64: dts: qcom: x1e78100-t14s: Add LCD variant with backlight support"
+  * HACK: workaround for t14s OLED backlight
+  * UBUNTU: Audio support on X Elite is currently experimental and comes with a risk of
+    permanently damaging hardware. Add an explicit kernel command line flag to make sure
+    it doesn't get enabled by accident.
 
   [ Sibi Sankar ]
   * arm64: dts: qcom: x1e80100-dell-xps13-9345: Add Left/Right Speakers and Tweeter
 
   [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Enable external DP support
-  * arm64: dts: qcom: x1e80100-dell-xps13-9345: Enable HBR3 on external DPs
-
-  [ Abel Vesa ]
-  * arm64: dts: qcom: x1e80100-slim7x: Enable external DP support
-
-  [ hogliux ]
-  * Add Bluetooth support for the Lenovo Yoga Slim 7x
-
-  [ Marcus Glocker ]
-  * arm64: dts: qcom: Add Samsung Galaxy Book4 Edge DTS
+  * UBUNTU: SAUCE: drm/msm/dp: Fix support of LTTPR handling
+  * UBUNTU: SAUCE: drm/msm/dp: Introduce link training per-segment for LTTPRs
 
   [ Tobias Heider ]
-  * arm64: dts: qcom: Sync Samsung Galaxy Book4 Edge DTS
-  * firmware: qcom: scm: Allow QSEECOM on Samsung Galaxy Book4 Edge
+  * UBUNTU: qcom-x1e: add packaging
 
-  [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-hp-x14: Enable HBR3 on external DPs
+ -- Tobias Heider <tobias.heider@canonical.com>  Fri, 14 Mar 2025 02:35:24 +0100
 
-  [ Maud Spierings ]
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Add bluetooth
+linux (6.14.0-10.10) plucky; urgency=medium
 
-  [ Tobias Heider ]
-  * arm64: dts: qcom: x1e80100-vivobook-s15: add external DP
+  * plucky/linux: 6.14.0-10.10 -proposed tracker (LP: #2102106)
 
-  [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-vivobook-s15: Enable HBR3 on external DPs
+  * Miscellaneous Ubuntu changes
+    - [Config] Revert back to GENKSYMS on amd64/arm64 too, drop rust support
 
-  [ Victorien ]
-  * arm64: dts: qcom: x1p64100-acer-swift-sf14-11 dt for Acer Swift 14 SF14-11 (touchpad fix)
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Wed, 12 Mar 2025 15:20:52 +0100
 
-  [ Tobias Heider ]
-  * arm64: dts: qcom: x1p64100-acer-swift-sf14-11: drop more audio stuff
-  * dt-bindings: arm: qcom: Add Acer Swift 14 AI
+linux (6.14.0-9.9) plucky; urgency=medium
 
-  [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e80100-acer-swift-sf14-11: Enable HBR3 on external DPs
+  * plucky/linux: 6.14.0-9.9 -proposed tracker (LP: #2101943)
 
-  [ Tobias Heider ]
-  * firmware: qcom: scm: Allow QSEECOM on Acer Swift 14 models
+  * Miscellaneous Ubuntu changes
+    - [Config] Revert back to GENKSYMS on non-rust-enabled archs
 
-  [ Kirill A. Korinsky ]
-  * arm64: dts: qcom: x1e80100: add HONOR MagicBook Art 14 devicetree
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Tue, 11 Mar 2025 12:38:22 +0100
 
-  [ Aleksandrs Vinarskis ]
-  * arm64: dts: qcom: x1e001de-devkit: Enable HBR3 on external DPs
+linux (6.14.0-8.8) plucky; urgency=medium
 
-  [ Abel Vesa ]
-  * drm/dp: Add helper to set LTTPRs in transparent mode
-  * drm/msm/dp: Add support for LTTPR handling
+  * plucky/linux: 6.14.0-8.8 -proposed tracker (LP: #2101833)
 
-  [ Davide Ricci ]
-  * Change: cracking sound fix
+  * Packaging resync (LP: #1786013)
+    - [Packaging] debian.master/dkms-versions -- update from kernel-versions
+      (main/d2025.02.26)
+    - [Packaging] debian.master/dkms-versions -- update from kernel-versions
+      (main/d2025.03.10)
 
-  [ Tobias Heider ]
-  * UBUNTU: Audio support on X Elite is currently experimental and comes with a risk of permanently damaging hardware. Add an explicit kernel command line flag to make sure it doesn't get enabled by accident.
+  * wdat_wdt.ko should be pulled in by linux-image-virtual (LP: #2098554)
+    - [Packaging]: wdat_wdt.ko is moved from "linux-modules-extra-*-generic" to
+      "linux-modules-*-generic"
 
-  [ Johan Hovold ]
-  * hack: efi/libstub: fix t14s exit_boot_services() failure
+  * Add additional PCI ids for BMG support (LP: #2098969)
+    - drm/xe/bmg: Add new PCI IDs
 
-  [ Dikshita Agarwal ]
-  * dt-bindings: media: Add video support for QCOM SM8550 SoC
-  * media: iris: add platform driver for iris video device
-  * media: iris: implement iris v4l2 file ops
-  * media: iris: introduce iris core state management with shared queues
-  * media: iris: implement video firmware load/unload
-  * media: iris: implement boot sequence of the firmware
-  * media: iris: introduce host firmware interface with necessary hooks
-  * media: iris: implement power management
-  * media: iris: implement reqbuf ioctl with vb2_queue_setup
+  * Provide linux-perf package (LP: #1613393)
+    - [Packaging] Split linux-perf from linux-tools-common
 
-  [ Vedang Nagar ]
-  * media: iris: implement s_fmt, g_fmt and try_fmt ioctls
-  * media: iris: implement g_selection ioctl
-  * media: iris: implement enum_fmt and enum_framesizes ioctls
-  * media: iris: implement subscribe_event and unsubscribe_event ioctls
+  * linux-tools-common: bpftool wrapper causes build failure for xdp-tools
+    (LP: #2007308)
+    - [Packaging] bpftool: move to separate unversioned and unflavored binary
+      package
 
-  [ Dikshita Agarwal ]
-  * media: iris: implement iris v4l2_ctrl_ops
+  * Miscellaneous Ubuntu changes
+    - [Packaging] templates/image.postrm.in: Add modules.weakdep to the remove-
+      list
+    - [Config] Re-enable rust support, switch from genksyms to gendwarfksyms
+    - [packaging] check-in copyright directly in debian/
+    - [Packaging] remove intermediate $(DEBIAN)/control.stub
+    - [Config] updateconfigs following v6.14-rc6 rebase
 
-  [ Vedang Nagar ]
-  * media: iris: implement query_cap ioctl
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Mon, 10 Mar 2025 16:46:27 +0100
 
-  [ Dikshita Agarwal ]
-  * media: iris: implement vb2 streaming ops
+linux (6.14.0-7.7) plucky; urgency=medium
 
-  [ Vedang Nagar ]
-  * media: iris: implement set properties to firmware during streamon
-  * media: iris: subscribe parameters and properties to firmware for hfi_gen2
+  * plucky/linux: 6.14.0-7.7 -proposed tracker (LP: #2100581)
 
-  [ Dikshita Agarwal ]
-  * media: iris: allocate, initialize and queue internal buffers
-  * media: iris: implement vb2 ops for buf_queue and firmware response
-  * media: iris: add support for dynamic resolution change
-  * media: iris: handle streamoff/on from client in dynamic resolution change
-  * media: iris: add support for drain sequence
+  * Miscellaneous upstream changes
+    - Revert "UBUNTU: [Packaging] Sync riscv64.mk with linux-riscv tree"
 
-  [ Vedang Nagar ]
-  * media: iris: add check whether the video session is supported or not
-  * media: iris: implement power scaling for vpu2 and vpu3
-  * media: iris: add check to allow sub states transitions
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Fri, 28 Feb 2025 10:46:05 +0100
 
-  [ Dikshita Agarwal ]
-  * media: iris: enable video driver probe of SM8250 SoC
-  * media: MAINTAINERS: add Qualcomm iris video accelerator driver
+linux (6.14.0-6.6) plucky; urgency=medium
 
-  [ Stephan Gerhold ]
-  * dt-bindings: clock: qcom,sm8450-videocc: Document X1E80100 compatible
-  * clk: qcom: videocc-sm8550: Add separate frequency tables for X1E80100
-  * arm64: dts: qcom: x1e80100: Add videocc
-  * arm64: defconfig: Enable Qualcomm SM8550 videocc
-  * dt-bindings: clock: qcom,x1e80100-gcc: Add missing video resets
-  * clk: qcom: gcc-x1e80100: Add missing video resets
-  * WIP: arm64: dts: qcom: x1e80100: Add IRIS video codec
-  * arm64: defconfig: Enable IRIS video codec
+  * plucky/linux: 6.14.0-6.6 -proposed tracker (LP: #2100481)
 
-  [ Tobias Heider ]
-  * UBUNTU: Add qcom-x1e as default flavour
-  * UBUNTU: update config for 6.14
-  * UBUNTU: install efi bootable vmlinuz.efi
+  * Miscellaneous Ubuntu changes
+    - [Packaging] riscv64.mk: fix a typo
+    - [Packaging] enable signing for s390x
+    - [Packaging] riscv64.mk: disable building as part of linux-generic
 
- -- Tobias Heider <tobias.heider@canonical.com>  Fri, 14 Feb 2025 15:17:26 +0100
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Fri, 28 Feb 2025 09:44:27 +0100
+
+linux (6.14.0-5.5) plucky; urgency=medium
+
+  * plucky/linux: 6.14.0-5.5 -proposed tracker (LP: #2100254)
+
+  * Miscellaneous Ubuntu changes
+    - [Packaging] Sync riscv64.mk with linux-riscv tree
+    - [Packaging] clean up the distclean rule
+    - [Config] updateconfigs following v6.14-rc4 rebase
+
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Wed, 26 Feb 2025 11:23:13 +0100
+
+linux (6.14.0-4.4) plucky; urgency=medium
+
+  * plucky/linux: 6.14.0-4.4 -proposed tracker (LP: #2098875)
+
+  * Packaging resync (LP: #1786013)
+    - [Packaging] debian.master/dkms-versions -- update from kernel-versions
+      (main/d2025.02.11)
+
+  * update apparmor and LSM stacking patch set (LP: #2028253)
+    - SAUCE: apparmor4.0.0 [1/53]: Stacking: Audit: Create audit_stamp structure
+    - SAUCE: apparmor4.0.0 [2/53]: Stacking: Audit: Allow multiple records in an
+      audit_buffer
+    - SAUCE: apparmor4.0.0 [3/53]: Stacking: LSM: security_lsmblob_to_secctx
+      module selection
+    - SAUCE: apparmor4.0.0 [4/53]: Stacking: Audit: Add record for multiple task
+      security contexts
+    - SAUCE: apparmor4.0.0 [5/53]: Stacking: Audit: multiple subject lsm values
+      for netlabel
+    - SAUCE: apparmor4.0.0 [6/53]: Stacking: Audit: Add record for multiple object
+      contexts
+    - SAUCE: apparmor4.0.0 [7/53]: Stacking: LSM: Single calls in secid hooks
+    - SAUCE: apparmor4.0.0 [8/53]: Stacking: LSM: Exclusive secmark usage
+    - SAUCE: apparmor4.0.0 [9/53]: Stacking: Audit: Call only the first of the
+      audit rule hooks
+    - SAUCE: apparmor4.0.0 [10/53]: Stacking: AppArmor: Remove the exclusive flag
+    - SAUCE: apparmor4.0.0 [11/53]: 6.15 apparmor-next: apparmor: Use str_yes_no()
+      helper function
+    - SAUCE: apparmor4.0.0 [12/53]: 6.15 apparmor-next: apparmor: Improve debug
+      print infrastructure
+    - SAUCE: apparmor4.0.0 [13/53]: 6.15 apparmor-next: apparmor: cleanup:
+      attachment perm lookup to use lookup_perms()
+    - SAUCE: apparmor4.0.0 [14/53]: 6.15 apparmor-next: apparmor: remove redundant
+      unconfined check.
+    - SAUCE: apparmor4.0.0 [15/53]: 6.15 apparmor-next: apparmor: switch signal
+      mediation to use RULE_MEDIATES
+    - SAUCE: apparmor4.0.0 [16/53]: 6.15 apparmor-next: apparmor: ensure labels
+      with more than one entry have correct flags
+    - SAUCE: apparmor4.0.0 [17/53]: 6.15 apparmor-next: apparmor: remove explicit
+      restriction that unconfined cannot use change_hat
+    - SAUCE: apparmor4.0.0 [18/53]: 6.15 apparmor-next: apparmor: cleanup:
+      refactor file_perm() to doc semantics of some checks
+    - SAUCE: apparmor4.0.0 [19/53]: 6.15 apparmor-next: apparmor: carry mediation
+      check on label
+    - SAUCE: apparmor4.0.0 [20/53]: 6.15 apparmor-next: apparmor: add additional
+      flags to extended permission.
+    - SAUCE: apparmor4.0.0 [21/53]: 6.15 apparmor-next: apparmor: add support for
+      profiles to define the kill signal
+    - SAUCE: apparmor4.0.0 [22/53]: 6.15 apparmor-next: apparmor: fix
+      x_table_lookup when stacking is not the first entry
+    - SAUCE: apparmor4.0.0 [23/53]: 6.15 apparmor-next: apparmor: add ability to
+      mediate caps with policy state machine
+    - SAUCE: apparmor4.0.0 [24/53]: 6.15 apparmor-next: apparmor: remove af_select
+      macro
+    - SAUCE: apparmor4.0.0 [25/53]: 6.15 apparmor-next: apparmor: lift kernel
+      socket check out of critical section
+    - SAUCE: apparmor4.0.0 [26/53]: 6.15 apparmor-next: apparmor: in preparation
+      for finer networking rules rework match_prot
+    - SAUCE: apparmor4.0.0 [27/53]: 6.15 apparmor-next: apparmor: add fine grained
+      af_unix mediation
+    - SAUCE: apparmor4.0.0 [28/53]: 6.15 apparmor-next: apparmor: gate make fine
+      grained unix mediation behind v9 abi
+    - SAUCE: apparmor4.0.0 [29/53]: 6.15 apparmor-next: apparmor: fix dbus
+      permission queries to v9 ABI
+    - SAUCE: apparmor4.0.0 [30/53]: 6.15 apparmor-next: apparmor: Fix checking
+      address of an array in accum_label_info()
+    - SAUCE: apparmor4.0.0 [31/53]: 6.15 apparmor-next: apparmor: Modify
+      mismatched function name
+    - SAUCE: apparmor4.0.0 [32/53]: 6.15 apparmor-next: apparmor: Modify
+      mismatched function name
+    - SAUCE: apparmor4.0.0 [33/53]: 6.15 apparmor-next: apparmor: fix typos and
+      spelling errors
+    - SAUCE: apparmor4.0.0 [34/53]: 6.15 apparmor-next: apparmor: use the
+      condition in AA_BUG_FMT even with debug disabled
+    - SAUCE: apparmor4.0.0 [35/53]: 6.15 apparmor-next: apparmor: Remove unused
+      variable 'sock' in __file_sock_perm()
+    - SAUCE: apparmor4.0.0 [36/53]: Revert "6.15 apparmor-next: apparmor: fix dbus
+      permission queries to v9 ABI"
+    - SAUCE: apparmor4.0.0 [37/53]: Revert "6.15 apparmor-next: apparmor: gate
+      make fine grained unix mediation behind v9 abi"
+    - SAUCE: apparmor4.0.0 [38/53]: patch to provide compatibility with v2.x net
+      rules
+    - SAUCE: apparmor4.0.0 [39/53]: apparmor: make debug_values_table static
+    - SAUCE: apparmor4.0.0 [40/53]: apparmor: Document that label must be last
+      member in struct aa_profile
+    - SAUCE: apparmor4.0.0 [41/53]: apparmor: transition from a list of rules to a
+      vector of rules
+    - SAUCE: apparmor4.0.0 [42/53]: setup slab cache for audit data
+    - SAUCE: apparmor4.0.0 [43/53]: add the ability for profiles to have a
+      learning cache
+    - SAUCE: apparmor4.0.0 [44/53]: add unprivileged user ns mediation
+    - SAUCE: apparmor4.0.0 [45/53]: Add sysctls for additional controls of unpriv
+      userns restrictions
+    - SAUCE: apparmor4.0.0 [47/53]: apparmor: open userns related sysctl so lxc
+      can check if restriction are in place
+    - SAUCE: apparmor4.0.0 [48/53]: apparmor: allow profile to be transitioned
+      when a userns is created
+    - SAUCE: apparmor4.0.0 [49/53]: Add fine grained mediation of posix mqueues
+    - SAUCE: apparmor4.0.0 [51/53]: apparmor: add fine grained ipv4/ipv6 mediation
+    - SAUCE: apparmor4.0.0 [52/53]: add io_uring mediation
+    - SAUCE: apparmor4.0.0 [53/53]: enable userspace upcall for mediation
+    - [Config] disable CONFIG_SECURITY_APPARMOR_RESTRICT_USERNS
+
+  * update apparmor and LSM stacking patch set (LP: #2028253) // [FFe]
+    apparmor-4.0.0-alpha2 for unprivileged user namespace restrictions in mantic
+    (LP: #2032602)
+    - SAUCE: apparmor4.0.0 [46/53]: userns - make it so special unconfined
+      profiles can mediate user namespaces
+
+  * Miscellaneous Ubuntu changes
+    - [Packaging] disable signing for ppc64el
+    - [Packaging] disable signing for s390x
+    - [packaging] rename to linux
+    - [Config] update RUSTC version
+    - [packaging] remove $(wildcard $(DEBIAN)/control.d/*) dependency
+    - [packaging] avoid piping control-create for error detection
+    - [packaging] split flavour-control.stub
+    - [packaging] generate debian/control with correct signed/unsigned
+    - [packaging] remove DESC and =HUMAN= substitution
+    - [Packaging] remove unnecessary dependency on control.stub
+    - [Packaging] add .gitignore and clean more files
+    - SAUCE: apparmor4.0.0 [50/53]: apparmor: audit mqueue-via-path access as
+      getattr instead of unlink
+    - [Packaging] debian.master/dkms-versions -- remove ipu6-drivers,
+      ipu7-drivers, backport-iwlwifi-dkms and mofed-modules-24.10 FTBFS
+
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Thu, 20 Feb 2025 14:20:53 +0100
+
+linux-unstable (6.14.0-3.3) plucky; urgency=medium
+
+  * plucky/linux-unstable: 6.14.0-3.3 -proposed tracker (LP: #2098836)
+
+  * RISC-V kernel config is out of sync with other archs (LP: #1981437)
+    - [Config] riscv64: Sync config with other architectures
+
+  * Miscellaneous Ubuntu changes
+    - SAUCE: platform/x86: int3472: fixup s/polarity/gpio_flags/
+    - [Config] riscv64: Disable CONFIG_ARCH_RENESAS
+    - [Config] riscv64: Disable Andes vendor extensions
+    - [Config] riscv64: Set CONFIG_MMC_SPI=m like other architectures
+    - [Config] riscv64: Enable Svpbmt support
+    - [Config] riscv64: Disable kernel compression
+    - [packaging] enable ppc64el signing
+    - [Config] updateconfigs
+
+ -- Paolo Pisati <paolo.pisati@canonical.com>  Wed, 19 Feb 2025 16:38:27 +0100
 
 linux-unstable (6.14.0-2.2) plucky; urgency=medium
 
