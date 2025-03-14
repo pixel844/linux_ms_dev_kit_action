@@ -668,6 +668,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
 	} else if (ieee80211_is_data_present(hdr->frame_control) && tx->sta &&
 		   test_sta_flag(tx->sta, WLAN_STA_USES_ENCRYPTION)) {
 		return TX_DROP;
+	} else {
+		/* Clear SKB CB key reference, ieee80211_tx_h_select_key()
+		 * could have been called to update key info after its removal
+		 * (e.g. by ieee80211_tx_dequeue()).
+		 */
+		info->control.hw_key = NULL;
 	}
 
 	return TX_CONTINUE;
