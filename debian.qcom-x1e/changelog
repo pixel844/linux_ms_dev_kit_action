@@ -1,4 +1,4 @@
-linux-qcom-x1e (6.14.0-29.29) oracular; urgency=medium
+linux-qcom-x1e (6.14.0-30.30) oracular; urgency=medium
 
   [ Johan Hovold ]
   * UBUNTU: SAUCE: wifi: ath12k: fix ring-buffer corruption
