@@ -1,3 +1,14 @@
+linux-qcom-x1e (6.14.0-28.28) oracular; urgency=medium
+
+  [ Jens Glathe ]
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-hp-x14: enable type-c dual role USB
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-hp-x14: remove unused i2c buses
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-hp-x14: add ps8830, boot-on for retimers
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-hp-x14: remove ps8830 retimer on i2c7
+  * UBUNTU: SAUCE: arm64: dts: qcom: x1e80100-hp-x14: add usb-1-ss1-sbu-mux
+
+ -- Tobias Heider <tobias.heider@canonical.com>  Mon, 17 Mar 2025 13:56:44 +0100
+
 linux-qcom-x1e (6.14.0-27.27) oracular; urgency=medium
 
   [ Johan Hovold ]
