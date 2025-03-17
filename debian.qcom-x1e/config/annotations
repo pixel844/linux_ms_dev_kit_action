@@ -1696,6 +1696,7 @@ CONFIG_BT_HCIBT3C                               policy<{'arm64': 'n'}>
 CONFIG_BT_HCIBTSDIO                             policy<{'arm64': 'm'}>
 CONFIG_BT_HCIBTUSB                              policy<{'arm64': 'm'}>
 CONFIG_BT_HCIBTUSB_AUTOSUSPEND                  policy<{'arm64': 'y'}>
+CONFIG_BT_HCIBTUSB_AUTO_ISOC_ALT                policy<{'arm64': 'y'}>
 CONFIG_BT_HCIBTUSB_BCM                          policy<{'arm64': 'y'}>
 CONFIG_BT_HCIBTUSB_MTK                          policy<{'arm64': 'y'}>
 CONFIG_BT_HCIBTUSB_POLL_SYNC                    policy<{'arm64': 'y'}>
