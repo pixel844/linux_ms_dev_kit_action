@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.14-rc7-2) oracular; urgency=medium
+
+  * add a gigantic bunch of ath12k fixes to cleanly include
+    https://lore.kernel.org/ath12k/20250226113118.7626-1-quic_lingbok@quicinc.com/ 
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 19 Mar 2025 08:59:02 +0100
+
 linux-qcom-x1e (6.14-rc7-1) oracular; urgency=medium
 
   * rebase to jhovold/wip/6.14-rc7
