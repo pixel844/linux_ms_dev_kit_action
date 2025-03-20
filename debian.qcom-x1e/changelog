@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.14-rc7-4) oracular; urgency=medium
+
+  * test revert Johan's boot fix c25cad8022156
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Thu, 20 Mar 2025 16:09:43 +0100
+
 linux-qcom-x1e (6.14-rc7-3) oracular; urgency=medium
 
   * add select ath12k patches to fix the AP change null deref (and get it built)
