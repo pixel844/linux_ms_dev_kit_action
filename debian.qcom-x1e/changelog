@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.14-rc7-6) oracular; urgency=medium
+
+  * squashed variant of 6.14-rc7-2 with long list of ath fixes
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Fri, 21 Mar 2025 18:20:25 +0100
+
 linux-qcom-x1e (6.14-rc7-1) oracular; urgency=medium
 
   * rebase to jhovold/wip/6.14-rc7
