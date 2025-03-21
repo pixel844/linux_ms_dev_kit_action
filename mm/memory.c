@@ -2030,6 +2030,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
 	tlb_finish_mmu(&tlb);
 	hugetlb_zap_end(vma, details);
 }
+EXPORT_SYMBOL(zap_page_range_single);
 
 /**
  * zap_vma_ptes - remove ptes mapping the vma
@@ -6394,6 +6395,7 @@ inval:
 	count_vm_vma_lock_event(VMA_LOCK_ABORT);
 	return NULL;
 }
+EXPORT_SYMBOL_GPL(lock_vma_under_rcu);
 #endif /* CONFIG_PER_VMA_LOCK */
 
 #ifndef __PAGETABLE_P4D_FOLDED

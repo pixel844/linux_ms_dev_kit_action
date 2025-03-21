@@ -10,9 +10,10 @@ build-indep:
 indep_hdrpkg = $(indep_hdrs_pkg_name)
 indep_hdrdir = $(CURDIR)/debian/$(indep_hdrpkg)/usr/src/$(indep_hdrpkg)
 
-$(stampdir)/stamp-install-headers: $(stampdir)/stamp-prepare-indep
+$(stampdir)/stamp-install-headers:
 	@echo Debug: $@
 	dh_testdir
+	dh_prep -p$(indep_hdrpkg)
 
 ifeq ($(do_flavour_header_package),true)
 	install -d $(indep_hdrdir)
@@ -34,9 +35,10 @@ endif
 srcpkg = linux-source-$(DEB_VERSION_UPSTREAM)
 srcdir = $(CURDIR)/debian/$(srcpkg)/usr/src/$(srcpkg)
 balldir = $(CURDIR)/debian/$(srcpkg)/usr/src/$(srcpkg)/$(srcpkg)
-install-source: $(stampdir)/stamp-prepare-indep
+install-source:
 	@echo Debug: $@
 ifeq ($(do_source_package),true)
+	dh_prep -p$(srcpkg)
 
 	install -d $(srcdir)
 ifeq ($(do_source_package_content),true)
@@ -51,11 +53,18 @@ endif
 endif
 
 .PHONY: install-tools
+install-tools: bpftoolpkg = $(bpftool_pkg_name)
+install-tools: bpftoolsbin = $(CURDIR)/debian/$(bpftoolpkg)/usr/sbin
+install-tools: bpftoolman = $(CURDIR)/debian/$(bpftoolpkg)/usr/share/man
+install-tools: bpftoolbashcomp = $(CURDIR)/debian/$(bpftoolpkg)/usr/share/bash-completion/completions
+install-tools: perfpkg = $(perf_pkg_name)
+install-tools: perfbin = $(CURDIR)/debian/$(perfpkg)/usr/bin
+install-tools: perfman = $(CURDIR)/debian/$(perfpkg)/usr/share/man
+install-tools: perfpython = $(CURDIR)/debian/$(perfpkg)/usr/lib/python3/dist-packages
 install-tools: toolspkg = $(tools_common_pkg_name)
 install-tools: toolsbin = $(CURDIR)/debian/$(toolspkg)/usr/bin
 install-tools: toolssbin = $(CURDIR)/debian/$(toolspkg)/usr/sbin
 install-tools: toolsman = $(CURDIR)/debian/$(toolspkg)/usr/share/man
-install-tools: toolspython = $(CURDIR)/debian/$(toolspkg)/usr/lib/python3/dist-packages
 install-tools: toolsbashcomp = $(CURDIR)/debian/$(toolspkg)/usr/share/bash-completion/completions
 install-tools: hosttoolspkg = $(hosttools_pkg_name)
 install-tools: hosttoolsbin = $(CURDIR)/debian/$(hosttoolspkg)/usr/bin
@@ -65,10 +74,13 @@ install-tools: cloudpkg = $(cloud_common_pkg_name)
 install-tools: cloudbin = $(CURDIR)/debian/$(cloudpkg)/usr/bin
 install-tools: cloudsbin = $(CURDIR)/debian/$(cloudpkg)/usr/sbin
 install-tools: cloudman = $(CURDIR)/debian/$(cloudpkg)/usr/share/man
-install-tools: $(stampdir)/stamp-prepare-indep $(stampdir)/stamp-build-perarch
+install-tools: $(stampdir)/stamp-build-perarch
 	@echo Debug: $@
 
 ifeq ($(do_tools_common),true)
+	dh_prep -p$(toolspkg)
+	dh_prep -p$(perfpkg)
+
 	rm -rf $(builddir)/tools
 	install -d $(builddir)/tools
 	for i in *; do $(LN) $(CURDIR)/$$i $(builddir)/tools/; done
@@ -80,7 +92,9 @@ ifeq ($(do_tools_common),true)
 	install -d $(toolsman)/man1
 	install -d $(toolsman)/man8
 	install -d $(toolsbashcomp)
-	install -d $(toolspython)
+	install -d $(perfbin)
+	install -d $(perfman)/man1
+	install -d $(perfpython)
 
 	install -m755 debian/tools/generic $(toolsbin)/usbip
 	install -m755 debian/tools/generic $(toolsbin)/usbipd
@@ -91,32 +105,25 @@ ifeq ($(do_tools_common),true)
 
 	install -m755 debian/tools/generic $(toolsbin)/rtla
 
-	install -m755 debian/tools/generic $(toolsbin)/perf
-
-	install -m755 debian/tools/generic $(toolssbin)/bpftool
-	make -C $(builddir)/tools/tools/bpf/bpftool doc
-	install -m644 $(builddir)/tools/tools/bpf/bpftool/Documentation/*.8 \
-		$(toolsman)/man8
-	install -m644 $(builddir)/tools/tools/bpf/bpftool/bash-completion/bpftool \
-		$(toolsbashcomp)
-
 	install -m755 debian/tools/generic $(toolsbin)/x86_energy_perf_policy
 	install -m755 debian/tools/generic $(toolsbin)/turbostat
 
 	cd $(builddir)/tools/tools/perf && make man
 	install -m644 $(builddir)/tools/tools/perf/Documentation/*.1 \
-		$(toolsman)/man1
+		$(perfman)/man1
 
 	install -m644 $(CURDIR)/tools/power/x86/x86_energy_perf_policy/*.8 $(toolsman)/man8
 	install -m644 $(CURDIR)/tools/power/x86/turbostat/*.8 $(toolsman)/man8
 
 ifeq ($(do_tools_perf_python),true)
 	# Python wrapper module for python-perf
-	install -d $(toolspython)/perf
-	install -m755 debian/tools/python-perf.py $(toolspython)/perf/__init__.py
+	install -d $(perfpython)/perf
+	install -m644 debian/tools/python-perf.py $(perfpython)/perf/__init__.py
 endif
 ifeq ($(do_cloud_tools),true)
 ifeq ($(do_tools_hyperv),true)
+	dh_prep -p$(cloudpkg)
+
 	install -d $(cloudsbin)
 	install -m755 debian/tools/generic $(cloudsbin)/hv_kvp_daemon
 	install -m755 debian/tools/generic $(cloudsbin)/hv_vss_daemon
@@ -140,6 +147,8 @@ endif
 endif
 
 ifeq ($(do_tools_host),true)
+	dh_prep -p$(hosttoolspkg)
+
 	install -d $(hosttoolsbin)
 	install -d $(hosttoolsman)/man1
 	install -d $(hosttoolssystemd)
@@ -153,10 +162,20 @@ ifeq ($(do_tools_host),true)
 		$(hosttoolsman)/man1
 endif
 
-$(stampdir)/stamp-prepare-indep:
-	@echo Debug: $@
-	dh_prep -i
-	$(stamp)
+ifeq ($(do_linux_tools),true)
+  ifeq ($(do_tools_bpftool),true)
+	dh_prep -p$(bpftoolpkg)
+
+	install -d $(bpftoolsbin)
+	install -d $(bpftoolman)/man8
+	install -d $(bpftoolbashcomp)
+	make -C $(builddir)/tools/tools/bpf/bpftool doc
+	install -m644 $(builddir)/tools/tools/bpf/bpftool/Documentation/*.8 \
+		$(bpftoolman)/man8
+	install -m644 $(builddir)/tools/tools/bpf/bpftool/bash-completion/bpftool \
+		$(bpftoolbashcomp)
+  endif
+endif
 
 .PHONY: install-indep
 install-indep: $(stampdir)/stamp-install-headers install-source install-tools
@@ -165,7 +184,7 @@ install-indep: $(stampdir)/stamp-install-headers install-source install-tools
 # This is just to make it easy to call manually. Normally done in
 # binary-indep target during builds.
 .PHONY: binary-headers
-binary-headers: $(stampdir)/stamp-prepare-indep $(stampdir)/stamp-install-headers
+binary-headers: $(stampdir)/stamp-install-headers
 	@echo Debug: $@
 	dh_installchangelogs -p$(indep_hdrpkg)
 	dh_installdocs -p$(indep_hdrpkg)
