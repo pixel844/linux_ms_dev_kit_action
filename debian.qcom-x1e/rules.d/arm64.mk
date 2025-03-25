@@ -22,3 +22,4 @@ do_tools_rtla = true
 do_dtbs		= true
 
 do_skip_checks = true
+do_zfs	= false
