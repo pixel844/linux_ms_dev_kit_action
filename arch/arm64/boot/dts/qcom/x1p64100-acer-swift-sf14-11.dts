@@ -16,8 +16,8 @@
 #include "x1e80100-pmics.dtsi"
 
 / {
-   model = "Acer Swift 14 AI (SF14-11)";  
-   compatible = "acer,swift-sf14-11","lenovo,thinkpad-t14s", "qcom,x1p64100", "qcom,x1e78100", "qcom,x1e80100";
+	model = "Acer Swift 14 AI (SF14-11)";
+	compatible = "acer,swift-sf14-11","qcom,x1p64100", "qcom,x1e80100";
 	chassis-type = "laptop";
 
 	aliases {
@@ -923,13 +923,6 @@
 	};
 };
 
-&i2c20 {
-	clock-frequency = <400000>;
-
-	status = "okay";
-
-};
-
 &lpass_tlmm {
 	spkr_01_sd_n_active: spkr-01-sd-n-active-state {
 		pins = "gpio12";
@@ -958,6 +951,7 @@
 
 &mdss_dp0_out {
 	data-lanes = <0 1>;
+	link-frequencies = /bits/ 64 <1620000000 2700000000 5400000000 8100000000>;
 };
 
 &mdss_dp1 {
@@ -966,6 +960,7 @@
 
 &mdss_dp1_out {
 	data-lanes = <0 1>;
+	link-frequencies = /bits/ 64 <1620000000 2700000000 5400000000 8100000000>;
 };
 
 &mdss_dp3 {
