@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.13.9-jg-0) oracular; urgency=medium
+
+  * rebase onto linux-stable/v6.13.9
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 29 Mar 2025 21:35:10 +0100
+
 linux-qcom-x1e (6.14.0-31-jg-1) oracular; urgency=medium
 
   * rebase onto jhovold/wip/x1e80100-6.14
