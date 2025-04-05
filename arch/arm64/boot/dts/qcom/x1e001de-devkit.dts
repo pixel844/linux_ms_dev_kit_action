@@ -1612,8 +1612,7 @@
 };
 
 &usb_1_ss0_dwc3 {
-	dr_mode = "otg";
-	usb-role-switch;
+	dr_mode = "host";
 };
 
 &usb_1_ss0_dwc3_hs {
@@ -1645,8 +1644,7 @@
 };
 
 &usb_1_ss1_dwc3 {
-	dr_mode = "otg";
-	usb-role-switch;
+	dr_mode = "host";
 };
 
 &usb_1_ss1_dwc3_hs {
@@ -1678,8 +1676,7 @@
 };
 
 &usb_1_ss2_dwc3 {
-	dr_mode = "otg";
-	usb-role-switch;
+	dr_mode = "host";
 };
 
 &usb_1_ss2_dwc3_hs {
