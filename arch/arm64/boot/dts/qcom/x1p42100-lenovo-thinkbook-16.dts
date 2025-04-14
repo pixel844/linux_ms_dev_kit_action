@@ -997,11 +997,11 @@
 	aux-bus {
 		panel {
 			compatible = "edp-panel";
-//			enable-gpios = <&pmc8380_3_gpios 4 GPIO_ACTIVE_HIGH>;
+			enable-gpios = <&pmc8380_3_gpios 4 GPIO_ACTIVE_HIGH>;
 			power-supply = <&vreg_edp_3p3>;
 
-//			pinctrl-0 = <&edp_bl_en>;
-//			pinctrl-names = "default";
+			pinctrl-0 = <&edp_bl_en>;
+			pinctrl-names = "default";
 
 			port {
 				edp_panel_in: endpoint {
@@ -1331,12 +1331,6 @@
 		pins = "gpio3";
 		function = "gpio";
 		bias-pull-up;
-	};
-
-	tpad_default: tpad-default-state {
-		pins = "gpio3";
-		function = "gpio";
-		bias-disable;
 	};
 
 	ts0_default: ts0-default-state {

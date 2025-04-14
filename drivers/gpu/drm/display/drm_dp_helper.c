@@ -4362,6 +4362,8 @@ int drm_panel_dp_aux_backlight(struct drm_panel *panel, struct drm_dp_aux *aux)
 	if (ret < 0)
 		return ret;
 
+	DRM_DEV_INFO(panel->dev, "edp_dcpd = 0x%02x\n",edp_dpcd);
+
 	if (!drm_edp_backlight_supported(edp_dpcd)) {
 		DRM_DEV_INFO(panel->dev, "DP AUX backlight is not supported\n");
 		return 0;
