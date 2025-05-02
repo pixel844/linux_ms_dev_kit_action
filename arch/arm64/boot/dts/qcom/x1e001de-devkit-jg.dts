@@ -15,7 +15,7 @@
 #include "x1e80100-pmics.dtsi"
 
 / {
-	model = "Qualcomm Technologies, Inc. X1E001DE Snapdragon Devkit for Windows";
+	model = "Qualcomm Technologies, Inc. X1E001DE Snapdragon Devkit for Windows (no WCN7850)";
 	compatible = "qcom,x1e001de-devkit", "qcom,x1e001de", "qcom,x1e80100";
 
 	aliases {
@@ -445,12 +445,6 @@
 		regulator-boot-on;
 	};
 
-	/*
-	 * TODO: These two regulators are actually part of the removable M.2
-	 * card and not the CRD mainboard. Need to describe this differently.
-	 * Functionally it works correctly, because all we need to do is to
-	 * turn on the actual 3.3V supply above.
-	 */
 	vreg_wcn_0p95: regulator-wcn-0p95 {
 		compatible = "regulator-fixed";
 
@@ -1573,8 +1567,6 @@
 };
 
 &uart14 {
-	status = "okay";
-
 	bluetooth {
 		compatible = "qcom,wcn7850-bt";
 		max-speed = <3200000>;
@@ -1588,6 +1580,7 @@
 		vddrfa1p8-supply = <&vreg_pmu_rfa_1p8>;
 	};
 };
+
 
 &uart21 {
 	compatible = "qcom,geni-debug-uart";
