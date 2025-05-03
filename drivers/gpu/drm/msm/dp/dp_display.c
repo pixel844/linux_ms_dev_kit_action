@@ -374,7 +374,7 @@ static int msm_dp_display_send_hpd_notification(struct msm_dp_display_private *d
 
 static int msm_dp_display_lttpr_init(struct msm_dp_display_private *dp, u8 *dpcd)
 {
-	int rc, lttpr_count;
+	int rc, lttpr_count, i;
 
 	if (drm_dp_read_lttpr_common_caps(dp->aux, dpcd, dp->link->lttpr_common_caps))
 		return 0;
@@ -384,6 +384,12 @@ static int msm_dp_display_lttpr_init(struct msm_dp_display_private *dp, u8 *dpcd
 	if (rc) {
 		DRM_ERROR("failed to set LTTPRs transparency mode, rc=%d\n", rc);
 		return 0;
+	}
+
+	for (i = 0; i < lttpr_count; i++) {
+		drm_dp_dump_lttpr_desc(dp->aux, DP_PHY_LTTPR(i));
+		drm_dp_read_lttpr_phy_caps(dp->aux, dpcd, DP_PHY_LTTPR(i),
+					   dp->link->lttpr_phy_caps[i]);
 	}
 
 	return lttpr_count;
