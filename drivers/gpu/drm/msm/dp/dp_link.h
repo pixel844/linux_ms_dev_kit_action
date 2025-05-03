@@ -20,7 +20,9 @@ struct msm_dp_link_info {
 	unsigned long capabilities;
 };
 
-#define DP_TRAIN_LEVEL_MAX	3
+#define DP_TRAIN_LEVEL_2	2
+#define DP_TRAIN_LEVEL_3	3
+#define DP_TRAIN_LEVEL_MAX	DP_TRAIN_LEVEL_3
 
 struct msm_dp_link_test_video {
 	u32 test_video_pattern;
@@ -58,6 +60,8 @@ struct msm_dp_link_phy_params {
 	u32 phy_test_pattern_sel;
 	u8 v_level;
 	u8 p_level;
+	u8 max_v_level;
+	u8 max_p_level;
 };
 
 struct msm_dp_link {
@@ -104,10 +108,15 @@ static inline u32 msm_dp_link_bit_depth_to_bpp(u32 tbd)
 	}
 }
 
-void msm_dp_link_reset_phy_params_vx_px(struct msm_dp_link *msm_dp_link);
+void msm_dp_link_reset_phy_params_vx_px(struct msm_dp_link *msm_dp_link,
+					enum drm_dp_phy dp_phy);
 u32 msm_dp_link_get_test_bits_depth(struct msm_dp_link *msm_dp_link, u32 bpp);
 int msm_dp_link_process_request(struct msm_dp_link *msm_dp_link);
 int msm_dp_link_get_colorimetry_config(struct msm_dp_link *msm_dp_link);
+int msm_dp_link_get_lttpr_max_pe_level(struct msm_dp_link *msm_dp_link,
+				       enum drm_dp_phy dp_phy);
+int msm_dp_link_get_lttpr_max_vs_level(struct msm_dp_link *msm_dp_link,
+				       enum drm_dp_phy dp_phy);
 int msm_dp_link_adjust_levels(struct msm_dp_link *msm_dp_link, u8 *link_status);
 bool msm_dp_link_send_test_response(struct msm_dp_link *msm_dp_link);
 int msm_dp_link_psm_config(struct msm_dp_link *msm_dp_link,

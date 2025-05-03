@@ -1103,6 +1103,28 @@ int msm_dp_link_get_colorimetry_config(struct msm_dp_link *msm_dp_link)
 	return cc;
 }
 
+int msm_dp_link_get_lttpr_max_pe_level(struct msm_dp_link *msm_dp_link,
+				       enum drm_dp_phy dp_phy)
+{
+	const u8 *phy_caps = msm_dp_link->lttpr_phy_caps[dp_phy - DP_PHY_LTTPR1];
+
+	if (drm_dp_lttpr_pre_emphasis_level_3_supported(phy_caps))
+		return DP_TRAIN_LEVEL_3;
+	else
+		return DP_TRAIN_LEVEL_2;
+}
+
+int msm_dp_link_get_lttpr_max_vs_level(struct msm_dp_link *msm_dp_link,
+				       enum drm_dp_phy dp_phy)
+{
+	const u8 *phy_caps = msm_dp_link->lttpr_phy_caps[dp_phy - DP_PHY_LTTPR1];
+
+	if (drm_dp_lttpr_voltage_swing_level_3_supported(phy_caps))
+		return DP_TRAIN_LEVEL_3;
+	else
+		return DP_TRAIN_LEVEL_2;
+}
+
 int msm_dp_link_adjust_levels(struct msm_dp_link *msm_dp_link, u8 *link_status)
 {
 	int i;
@@ -1138,23 +1160,23 @@ int msm_dp_link_adjust_levels(struct msm_dp_link *msm_dp_link, u8 *link_status)
 	 * Adjust the voltage swing and pre-emphasis level combination to within
 	 * the allowable range.
 	 */
-	if (msm_dp_link->phy_params.v_level > DP_TRAIN_LEVEL_MAX) {
+	if (msm_dp_link->phy_params.v_level > msm_dp_link->phy_params.max_v_level) {
 		drm_dbg_dp(link->drm_dev,
 			"Requested vSwingLevel=%d, change to %d\n",
 			msm_dp_link->phy_params.v_level,
-			DP_TRAIN_LEVEL_MAX);
-		msm_dp_link->phy_params.v_level = DP_TRAIN_LEVEL_MAX;
+			msm_dp_link->phy_params.max_v_level);
+		msm_dp_link->phy_params.v_level = msm_dp_link->phy_params.max_v_level;
 	}
 
-	if (msm_dp_link->phy_params.p_level > DP_TRAIN_LEVEL_MAX) {
+	if (msm_dp_link->phy_params.p_level > msm_dp_link->phy_params.max_p_level) {
 		drm_dbg_dp(link->drm_dev,
 			"Requested preEmphasisLevel=%d, change to %d\n",
 			msm_dp_link->phy_params.p_level,
-			DP_TRAIN_LEVEL_MAX);
-		msm_dp_link->phy_params.p_level = DP_TRAIN_LEVEL_MAX;
+			msm_dp_link->phy_params.max_p_level);
+		msm_dp_link->phy_params.p_level = msm_dp_link->phy_params.max_p_level;
 	}
 
-	max_p_level = DP_TRAIN_LEVEL_MAX - msm_dp_link->phy_params.v_level;
+	max_p_level = msm_dp_link->phy_params.max_p_level - msm_dp_link->phy_params.v_level;
 	if (msm_dp_link->phy_params.p_level > max_p_level) {
 		drm_dbg_dp(link->drm_dev,
 			"Requested preEmphasisLevel=%d, change to %d\n",
@@ -1169,10 +1191,25 @@ int msm_dp_link_adjust_levels(struct msm_dp_link *msm_dp_link, u8 *link_status)
 	return 0;
 }
 
-void msm_dp_link_reset_phy_params_vx_px(struct msm_dp_link *msm_dp_link)
+void msm_dp_link_reset_phy_params_vx_px(struct msm_dp_link *msm_dp_link,
+					enum drm_dp_phy dp_phy)
 {
 	msm_dp_link->phy_params.v_level = 0;
 	msm_dp_link->phy_params.p_level = 0;
+
+	/*
+	 * Get max supported voltage swing, pre-emphasis levels from the DPTX_PHY
+	 * (source or LTTPR) upstream from the DPRX_PHY we train.
+	 */
+	if (msm_dp_link->lttpr_count <= 0 || dp_phy == DP_PHY_LTTPR(msm_dp_link->lttpr_count - 1)) {
+		msm_dp_link->phy_params.max_p_level = DP_TRAIN_LEVEL_MAX;
+		msm_dp_link->phy_params.max_v_level = DP_TRAIN_LEVEL_MAX;
+	} else {
+		msm_dp_link->phy_params.max_p_level =
+			msm_dp_link_get_lttpr_max_pe_level(msm_dp_link, dp_phy + 1);
+		msm_dp_link->phy_params.max_v_level =
+			msm_dp_link_get_lttpr_max_vs_level(msm_dp_link, dp_phy + 1);
+	}
 }
 
 u32 msm_dp_link_get_test_bits_depth(struct msm_dp_link *msm_dp_link, u32 bpp)

@@ -1042,6 +1042,8 @@ static int msm_dp_ctrl_update_phy_vx_px(struct msm_dp_ctrl_private *ctrl,
 	int ret = 0;
 	u8 buf[4];
 	u32 max_level_reached = 0;
+	u32 max_voltage_swing_level = link->phy_params.max_v_level;
+	u32 max_pre_emphasis_level = link->phy_params.max_p_level;
 	u32 voltage_swing_level = link->phy_params.v_level;
 	u32 pre_emphasis_level = link->phy_params.p_level;
 
@@ -1054,14 +1056,14 @@ static int msm_dp_ctrl_update_phy_vx_px(struct msm_dp_ctrl_private *ctrl,
 	if (ret)
 		return ret;
 
-	if (voltage_swing_level >= DP_TRAIN_LEVEL_MAX) {
+	if (voltage_swing_level >= max_voltage_swing_level) {
 		drm_dbg_dp(ctrl->drm_dev,
 				"max. voltage swing level reached %d\n",
 				voltage_swing_level);
 		max_level_reached |= DP_TRAIN_MAX_SWING_REACHED;
 	}
 
-	if (pre_emphasis_level >= DP_TRAIN_LEVEL_MAX) {
+	if (pre_emphasis_level >= max_pre_emphasis_level) {
 		drm_dbg_dp(ctrl->drm_dev,
 				"max. pre-emphasis level reached %d\n",
 				pre_emphasis_level);
@@ -1148,7 +1150,7 @@ static int msm_dp_ctrl_link_train_1(struct msm_dp_ctrl_private *ctrl,
 	msm_dp_ctrl_train_pattern_set(ctrl, DP_TRAINING_PATTERN_1 |
 		DP_LINK_SCRAMBLING_DISABLE, dp_phy);
 
-	msm_dp_link_reset_phy_params_vx_px(ctrl->link);
+	msm_dp_link_reset_phy_params_vx_px(ctrl->link, dp_phy);
 	ret = msm_dp_ctrl_update_phy_vx_px(ctrl, dp_phy);
 	if (ret)
 		return ret;
@@ -1168,7 +1170,7 @@ static int msm_dp_ctrl_link_train_1(struct msm_dp_ctrl_private *ctrl,
 		}
 
 		if (ctrl->link->phy_params.v_level >=
-			DP_TRAIN_LEVEL_MAX) {
+			ctrl->link->phy_params.max_v_level) {
 			DRM_ERROR_RATELIMITED("max v_level reached\n");
 			return -EAGAIN;
 		}
