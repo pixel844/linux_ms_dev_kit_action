@@ -1047,6 +1047,13 @@ static int msm_dp_ctrl_update_phy_vx_px(struct msm_dp_ctrl_private *ctrl,
 	u32 voltage_swing_level = link->phy_params.v_level;
 	u32 pre_emphasis_level = link->phy_params.p_level;
 
+	pr_err("AA phy #%d: v_level=%d, p_level=%d\n",
+		dp_phy, link->phy_params.v_level,
+		link->phy_params.p_level);
+	pr_err("BB phy #%d: max_v_level=%d, max_p_level=%d\n",
+		dp_phy, link->phy_params.max_v_level,
+		link->phy_params.max_p_level);
+
 	drm_dbg_dp(ctrl->drm_dev,
 		"voltage level: %d emphasis level: %d\n",
 			voltage_swing_level, pre_emphasis_level);

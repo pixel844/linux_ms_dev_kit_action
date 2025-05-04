@@ -1188,6 +1188,10 @@ int msm_dp_link_adjust_levels(struct msm_dp_link *msm_dp_link, u8 *link_status)
 	drm_dbg_dp(link->drm_dev, "adjusted: v_level=%d, p_level=%d\n",
 		msm_dp_link->phy_params.v_level, msm_dp_link->phy_params.p_level);
 
+	pr_err("CC phy #XX: v_level=%d, p_level=%d\n",
+		msm_dp_link->phy_params.v_level,
+		msm_dp_link->phy_params.p_level);
+
 	return 0;
 }
 
@@ -1196,6 +1200,9 @@ void msm_dp_link_reset_phy_params_vx_px(struct msm_dp_link *msm_dp_link,
 {
 	msm_dp_link->phy_params.v_level = 0;
 	msm_dp_link->phy_params.p_level = 0;
+
+	pr_err("00 phy #%d: params reset",
+		dp_phy);
 
 	/*
 	 * Get max supported voltage swing, pre-emphasis levels from the DPTX_PHY
@@ -1210,6 +1217,16 @@ void msm_dp_link_reset_phy_params_vx_px(struct msm_dp_link *msm_dp_link,
 		msm_dp_link->phy_params.max_v_level =
 			msm_dp_link_get_lttpr_max_vs_level(msm_dp_link, dp_phy + 1);
 	}
+
+	pr_err("00 phy #%d: max_v_level=%d, max_p_level=%d\n",
+		dp_phy, msm_dp_link->phy_params.max_v_level,
+		msm_dp_link->phy_params.max_p_level);
+
+	// DEV BREAKING CHANGE - ignore advertised levels
+	pr_err("00 phy #%d: forcing max_v_level=3, max_p_level=3\n",
+		dp_phy);
+	msm_dp_link->phy_params.max_p_level = DP_TRAIN_LEVEL_MAX;
+	msm_dp_link->phy_params.max_v_level = DP_TRAIN_LEVEL_MAX;
 }
 
 u32 msm_dp_link_get_test_bits_depth(struct msm_dp_link *msm_dp_link, u32 bpp)
