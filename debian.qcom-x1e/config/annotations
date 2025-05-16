@@ -8964,6 +8964,7 @@ CONFIG_REGULATOR_DA9121                         policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_DA9210                         policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_DA9211                         policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_DEBUG                          policy<{'arm64': 'n'}>
+CONFIG_REGULATOR_DUMMY_CONSUMER                 policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_FAN53555                       policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_FAN53880                       policy<{'arm64': 'm'}>
 CONFIG_REGULATOR_GPIO                           policy<{'arm64': 'm'}>
@@ -9519,10 +9520,9 @@ CONFIG_RTW89_PCI                                policy<{'arm64': 'm'}>
 CONFIG_RT_GROUP_SCHED                           policy<{'arm64': 'n'}>
 CONFIG_RT_MUTEXES                               policy<{'arm64': 'y'}>
 CONFIG_RUNTIME_TESTING_MENU                     policy<{'arm64': 'y'}>
-CONFIG_RUSTC_HAS_COERCE_POINTEE                 policy<{'arm64': 'y'}>
-CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '190107'}>
+CONFIG_RUSTC_LLVM_VERSION                       policy<{'arm64': '190101'}>
 CONFIG_RUSTC_SUPPORTS_ARM64                     policy<{'arm64': 'y'}>
-CONFIG_RUSTC_VERSION                            policy<{'arm64': '108401'}>
+CONFIG_RUSTC_VERSION                            policy<{'arm64': '108200'}>
 CONFIG_RUST_IS_AVAILABLE                        policy<{'arm64': 'y'}>
 CONFIG_RV                                       policy<{'arm64': 'y'}>
 CONFIG_RVU_ESWITCH                              policy<{'arm64': 'm'}>
