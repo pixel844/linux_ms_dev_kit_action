@@ -37,6 +37,15 @@ config REGULATOR_FIXED_VOLTAGE
 	  useful for systems which use a combination of software
 	  managed regulators and simple non-configurable regulators.
 
+config REGULATOR_DUMMY_CONSUMER
+	tristate "Dummy regulator consumer support"
+	help
+	  This driver provides a dummy consumer for a device behind an 
+	  USB phy (for example) that needs power supplies, but has no
+	  own device node since it's enumerated by USB. 
+
+	  If unsure, say no.
+
 config REGULATOR_VIRTUAL_CONSUMER
 	tristate "Virtual regulator consumer support"
 	help
