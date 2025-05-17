@@ -46,12 +46,10 @@ static void dummy_remove(struct platform_device *pdev)
     regulator_disable(data->dummy_vdd);
 }
 
-#ifdef CONFIG_PM_SLEEP
 static int dummy_suspend(struct device *dev)
 {
     struct dummy_consumer_data *data = dev_get_drvdata(dev);
-    regulator_disable(data->dummy_vdd);
-    return 0;
+    return regulator_disable(data->dummy_vdd);
 }
 
 static int dummy_resume(struct device *dev)
@@ -60,11 +58,7 @@ static int dummy_resume(struct device *dev)
     return regulator_enable(data->dummy_vdd);
 }
 
-static const struct dev_pm_ops dummy_pm_ops = {
-    .suspend = dummy_suspend,
-    .resume  = dummy_resume,
-};
-#endif
+static DEFINE_SIMPLE_DEV_PM_OPS(dummy_consumer_pm, dummy_suspend, dummy_resume);
 
 static const struct of_device_id dummy_of_match[] = {
     { .compatible = "dummy,regulator-consumer", },
@@ -76,9 +70,7 @@ static struct platform_driver dummy_driver = {
     .driver = {
         .name = "dummy-regulator-consumer",
         .of_match_table = dummy_of_match,
-#ifdef CONFIG_PM_SLEEP
-        .pm = &dummy_pm_ops,
-#endif
+        .pm = pm_sleep_ptr(&dummy_consumer_pm),
     },
     .probe = dummy_probe,
     .remove = dummy_remove,
