@@ -3549,6 +3549,8 @@ static int qmp_combo_typec_mux_set(struct typec_mux_dev *mux,
 	if (state->mode == qmp->pin_assignment || state->mode == TYPEC_STATE_SAFE)
 		return 0;
 
+	dev_err(qmp->dev, "ALEX: qmp_combo_typec_mux_set: %li.\n", state->mode);
+
 	mutex_lock(&qmp->phy_mutex);
 	qmp->pin_assignment = state->mode;
 
@@ -3623,6 +3625,8 @@ static int qmp_combo_typec_mux_register(struct qmp_combo *qmp)
 		dev_err(dev, "Unable to register typec mux: %pe\n", qmp->mux);
 		return PTR_ERR(qmp->mux);
 	}
+
+	dev_err(dev, "ALEX: qmp_combo_typec_mux_register\n");
 
 	return devm_add_action_or_reset(dev, qmp_combo_typec_mux_unregister, qmp);
 }
