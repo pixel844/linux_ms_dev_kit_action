@@ -18,6 +18,8 @@ struct gpio_sbu_mux {
 	struct typec_switch_dev *sw;
 	struct typec_mux_dev *mux;
 
+	struct typec_mux *typec_mux;
+
 	struct mutex lock; /* protect enabled and swapped */
 	bool enabled;
 	bool swapped;
@@ -65,6 +67,7 @@ static int gpio_sbu_mux_set(struct typec_mux_dev *mux,
 			    struct typec_mux_state *state)
 {
 	struct gpio_sbu_mux *sbu_mux = typec_mux_get_drvdata(mux);
+	struct typec_mux_state mux_state;
 
 	if (!sbu_mux->enable_gpio)
 		return -EOPNOTSUPP;
@@ -89,7 +92,11 @@ static int gpio_sbu_mux_set(struct typec_mux_dev *mux,
 
 	mutex_unlock(&sbu_mux->lock);
 
-	return 0;
+	mux_state.alt = state->alt;
+	mux_state.data = state->data;
+	mux_state.mode = state->mode;
+
+	return typec_mux_set(sbu_mux->typec_mux, &mux_state);
 }
 
 static int gpio_sbu_mux_probe(struct platform_device *pdev)
@@ -98,6 +105,7 @@ static int gpio_sbu_mux_probe(struct platform_device *pdev)
 	struct typec_mux_desc mux_desc = { };
 	struct device *dev = &pdev->dev;
 	struct gpio_sbu_mux *sbu_mux;
+	int ret;
 
 	sbu_mux = devm_kzalloc(dev, sizeof(*sbu_mux), GFP_KERNEL);
 	if (!sbu_mux)
@@ -116,14 +124,21 @@ static int gpio_sbu_mux_probe(struct platform_device *pdev)
 		return dev_err_probe(dev, PTR_ERR(sbu_mux->select_gpio),
 				     "unable to acquire select gpio\n");
 
+	sbu_mux->typec_mux = typec_mux_get(dev);
+	if (IS_ERR(sbu_mux->typec_mux))
+		return dev_err_probe(dev, PTR_ERR(sbu_mux->typec_mux),
+				     "unable to acquire mode-mux\n");
+
 	sw_desc.drvdata = sbu_mux;
 	sw_desc.fwnode = dev_fwnode(dev);
 	sw_desc.set = gpio_sbu_switch_set;
 
 	sbu_mux->sw = typec_switch_register(dev, &sw_desc);
-	if (IS_ERR(sbu_mux->sw))
-		return dev_err_probe(dev, PTR_ERR(sbu_mux->sw),
-				     "failed to register typec switch\n");
+	if (IS_ERR(sbu_mux->sw)) {
+		ret = dev_err_probe(dev, PTR_ERR(sbu_mux->sw),
+				    "failed to register typec switch\n");
+		goto err_switch_put;
+	}
 
 	mux_desc.drvdata = sbu_mux;
 	mux_desc.fwnode = dev_fwnode(dev);
@@ -131,14 +146,21 @@ static int gpio_sbu_mux_probe(struct platform_device *pdev)
 
 	sbu_mux->mux = typec_mux_register(dev, &mux_desc);
 	if (IS_ERR(sbu_mux->mux)) {
-		typec_switch_unregister(sbu_mux->sw);
-		return dev_err_probe(dev, PTR_ERR(sbu_mux->mux),
-				     "failed to register typec mux\n");
+		ret = dev_err_probe(dev, PTR_ERR(sbu_mux->mux),
+				    "failed to register typec mux\n");
+		goto err_switch_unregister;
 	}
 
 	platform_set_drvdata(pdev, sbu_mux);
 
 	return 0;
+
+err_switch_unregister:
+	typec_switch_unregister(sbu_mux->sw);
+err_switch_put:
+	typec_mux_put(sbu_mux->typec_mux);
+
+	return ret;
 }
 
 static void gpio_sbu_mux_remove(struct platform_device *pdev)
