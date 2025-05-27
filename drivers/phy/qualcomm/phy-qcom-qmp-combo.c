@@ -3858,8 +3858,11 @@ static int qmp_combo_typec_mux_set(struct typec_mux_dev *mux, struct typec_mux_s
 			break;
 		}
 	} else {
-		/* No DP SVID => don't care, assume it's just USB3 */
-		new_mode = QMPPHY_MODE_USB3_ONLY;
+		/* Fall back to USB3+DP mode if we're not sure it's strictly USB3-only */
+		if (state->mode == TYPEC_MODE_USB3 || state->mode == TYPEC_STATE_USB)
+			new_mode = QMPPHY_MODE_USB3_ONLY;
+		else
+			new_mode = QMPPHY_MODE_USB3DP;
 	}
 
 	if (new_mode == qmp->qmpphy_mode) {
@@ -4323,6 +4326,11 @@ static int qmp_combo_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_node_put;
 
+	/*
+	 * The hw default is USB3_ONLY, but USB3+DP mode lets us more easily
+	 * check both sub-blocks' init tables for blunders at probe time.
+	 */
+	qmp->qmpphy_mode = QMPPHY_MODE_USB3DP;
 
 	qmp->usb_phy = devm_phy_create(dev, usb_np, &qmp_combo_usb_phy_ops);
 	if (IS_ERR(qmp->usb_phy)) {
