@@ -1000,7 +1000,7 @@
 		vddrfa1p2-supply = <&vreg_pmu_rfa_1p2>;
 		vddrfa1p8-supply = <&vreg_pmu_rfa_1p7>;
 
-		qcom,ath11k-calibration-variant = "LE_X13S";
+		qcom,calibration-variant = "LE_X13S";
 	};
 };
 
@@ -1175,6 +1175,12 @@
 
 &remoteproc_nsp0 {
 	firmware-name = "qcom/sc8280xp/LENOVO/21BX/qccdsp8280.mbn";
+
+	status = "okay";
+};
+
+&remoteproc_slpi {
+	firmware-name = "qcom/sc8280xp/LENOVO/21BX/qcslpi8280.mbn";
 
 	status = "okay";
 };
