@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.15.0-jg-7) plucky; urgency=medium
+
+  * add PCIe patch to avoid AER issues
+  * add X1-45 speedbin 233 patch
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 14 Jun 2025 09:07:21 +0200
+
 linux-qcom-x1e (6.15.0-jg-6) plucky; urgency=medium
 
   * add lenovo ideapad 5 dts
