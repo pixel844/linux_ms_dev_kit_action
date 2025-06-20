@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.15.0-jg-8) plucky; urgency=medium
+
+  * re-apply v3 of the X1-45 GPU support https://lore.kernel.org/all/20250620-x1p-adreno-v3-0-56398c078c15@oss.qualcomm.com/
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Fri, 20 Jun 2025 21:56:52 +0200
+
 linux-qcom-x1e (6.15.0-jg-7) plucky; urgency=medium
 
   * add PCIe patch to avoid AER issues
