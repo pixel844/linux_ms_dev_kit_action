@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.16.0-rc5-jg-0) plucky; urgency=medium
+
+  * rebase to jhovold/wip/x1e80100-6.16-rc5
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 07 Jul 2025 15:30:44 +0200
+
 linux-qcom-x1e (6.16.0-rc4-jg-1) plucky; urgency=medium
 
   * add https://patchwork.freedesktop.org/series/143282/ for tests
