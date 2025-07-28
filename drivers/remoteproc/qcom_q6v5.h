@@ -12,6 +12,9 @@ struct rproc;
 struct qcom_smem_state;
 struct qcom_sysmon;
 
+/* Module parameter for keeping ADSP firmware */
+bool keep_adsp_fw;
+
 struct qcom_q6v5 {
 	struct device *dev;
 	struct rproc *rproc;
@@ -40,6 +43,9 @@ struct qcom_q6v5 {
 
 	const char *load_state;
 	void (*handover)(struct qcom_q6v5 *q6v5);
+
+	bool attach_only;
+	bool hyp_mode;
 };
 
 int qcom_q6v5_init(struct qcom_q6v5 *q6v5, struct platform_device *pdev,

@@ -25,7 +25,6 @@
 #include <linux/soc/qcom/mdt_loader.h>
 #include <linux/soc/qcom/smem.h>
 #include <linux/soc/qcom/smem_state.h>
-#include <linux/moduleparam.h>
 #include <asm/virt.h>
 
 #include "qcom_common.h"
@@ -121,12 +120,8 @@ struct qcom_adsp {
 	struct qcom_scm_pas_metadata dtb_pas_metadata;
 };
 
-static bool qcom_adsp_lite = false;
-module_param_named(adsp_lite, qcom_adsp_lite, bool, 0444);
-MODULE_PARM_DESC(adsp_lite, "Attach to pre-loaded ADSP Lite firmware from cold boot");
-
 static void adsp_segment_dump(struct rproc *rproc, struct rproc_dump_segment *segment,
-		       void *dest, size_t offset, size_t size)
+			   void *dest, size_t offset, size_t size)
 {
 	struct qcom_adsp *adsp = rproc->priv;
 	int total_offset;
@@ -181,7 +176,7 @@ unroll_pd_votes:
 };
 
 static void adsp_pds_disable(struct qcom_adsp *adsp, struct device **pds,
-			     size_t pd_count)
+				 size_t pd_count)
 {
 	int i;
 
@@ -226,8 +221,17 @@ static int adsp_load(struct rproc *rproc, const struct firmware *fw)
 	struct qcom_adsp *adsp = rproc->priv;
 	int ret;
 
+	if (adsp->q6v5.attach_only) {
+		dev_err(adsp->dev, "Load not supported in attach-only mode; use attach instead\n");
+		return -EINVAL;
+	}
+
 	/* Store firmware handle to be used in adsp_start() */
 	adsp->firmware = fw;
+
+	/* Shutdown any preloaded fw (lite or full) */
+	if (adsp->real_pas_id)
+		ret = qcom_scm_pas_shutdown(adsp->real_pas_id);
 
 	if (adsp->dtb_pas_id) {
 		ret = request_firmware(&adsp->dtb_firmware, adsp->dtb_firmware_name, adsp->dev);
@@ -244,9 +248,9 @@ static int adsp_load(struct rproc *rproc, const struct firmware *fw)
 			goto release_dtb_firmware;
 
 		ret = qcom_mdt_load_no_init(adsp->dev, adsp->dtb_firmware, adsp->dtb_firmware_name,
-					    adsp->dtb_pas_id, adsp->dtb_mem_region,
-					    adsp->dtb_mem_phys, adsp->dtb_mem_size,
-					    &adsp->dtb_mem_reloc);
+						adsp->dtb_pas_id, adsp->dtb_mem_region,
+						adsp->dtb_mem_phys, adsp->dtb_mem_size,
+						&adsp->dtb_mem_reloc);
 		if (ret)
 			goto release_dtb_metadata;
 	}
@@ -270,6 +274,11 @@ static int adsp_start(struct rproc *rproc)
 	ret = qcom_q6v5_prepare(&adsp->q6v5);
 	if (ret)
 		return ret;
+
+	if (adsp->q6v5.attach_only) {
+		dev_err(adsp->dev, "Start not supported in attach-only mode; use attach instead\n");
+		return -EINVAL;
+	}
 
 	ret = adsp_pds_enable(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
 	if (ret < 0)
@@ -310,8 +319,8 @@ static int adsp_start(struct rproc *rproc)
 		goto disable_px_supply;
 
 	ret = qcom_mdt_load_no_init(adsp->dev, adsp->firmware, rproc->firmware, adsp->pas_id,
-				    adsp->mem_region, adsp->mem_phys, adsp->mem_size,
-				    &adsp->mem_reloc);
+					adsp->mem_region, adsp->mem_phys, adsp->mem_size,
+					&adsp->mem_reloc);
 	if (ret)
 		goto release_pas_metadata;
 
@@ -390,6 +399,11 @@ static int adsp_stop(struct rproc *rproc)
 	struct qcom_adsp *adsp = rproc->priv;
 	int handover;
 	int ret;
+
+	if (adsp->q6v5.hyp_mode) {
+		dev_info(adsp->dev, "EL2 mode: skipping stop/shutdown\n");
+		return 0;
+	}
 
 	ret = qcom_q6v5_request_stop(&adsp->q6v5, adsp->sysmon);
 	if (ret == -ETIMEDOUT)
@@ -473,13 +487,13 @@ static int adsp_init_clock(struct qcom_adsp *adsp)
 	adsp->xo = devm_clk_get(adsp->dev, "xo");
 	if (IS_ERR(adsp->xo))
 		return dev_err_probe(adsp->dev, PTR_ERR(adsp->xo),
-				     "failed to get xo clock");
+					 "failed to get xo clock");
 
 
 	adsp->aggre2_clk = devm_clk_get_optional(adsp->dev, "aggre2");
 	if (IS_ERR(adsp->aggre2_clk))
 		return dev_err_probe(adsp->dev, PTR_ERR(adsp->aggre2_clk),
-				     "failed to get aggre2 clock");
+					 "failed to get aggre2 clock");
 
 	return 0;
 }
@@ -546,7 +560,7 @@ unroll_attach:
 };
 
 static void adsp_pds_detach(struct qcom_adsp *adsp, struct device **pds,
-			    size_t pd_count)
+				size_t pd_count)
 {
 	struct device *dev = adsp->dev;
 	int i;
@@ -710,14 +724,14 @@ static int adsp_probe(struct platform_device *pdev)
 
 	fw_name = desc->firmware_name;
 	ret = of_property_read_string(pdev->dev.of_node, "firmware-name",
-				      &fw_name);
+					  &fw_name);
 	if (ret < 0 && ret != -EINVAL)
 		return ret;
 
 	if (desc->dtb_firmware_name) {
 		dtb_fw_name = desc->dtb_firmware_name;
 		ret = of_property_read_string_index(pdev->dev.of_node, "firmware-name", 1,
-						    &dtb_fw_name);
+							&dtb_fw_name);
 		if (ret < 0 && ret != -EINVAL)
 			return ret;
 	}
@@ -739,10 +753,11 @@ static int adsp_probe(struct platform_device *pdev)
 	adsp->dev = &pdev->dev;
 	adsp->rproc = rproc;
 	adsp->minidump_id = desc->minidump_id;
-	if ((desc->lite_pas_id && qcom_adsp_lite) || is_kernel_in_hyp_mode()) {
+	if (keep_adsp_fw || is_kernel_in_hyp_mode()) {
 		adsp->pas_id = desc->lite_pas_id;
 		adsp->real_pas_id = desc->pas_id;
 		adsp->rproc->state = RPROC_DETACHED;
+		adsp->rproc->auto_boot = false;
 	} else {
 		adsp->pas_id = desc->pas_id;
 	}
@@ -780,22 +795,36 @@ static int adsp_probe(struct platform_device *pdev)
 		goto unassign_mem;
 
 	ret = adsp_pds_attach(&pdev->dev, adsp->proxy_pds,
-			      desc->proxy_pd_names);
+				  desc->proxy_pd_names);
 	if (ret < 0)
 		goto unassign_mem;
 	adsp->proxy_pd_count = ret;
 
 	ret = qcom_q6v5_init(&adsp->q6v5, pdev, rproc, desc->crash_reason_smem, desc->load_state,
-			     qcom_pas_handover);
+				 qcom_pas_handover);
 	if (ret)
 		goto detach_proxy_pds;
+
+	/* Set attach_only flag in q6v5 (already done in q6v5_init, but confirm sync if needed) */
+	/* Then handle keep_adsp_fw (EL1 only) */
+	if (keep_adsp_fw && !is_kernel_in_hyp_mode()) {
+		adsp->q6v5.attach_only = true;  /* Redundant but ensures sync */
+		adsp->rproc->auto_boot = false;
+		adsp->rproc->state = RPROC_DETACHED;
+		dev_info(adsp->dev, "keep_adsp_fw: setting to detached and attempting auto-attach\n");
+		ret = rproc_boot(adsp->rproc);
+		if (ret) {
+			dev_err(adsp->dev, "failed to attach to preloaded firmware: %d\n", ret);
+			goto deinit_remove_pdm_smd_glink;
+		}
+	}
 
 	qcom_add_glink_subdev(rproc, &adsp->glink_subdev, desc->ssr_name);
 	qcom_add_smd_subdev(rproc, &adsp->smd_subdev);
 	qcom_add_pdm_subdev(rproc, &adsp->pdm_subdev);
 	adsp->sysmon = qcom_add_sysmon_subdev(rproc,
-					      desc->sysmon_name,
-					      desc->ssctl_id);
+						  desc->sysmon_name,
+						  desc->ssctl_id);
 	if (IS_ERR(adsp->sysmon)) {
 		ret = PTR_ERR(adsp->sysmon);
 		goto deinit_remove_pdm_smd_glink;

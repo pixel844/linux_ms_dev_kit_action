@@ -15,11 +15,17 @@
 #include <linux/soc/qcom/smem.h>
 #include <linux/soc/qcom/smem_state.h>
 #include <linux/remoteproc.h>
+#include <linux/moduleparam.h>
+#include <asm/virt.h>
 #include "qcom_common.h"
 #include "qcom_q6v5.h"
 
 #define Q6V5_LOAD_STATE_MSG_LEN	64
 #define Q6V5_PANIC_DELAY_MS	200
+
+bool keep_adsp_fw;
+module_param(keep_adsp_fw, bool, 0444);
+MODULE_PARM_DESC(keep_adsp_fw, "If true, leave preloaded ADSP firmware alone (EL1 only)");
 
 static int q6v5_load_state_toggle(struct qcom_q6v5 *q6v5, bool enable)
 {
@@ -45,6 +51,14 @@ static int q6v5_load_state_toggle(struct qcom_q6v5 *q6v5, bool enable)
 int qcom_q6v5_prepare(struct qcom_q6v5 *q6v5)
 {
 	int ret;
+
+	if (q6v5->attach_only) {
+		dev_info(q6v5->dev, "attach-only mode: skipping prepare changes\n");
+		if (q6v5->handover_issued) {
+			q6v5->handover_issued = false;
+		}
+		return 0;
+	}
 
 	ret = icc_set_bw(q6v5->path, 0, UINT_MAX);
 	if (ret < 0) {
@@ -79,11 +93,17 @@ EXPORT_SYMBOL_GPL(qcom_q6v5_prepare);
 int qcom_q6v5_attach(struct qcom_q6v5 *q6v5)
 {
 	/*
-	 * We assume the remoteproc is already running. There is no need to
-	 * vote for resources since handover already happened.
+	 * Assume the remoteproc is running (as in preload/attach cases).
+	 * Enable IRQs to catch any pending or future events.
 	 */
+	enable_irq(q6v5->ready_irq);
+	enable_irq(q6v5->handover_irq);
+
 	q6v5->running = true;
 	q6v5->handover_issued = true;
+
+	dev_info(q6v5->dev, "Attached to running firmware (assumed ready)\n");
+
 	return 0;
 }
 EXPORT_SYMBOL_GPL(qcom_q6v5_attach);
@@ -366,6 +386,15 @@ int qcom_q6v5_init(struct qcom_q6v5 *q6v5, struct platform_device *pdev,
 	if (IS_ERR(q6v5->path))
 		return dev_err_probe(&pdev->dev, PTR_ERR(q6v5->path),
 				     "failed to acquire interconnect path\n");
+
+	q6v5->attach_only = false;
+
+	if (is_kernel_in_hyp_mode() || keep_adsp_fw) {
+		q6v5->attach_only = true;
+		dev_info(q6v5->dev, "attach-only mode enabled (EL%d, keep_adsp_fw=%d)\n",
+			(is_kernel_in_hyp_mode() == 0)?1:2, keep_adsp_fw);
+		q6v5->handover_issued = true;  /* Simulate for preload safety */
+	}
 
 	return 0;
 }
