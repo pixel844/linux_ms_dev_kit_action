@@ -1,3 +1,11 @@
+linux-qcom-x1e (6.16-el2-jg-4) plucky; urgency=medium
+
+  * added a lod of X1 related structural patches from lore.kernel.org
+  * added Microsoft SP12 from @harrisonvanderbyl
+  * introduced driver for Samsung ATNA40CT01 (WIP)
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 27 Aug 2025 08:57:16 +0200
+
 linux-qcom-x1e (6.16-el2-jg-3) plucky; urgency=medium
 
   * arm64: qcom: dt: remove pm8010-thermal from visibility
