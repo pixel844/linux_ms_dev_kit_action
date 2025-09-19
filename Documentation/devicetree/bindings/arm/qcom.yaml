@@ -100,6 +100,7 @@ description: |
         sm8550
         sm8650
         sm8750
+        x126100
         x1e78100
         x1e80100
         x1p42100
@@ -1127,6 +1128,11 @@ properties:
               - qcom,sm8750-mtp
               - qcom,sm8750-qrd
           - const: qcom,sm8750
+
+      - items:
+          - enum:
+              - lenovo,ideapad-slim3
+          - const: qcom,x126100
 
       - items:
           - enum:
