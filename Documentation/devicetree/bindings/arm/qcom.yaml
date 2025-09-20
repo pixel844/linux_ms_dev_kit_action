@@ -1127,6 +1127,7 @@ properties:
           - enum:
               - lenovo,ideapad-slim3
           - const: qcom,x126100
+          - const: qcom,x1p42100
 
       - items:
           - enum:
