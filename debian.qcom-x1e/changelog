@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.16-el2-jg-6) plucky; urgency=medium
+
+  * additional tweaks for Ideapad Slim 3
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Fri, 26 Sep 2025 23:40:27 +0200
+
 linux-qcom-x1e (6.16-el2-jg-5) plucky; urgency=medium
 
   * add HDMI support for T14s V1 https://lore.kernel.org/all/20250821-topic-x1e80100-hdmi-v1-0-f14ad9430e88@linaro.org/ 
