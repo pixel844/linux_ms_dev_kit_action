@@ -166,8 +166,8 @@ static u32 i2c_hid_lookup_quirk(const u16 idVendor, const u16 idProduct)
 
 	for (n = 0; i2c_hid_quirks[n].idVendor; n++)
 		if (i2c_hid_quirks[n].idVendor == idVendor &&
-		    (i2c_hid_quirks[n].idProduct == (__u16)HID_ANY_ID ||
-		     i2c_hid_quirks[n].idProduct == idProduct))
+			(i2c_hid_quirks[n].idProduct == (__u16)HID_ANY_ID ||
+			 i2c_hid_quirks[n].idProduct == idProduct))
 			quirks = i2c_hid_quirks[n].quirks;
 
 	return quirks;
@@ -201,7 +201,7 @@ static int i2c_hid_xfer(struct i2c_hid *ihid,
 
 	if (send_len) {
 		i2c_hid_dbg(ihid, "%s: cmd=%*ph\n",
-			    __func__, send_len, send_buf);
+				__func__, send_len, send_buf);
 
 		msgs[n].addr = client->addr;
 		msgs[n].flags = (client->flags & I2C_M_TEN) | I2C_M_DMA_SAFE;
@@ -238,7 +238,7 @@ static int i2c_hid_read_register(struct i2c_hid *ihid, __le16 reg,
 }
 
 static size_t i2c_hid_encode_command(u8 *buf, u8 opcode,
-				     int report_type, int report_id)
+					 int report_type, int report_id)
 {
 	size_t length = 0;
 
@@ -255,8 +255,8 @@ static size_t i2c_hid_encode_command(u8 *buf, u8 opcode,
 }
 
 static int i2c_hid_get_report(struct i2c_hid *ihid,
-			      u8 report_type, u8 report_id,
-			      u8 *recv_buf, size_t recv_len)
+				  u8 report_type, u8 report_id,
+				  u8 *recv_buf, size_t recv_len)
 {
 	size_t length = 0;
 	size_t ret_count;
@@ -287,7 +287,7 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
 	 * in the first 2 bytes of the response, so adjust .
 	 */
 	error = i2c_hid_xfer(ihid, ihid->cmdbuf, length,
-			     ihid->rawbuf, recv_len + sizeof(__le16));
+				 ihid->rawbuf, recv_len + sizeof(__le16));
 	if (error) {
 		dev_err(&ihid->client->dev,
 			"failed to get a report from device: %d\n", error);
@@ -315,7 +315,7 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
 }
 
 static size_t i2c_hid_format_report(u8 *buf, int report_id,
-				    const u8 *data, size_t size)
+					const u8 *data, size_t size)
 {
 	size_t length = sizeof(__le16); /* reserve space to store size */
 
@@ -341,9 +341,9 @@ static size_t i2c_hid_format_report(u8 *buf, int report_id,
  * @do_set: true: use SET_REPORT HID command, false: send plain OUTPUT report
  */
 static int i2c_hid_set_or_send_report(struct i2c_hid *ihid,
-				      u8 report_type, u8 report_id,
-				      const u8 *buf, size_t data_len,
-				      bool do_set)
+					  u8 report_type, u8 report_id,
+					  const u8 *buf, size_t data_len,
+					  bool do_set)
 {
 	size_t length = 0;
 	int error;
@@ -506,8 +506,8 @@ static int i2c_hid_finish_hwreset(struct i2c_hid *ihid)
 		msleep(100);
 		clear_bit(I2C_HID_RESET_PENDING, &ihid->flags);
 	} else if (!wait_event_timeout(ihid->wait,
-				       !test_bit(I2C_HID_RESET_PENDING, &ihid->flags),
-				       msecs_to_jiffies(1000))) {
+					   !test_bit(I2C_HID_RESET_PENDING, &ihid->flags),
+					   msecs_to_jiffies(1000))) {
 		dev_warn(&ihid->client->dev, "device did not ack reset within 1000 ms\n");
 		clear_bit(I2C_HID_RESET_PENDING, &ihid->flags);
 	}
@@ -520,7 +520,7 @@ static int i2c_hid_finish_hwreset(struct i2c_hid *ihid)
 	return ret;
 }
 
-static void i2c_hid_get_input(struct i2c_hid *ihid)
+static irqreturn_t i2c_hid_get_input(struct i2c_hid *ihid)
 {
 	u16 size = le16_to_cpu(ihid->hdesc.wMaxInputLength);
 	u16 ret_size;
@@ -530,13 +530,11 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
 		size = ihid->bufsize;
 
 	ret = i2c_master_recv(ihid->client, ihid->inbuf, size);
-	if (ret != size) {
-		if (ret < 0)
-			return;
-
-		dev_err(&ihid->client->dev, "%s: got %d data instead of %d\n",
-			__func__, ret, size);
-		return;
+	if (ret < 0 || ret != size) {
+		if (ret >= 0)
+			dev_err(&ihid->client->dev, "%s: got %d data instead of %d\n",
+					__func__, ret, size);
+		return IRQ_NONE;
 	}
 
 	/* Receiving buffer is properly aligned */
@@ -545,14 +543,14 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
 		/* host or device initiated RESET completed */
 		if (test_and_clear_bit(I2C_HID_RESET_PENDING, &ihid->flags))
 			wake_up(&ihid->wait);
-		return;
+		return IRQ_NONE;
 	}
 
 	if ((ihid->quirks & I2C_HID_QUIRK_BOGUS_IRQ) && ret_size == 0xffff) {
 		dev_warn_once(&ihid->client->dev,
-			      "%s: IRQ triggered but there's no data\n",
-			      __func__);
-		return;
+					  "%s: IRQ triggered but there's no data\n",
+					  __func__);
+		return IRQ_NONE;
 	}
 
 	if (ret_size > size || ret_size < sizeof(__le16)) {
@@ -561,9 +559,9 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
 			ret_size = size;
 		} else {
 			dev_err(&ihid->client->dev,
-				"%s: incomplete report (%d/%d)\n",
-				__func__, size, ret_size);
-			return;
+					"%s: incomplete report (%d/%d)\n",
+					__func__, size, ret_size);
+			return IRQ_NONE;
 		}
 	}
 
@@ -574,20 +572,18 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
 			pm_wakeup_event(&ihid->client->dev, 0);
 
 		hid_input_report(ihid->hid, HID_INPUT_REPORT,
-				ihid->inbuf + sizeof(__le16),
-				ret_size - sizeof(__le16), 1);
+						 ihid->inbuf + sizeof(__le16),
+						 ret_size - sizeof(__le16), 1);
 	}
 
-	return;
+	return IRQ_HANDLED;
 }
 
 static irqreturn_t i2c_hid_irq(int irq, void *dev_id)
 {
 	struct i2c_hid *ihid = dev_id;
 
-	i2c_hid_get_input(ihid);
-
-	return IRQ_HANDLED;
+	return i2c_hid_get_input(ihid);
 }
 
 static int i2c_hid_get_report_length(struct hid_report *report)
@@ -632,13 +628,13 @@ static int i2c_hid_alloc_buffers(struct i2c_hid *ihid, size_t report_size)
 	 * reportID > 15 and the maximum report length.
 	 */
 	int cmd_len = sizeof(__le16) +	/* command register */
-		      sizeof(u8) +	/* encoded report type/ID */
-		      sizeof(u8) +	/* opcode */
-		      sizeof(u8) +	/* optional 3rd byte report ID */
-		      sizeof(__le16) +	/* data register */
-		      sizeof(__le16) +	/* report data size */
-		      sizeof(u8) +	/* report ID if numbered report */
-		      report_size;
+			  sizeof(u8) +	/* encoded report type/ID */
+			  sizeof(u8) +	/* opcode */
+			  sizeof(u8) +	/* optional 3rd byte report ID */
+			  sizeof(__le16) +	/* data register */
+			  sizeof(__le16) +	/* report data size */
+			  sizeof(u8) +	/* report ID if numbered report */
+			  report_size;
 
 	ihid->inbuf = kzalloc(report_size, GFP_KERNEL);
 	ihid->rawbuf = kzalloc(report_size, GFP_KERNEL);
@@ -687,7 +683,7 @@ static int i2c_hid_get_raw_report(struct hid_device *hid,
 }
 
 static int i2c_hid_output_raw_report(struct hid_device *hid, u8 report_type,
-				     const u8 *buf, size_t count, bool do_set)
+					 const u8 *buf, size_t count, bool do_set)
 {
 	struct i2c_client *client = hid->driver_data;
 	struct i2c_hid *ihid = i2c_get_clientdata(client);
@@ -725,8 +721,8 @@ static int i2c_hid_output_report(struct hid_device *hid, u8 *buf, size_t count)
 }
 
 static int i2c_hid_raw_request(struct hid_device *hid, unsigned char reportnum,
-			       __u8 *buf, size_t len, unsigned char rtype,
-			       int reqtype)
+				   __u8 *buf, size_t len, unsigned char rtype,
+				   int reqtype)
 {
 	switch (reqtype) {
 	case HID_REQ_GET_REPORT:
@@ -785,8 +781,8 @@ static int i2c_hid_parse(struct hid_device *hid)
 		i2c_hid_dbg(ihid, "asking HID report descriptor\n");
 
 		ret = i2c_hid_read_register(ihid,
-					    ihid->hdesc.wReportDescRegister,
-					    rdesc, rsize);
+						ihid->hdesc.wReportDescRegister,
+						rdesc, rsize);
 		if (ret) {
 			hid_err(hid, "reading report descriptor failed\n");
 			goto out;
@@ -863,6 +859,11 @@ static const struct hid_ll_driver i2c_hid_ll_driver = {
 	.raw_request = i2c_hid_raw_request,
 };
 
+static irqreturn_t i2c_hid_irq_primary(int irq, void *dev_id)
+{
+	return IRQ_WAKE_THREAD;
+}
+
 static int i2c_hid_init_irq(struct i2c_client *client)
 {
 	struct i2c_hid *ihid = i2c_get_clientdata(client);
@@ -871,12 +872,14 @@ static int i2c_hid_init_irq(struct i2c_client *client)
 
 	i2c_hid_dbg(ihid, "Requesting IRQ: %d\n", client->irq);
 
-	if (!irq_get_trigger_type(client->irq))
+	irqflags = irq_get_trigger_type(client->irq);
+	if (irqflags == IRQ_TYPE_NONE)
 		irqflags = IRQF_TRIGGER_LOW;
 
-	ret = request_threaded_irq(client->irq, NULL, i2c_hid_irq,
-				   irqflags | IRQF_ONESHOT | IRQF_NO_AUTOEN,
-				   client->name, ihid);
+	irqflags |= IRQF_SHARED;  /* Shared support */
+
+	ret = request_threaded_irq(client->irq, i2c_hid_irq_primary, i2c_hid_irq,
+						   irqflags, client->name, ihid);
 	if (ret < 0) {
 		dev_warn(&client->dev,
 			"Could not register for %s interrupt, irq = %d,"
@@ -904,9 +907,9 @@ static int i2c_hid_fetch_hid_descriptor(struct i2c_hid *ihid)
 	} else {
 		i2c_hid_dbg(ihid, "Fetching the HID descriptor\n");
 		error = i2c_hid_read_register(ihid,
-					      ihid->wHIDDescRegister,
-					      &ihid->hdesc,
-					      sizeof(ihid->hdesc));
+						  ihid->wHIDDescRegister,
+						  &ihid->hdesc,
+						  sizeof(ihid->hdesc));
 		if (error) {
 			dev_err(&ihid->client->dev,
 				"failed to fetch HID descriptor: %d\n",
@@ -1052,7 +1055,7 @@ static int __i2c_hid_core_probe(struct i2c_hid *ihid)
 	hid->product = le16_to_cpu(ihid->hdesc.wProductID);
 
 	hid->initial_quirks |= i2c_hid_get_dmi_quirks(hid->vendor,
-						      hid->product);
+							  hid->product);
 
 	snprintf(hid->name, sizeof(hid->name), "%s %04X:%04X",
 		 client->name, (u16)hid->vendor, (u16)hid->product);
@@ -1068,8 +1071,6 @@ static int i2c_hid_core_register_hid(struct i2c_hid *ihid)
 	struct i2c_client *client = ihid->client;
 	struct hid_device *hid = ihid->hid;
 	int ret;
-
-	enable_irq(client->irq);
 
 	ret = hid_add_device(hid);
 	if (ret) {
@@ -1113,7 +1114,7 @@ err_power_down:
 static void ihid_core_panel_prepare_work(struct work_struct *work)
 {
 	struct i2c_hid *ihid = container_of(work, struct i2c_hid,
-					    panel_follower_prepare_work);
+						panel_follower_prepare_work);
 	struct hid_device *hid = ihid->hid;
 	int ret;
 
@@ -1202,7 +1203,7 @@ static int i2c_hid_core_register_panel_follower(struct i2c_hid *ihid)
 }
 
 int i2c_hid_core_probe(struct i2c_client *client, struct i2chid_ops *ops,
-		       u16 hid_descriptor_address, u32 quirks)
+			   u16 hid_descriptor_address, u32 quirks)
 {
 	int ret;
 	struct i2c_hid *ihid;
