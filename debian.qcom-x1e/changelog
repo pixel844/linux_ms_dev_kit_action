@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.16-el2-jg-7) questing; urgency=medium
+
+  * Ideapad Slim 3: disable touchpad irq for now
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Thu, 09 Oct 2025 20:50:19 +0200
+
 linux-qcom-x1e (6.16-el2-jg-6) plucky; urgency=medium
 
   * additional tweaks for Ideapad Slim 3
