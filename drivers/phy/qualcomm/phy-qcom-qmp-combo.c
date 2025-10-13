@@ -4172,7 +4172,7 @@ static int qmp_combo_get_dt_lanes_mapping(struct device *dev, unsigned int endpo
 					  u32 *data_lanes, unsigned int max,
 					  unsigned int *count)
 {
-	struct device_node *ep;
+	struct device_node *ep __free(device_node) = NULL;
 	int ret;
 
 	ep = of_graph_get_endpoint_by_regs(dev->of_node, 0, endpoint);
@@ -4181,17 +4181,14 @@ static int qmp_combo_get_dt_lanes_mapping(struct device *dev, unsigned int endpo
 
 	ret = of_property_count_u32_elems(ep, "data-lanes");
 	if (ret < 0)
-		goto err_node_put;
+		return ret;
 
 	*count = ret;
+	if (*count > max)
+		return -EINVAL;
 
-	ret = of_property_read_u32_array(ep, "data-lanes", data_lanes,
-					 max_t(unsigned int, *count, max));
-
-err_node_put:
-	of_node_put(ep);
-
-	return ret;
+	return of_property_read_u32_array(ep, "data-lanes", data_lanes,
+					  min_t(unsigned int, *count, max));
 }
 
 static int qmp_combo_get_dt_dp_orientation(struct device *dev,
