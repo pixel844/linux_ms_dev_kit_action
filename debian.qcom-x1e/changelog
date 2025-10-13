@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.17.0-jg-0) questing; urgency=medium
+
+  * transplant the whole jg/ tree onto sgerhold/wip/cqom-laptops-el2
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 13 Oct 2025 15:11:38 +0200
+
 linux-qcom-x1e (6.16-el2-jg-7) questing; urgency=medium
 
   * Ideapad Slim 3: disable touchpad irq for now
