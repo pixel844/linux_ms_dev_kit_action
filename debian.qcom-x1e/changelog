@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.17.0-jg-0) questing; urgency=medium
+
+  * transplant the whole jg/ tree onto sgerhold/wip/cqom-laptops-el2
+  * update to qcom-x1e-6.17 config 
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 16 Oct 2025 13:00:00 +0200
+
 linux-qcom-x1e (6.17.0-8.8) plucky; urgency=medium
 
   * Enable CONFIG_VIDEO_OV02E10=m for camera on Dell Latitude
