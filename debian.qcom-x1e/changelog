@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.17.0-jg-1) questing; urgency=medium
+
+  * qcom-x1e: add dynamic dtb list generation for stubble
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sun, 26 Oct 2025 18:11:53 +0100
+
 linux-qcom-x1e (6.17.0-jg-0) questing; urgency=medium
 
   * transplant the whole jg/ tree onto sgerhold/wip/cqom-laptops-el2
