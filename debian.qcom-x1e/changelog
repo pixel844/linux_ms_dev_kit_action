@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.17.0-jg-2) questing; urgency=medium
+
+  * update 20251013-topic-x1e80100-hdmi-v6-0-3a9c8f7506d6@linaro.org
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sun, 02 Nov 2025 21:40:32 +0100
+
 linux-qcom-x1e (6.17.0-jg-1) questing; urgency=medium
 
   * qcom-x1e: add dynamic dtb list generation for stubble
