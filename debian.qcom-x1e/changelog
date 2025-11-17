@@ -1,3 +1,9 @@
+linux-qcom-x1e (6.17.0-jg-3) questing; urgency=medium
+
+  * reactivate explicit qmp-phy config from https://lore.kernel.org/r/20250821-topic-x1e80100-hdmi-v1-2-f14ad9430e88@linaro.org
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Mon, 17 Nov 2025 07:23:06 +0100
+
 linux-qcom-x1e (6.17.0-jg-2) questing; urgency=medium
 
   * update 20251013-topic-x1e80100-hdmi-v6-0-3a9c8f7506d6@linaro.org
