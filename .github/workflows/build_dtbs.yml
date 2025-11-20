@@ -1,0 +1,38 @@
+name: Build DTBs
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4 # Action to check out your repository's code
+
+    - name: Install Device Tree Compiler (DTC)
+      run: |
+        sudo apt-get update
+        sudo apt-get install device-tree-compiler -y # Command to install dtc
+
+    - name: Compile DTS files to DTBs
+      run: |
+        # Replace '*.dts' with the specific path/name of your dts files if needed
+        for DTS_FILE in $(find . -name "*.dts"); do
+          DTB_FILE=$(echo "$DTS_FILE" | sed 's/\.dts/\.dtb/')
+          # The compilation command: dtc -I dts -O dtb -o output.dtb input.dts
+          dtc -I dts -O dtb -o "$DTB_FILE" "$DTS_FILE"
+        done
+
+    - name: Upload DTB artifacts
+      uses: actions/upload-artifact@v4 # Action to upload generated files as artifacts
+      with:
+        name: device-tree-blobs
+        path: |
+          **/*.dtb # This pattern uploads all generated .dtb files
