@@ -1,20 +1,13 @@
-name: Build QCOM DTBs
+name: Build All DTBs via Make
 
 on:
   push:
-    # Triggers the workflow for pushes to any branch
     branches:
-      - '**'
+      - '**' # Trigger on pushes to any branch
   pull_request:
-    # Triggers the workflow for PRs to any branch
     branches:
-      - '**'
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Reason for manual execution'
-        required: false
-        default: 'Manual run via UI'
+      - '**' # Trigger on pull requests to any branch
+  workflow_dispatch: # Enable manual triggering from the GitHub UI
 
 jobs:
   build:
@@ -24,22 +17,45 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Install Device Tree Compiler (DTC)
+    - name: Install build dependencies and cross-compiler
       run: |
         sudo apt-get update
-        sudo apt-get install device-tree-compiler -y
+        sudo apt-get install -y \
+          build-essential \
+          libncurses-dev \
+          flex \
+          bison \
+          bc \
+          libssl-dev \
+          device-tree-compiler \
+          gcc-aarch64-linux-gnu # Toolchain for ARM64 cross-compilation
 
-    - name: Compile QCOM DTS files to DTBs
+    - name: Set up environment variables
+      # Environment variables need to be set in every step that uses `make`
       run: |
-        # Find and compile only DTS files in directories containing 'qcom'
-        for DTS_FILE in $(find . -path '*/qcom/*.dts'); do
-          DTB_FILE=$(echo "$DTS_FILE" | sed 's/\.dts/\.dtb/')
-          dtc -I dts -O dtb -o "$DTB_FILE" "$DTS_FILE"
-        done
+        echo "ARCH=arm64" >> $GITHUB_ENV
+        echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
 
-    - name: Upload QCOM DTB artifacts
+    - name: Configure the kernel
+      run: |
+        # Ensure a defconfig file exists in your repository, e.g.,
+        # arch/arm64/configs/your_qcom_defconfig
+        # This command generates the .config file used by `make dtbs`
+        make your_qcom_defconfig
+
+    - name: Compile all DTBs using make
+      run: |
+        # This command compiles all DTBs defined in your .config file
+        make dtbs
+
+    - name: List generated DTBs for verification
+      run: |
+        # Optional step to show which DTBs were created
+        find arch/${{ env.ARCH }}/boot/dts/ -name "*.dtb"
+
+    - name: Upload DTB artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: qcom-device-tree-blobs
+        name: all-compiled-dtbs
         path: |
-          **/*qcom*/*.dtb
+          arch/${{ env.ARCH }}/boot/dts/**/*.dtb
