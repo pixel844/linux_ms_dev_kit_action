@@ -1,4 +1,4 @@
-name: Build DTBs
+name: Build DTB
 
 on:
   # 1. Run on push/PR, but ONLY if relevant files changed
