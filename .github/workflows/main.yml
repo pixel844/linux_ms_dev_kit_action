@@ -1,61 +1,95 @@
-name: Build All DTBs via Make
+name: Build DTBs
 
 on:
+  # 1. Run on push/PR, but ONLY if relevant files changed
   push:
-    branches:
-      - '**' # Trigger on pushes to any branch
+    branches: [ '**' ]
+    paths:
+      - 'arch/arm64/boot/dts/**'
+      - 'arch/arm64/configs/**'
+      - 'scripts/dtc/**'
+      - 'Makefile'
   pull_request:
-    branches:
-      - '**' # Trigger on pull requests to any branch
-  workflow_dispatch: # Enable manual triggering from the GitHub UI
+    branches: [ '**' ]
+    paths:
+      - 'arch/arm64/boot/dts/**'
+      - 'arch/arm64/configs/**'
+
+  # 2. Allow manual runs with custom inputs
+  workflow_dispatch:
+    inputs:
+      defconfig_name:
+        description: 'Name of the defconfig to use (e.g. vendor_defconfig)'
+        required: true
+        default: 'defconfig'
 
 jobs:
-  build:
+  build-dtbs:
     runs-on: ubuntu-latest
+    env:
+      ARCH: arm64
+      CROSS_COMPILE: aarch64-linux-gnu-
+      # Use input if manual, otherwise default to 'defconfig'
+      KERNEL_DEFCONFIG: ${{ inputs.defconfig_name || 'defconfig' }}
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        # 3. Huge Speedup: Do not download the entire git history
+        fetch-depth: 1
 
-    - name: Install build dependencies and cross-compiler
+    - name: Install Dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y \
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq \
           build-essential \
-          libncurses-dev \
-          flex \
-          bison \
           bc \
+          bison \
+          flex \
           libssl-dev \
+          libelf-dev \
           device-tree-compiler \
-          gcc-aarch64-linux-gnu # Toolchain for ARM64 cross-compilation
+          gcc-aarch64-linux-gnu
 
-    - name: Set up environment variables
-      # Environment variables need to be set in every step that uses `make`
+    - name: Configure Kernel
       run: |
-        echo "ARCH=arm64" >> $GITHUB_ENV
-        echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
+        echo "Using config: ${KERNEL_DEFCONFIG}"
+        
+        # Verify config exists before running make
+        if [ "${KERNEL_DEFCONFIG}" != "defconfig" ] && [ ! -f "arch/${ARCH}/configs/${KERNEL_DEFCONFIG}" ]; then
+          echo "::error::Config file 'arch/${ARCH}/configs/${KERNEL_DEFCONFIG}' not found!"
+          exit 1
+        fi
 
-    - name: Configure the kernel
+        # -s (silent) reduces log noise
+        make -s ${KERNEL_DEFCONFIG}
+
+    - name: Compile DTBs
       run: |
-        # Ensure a defconfig file exists in your repository, e.g.,
-        # arch/arm64/configs/your_qcom_defconfig
-        # This command generates the .config file used by `make dtbs`
-        make your_qcom_defconfig
+        echo "Starting DTB build on $(nproc) cores..."
+        # -j$(nproc): Use all cores
+        # -s: Silent mode (only show warnings/errors)
+        make -j$(nproc) -s dtbs
 
-    - name: Compile all DTBs using make
+    - name: Prepare Artifacts
       run: |
-        # This command compiles all DTBs defined in your .config file
-        make dtbs
+        # 4. Compression: Zip the DTBs. 
+        # Uploading 1 zip is much faster than uploading 500 small files.
+        echo "Compressing DTBs..."
+        
+        # Create a clean directory for artifacts
+        mkdir -p out_dtbs
+        
+        # Find and copy all dtb files, preserving structure
+        find arch/${ARCH}/boot/dts/ -name "*.dtb" -print0 | xargs -0 cp --parents -t out_dtbs/
+        
+        # Create the zip
+        zip -r dtbs-${{ env.KERNEL_DEFCONFIG }}.zip out_dtbs/arch/${ARCH}/boot/dts/
 
-    - name: List generated DTBs for verification
-      run: |
-        # Optional step to show which DTBs were created
-        find arch/${{ env.ARCH }}/boot/dts/ -name "*.dtb"
-
-    - name: Upload DTB artifacts
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: all-compiled-dtbs
-        path: |
-          arch/${{ env.ARCH }}/boot/dts/**/*.dtb
+        name: dtbs-${{ env.KERNEL_DEFCONFIG }}
+        path: dtbs-${{ env.KERNEL_DEFCONFIG }}.zip
+        if-no-files-found: error
