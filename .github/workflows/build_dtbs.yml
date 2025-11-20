@@ -1,12 +1,18 @@
-name: Build DTBs
+name: Build All QCOM DTBs via Make
 
 on:
   push:
     branches:
-      - main
+      - '**'
   pull_request:
     branches:
-      - main
+      - '**'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual execution'
+        required: false
+        default: 'Manual run via UI'
 
 jobs:
   build:
@@ -14,25 +20,38 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4 # Action to check out your repository's code
+      uses: actions/checkout@v4
 
-    - name: Install Device Tree Compiler (DTC)
+    - name: Install kernel build dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install device-tree-compiler -y # Command to install dtc
+        # Install necessary tools for general kernel compilation
+        sudo apt-get install -y build-essential libncurses-dev flex bison bc libssl-dev device-tree-compiler
 
-    - name: Compile DTS files to DTBs
+    - name: Configure the kernel (QCOM specific example)
       run: |
-        # Replace '*.dts' with the specific path/name of your dts files if needed
-        for DTS_FILE in $(find . -name "*.dts"); do
-          DTB_FILE=$(echo "$DTS_FILE" | sed 's/\.dts/\.dtb/')
-          # The compilation command: dtc -I dts -O dtb -o output.dtb input.dts
-          dtc -I dts -O dtb -o "$DTB_FILE" "$DTS_FILE"
-        done
+        # NOTE: You must have a defconfig file in your repository.
+        # This example assumes a defconfig is located at 'arch/arm64/configs/your_qcom_defconfig'
+        # Replace 'your_qcom_defconfig' with your actual file name.
+        export ARCH=arm64
+        export CROSS_COMPILE=aarch64-linux-gnu-
+        # Set up a toolchain if cross-compiling (common for embedded devices)
+        # You may need an additional step to install the cross-compiler, e.g., 'apt-get install -y gcc-aarch64-linux-gnu'
+
+        make your_qcom_defconfig
+
+    - name: Compile all DTBs using make
+      run: |
+        export ARCH=arm64
+        export CROSS_COMPILE=aarch64-linux-gnu-
+
+        # This command compiles all DTBs specified by the configuration
+        make dtbs
 
     - name: Upload DTB artifacts
-      uses: actions/upload-artifact@v4 # Action to upload generated files as artifacts
+      uses: actions/upload-artifact@v4
       with:
-        name: device-tree-blobs
+        name: all-compiled-dtbs
+        # The DTBs are typically found in a directory like this after 'make dtbs'
         path: |
-          **/*.dtb # This pattern uploads all generated .dtb files
+          arch/arm64/boot/dts/**/*.dtb
