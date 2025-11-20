@@ -12,7 +12,7 @@
 
 / {
    model = "Acer Swift 14 AI (SF14-11)";  
-   compatible = "acer,swift-sf14-11","lenovo,thinkpad-t14s", "qcom,x1p64100", "qcom,x1e80100";
+   compatible = "acer,swift-sf14-11", "qcom,x1p64100", "qcom,x1e78100", "qcom,x1e80100";
 	chassis-type = "laptop";
 
 };
