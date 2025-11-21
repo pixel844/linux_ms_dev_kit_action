@@ -4244,12 +4244,41 @@ static int qmp_combo_probe(struct platform_device *pdev)
 	int ret, i;
 	bool explicit_mode = false;
 
+/*!!! Debug */
+	const char *mode_str;
+	struct property *prop;
+	int len;
+
 	qmp = devm_kzalloc(dev, sizeof(*qmp), GFP_KERNEL);
 	if (!qmp)
 		return -ENOMEM;
 
 	qmp->dev = dev;
 	dev_set_drvdata(dev, qmp);
+
+/*!!! Debug */
+pr_info("QMP-DT: Node path: %pOFn\n", dev->of_node);  // Full node name
+
+pr_info("QMP-DT: ID - Path '%s', Reg 0x%lx, Compatible '%s'\n",
+        dev->of_node->full_name,
+        pdev->resource[0].start,
+        of_get_property(dev->of_node, "compatible", NULL) ?: "unknown");
+
+prop = of_find_property(dev->of_node, "qcom,combo-initial-mode", &len);
+pr_info("QMP-DT: combo-initial-mode present (len %d): %s\n", len,
+        prop ? "YES" : "NO");
+if (prop && len > 0) {
+    of_property_read_string(dev->of_node, "qcom,combo-initial-mode", &mode_str);
+    pr_info("QMP-DT: Read mode string: '%s'\n", mode_str ? mode_str : "NULL");
+}
+
+prop = of_find_property(dev->of_node, "mode-switch", &len);
+pr_info("QMP-DT: mode-switch present (len %d): %s\n", len,
+        prop ? "YES" : "NO");
+
+prop = of_find_property(dev->of_node, "orientation-switch", &len);
+pr_info("QMP-DT: orientation-switch present (len %d): %s\n", len,
+        prop ? "YES" : "NO");
 
 	qmp->orientation = TYPEC_ORIENTATION_NORMAL;
 
@@ -4301,16 +4330,28 @@ static int qmp_combo_probe(struct platform_device *pdev)
 		}
 	}
 
+/*!!! Debug */
+pr_info("QMP-DT: After parse - explicit_mode=%d, qmpphy_mode=%d (str: %s)\n",
+        explicit_mode, qmp->qmpphy_mode,
+        explicit_mode ? qmpphy_mode_str[qmp->qmpphy_mode] : "N/A");
+
 	if (of_property_present(dev->of_node, "mode-switch") ||
 	    of_property_present(dev->of_node, "orientation-switch")) {
 		ret = qmp_combo_typec_register(qmp);
 		if (ret)
 			goto err_node_put;
 	} else if (explicit_mode) {
-		dev_dbg(dev, "Static explicit mode %s enabled\n", qmpphy_mode_str[qmp->qmpphy_mode]);
+		pr_info("QMP-DT: Static explicit mode %s enabled\n", qmpphy_mode_str[qmp->qmpphy_mode]);
 	} else {
 		enum typec_orientation dp_orientation = TYPEC_ORIENTATION_NONE;
 		enum typec_orientation usb3_orientation = TYPEC_ORIENTATION_NONE;
+
+/*!!! Debug */
+// In the guarded if, before it
+bool has_mode = !!of_property_present(dev->of_node, "mode-switch");
+bool has_orient = !!of_property_present(dev->of_node, "orientation-switch");
+pr_info("QMP-DT: Branch check - has_mode=%d, has_orient=%d, explicit=%d\n",
+        has_mode, has_orient, explicit_mode);
 
 		ret = qmp_combo_get_dt_dp_orientation(dev, &dp_orientation);
 		if (ret)
