@@ -80,12 +80,8 @@
 	hdmi-bridge {
 		compatible = "realtek,rtd2171";
 
-		enable-gpios = <&tlmm 125 GPIO_ACTIVE_HIGH>;
-
 		pinctrl-0 = <&hdmi_hpd_default>;
 		pinctrl-names = "default";
-
-		vdd-supply = <&vreg_hdmi_5p0>;
 
 		ports {
 			#address-cells = <1>;
@@ -390,22 +386,6 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&edp_bl_reg_en>;
-
-		regulator-boot-on;
-	};
-
-	vreg_hdmi_5p0: regulator-hdmi-5p0 {
-		compatible = "regulator-fixed";
-
-		regulator-name = "VREG_HDMI_5P0";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-
-		gpio = <&tlmm 125 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-
-		pinctrl-0 = <&hdmi_reg_en>;
-		pinctrl-names = "default";
 
 		regulator-boot-on;
 	};
@@ -1409,14 +1389,6 @@
 		bias-disable;
 	};
 
-	hdmi_reg_en: hdmi_reg_en-state {
-		pins = "gpio125";
-		drive-strength = <2>;
-		function = "gpio";
-		bias-disable;
-		output-high;
-	};
-
 	kybd_default: kybd-default-state {
 		pins = "gpio67";
 		function = "gpio";
@@ -1646,28 +1618,6 @@
 
 &usb_1_ss1_qmpphy_out {
 	remote-endpoint = <&pmic_glink_ss1_ss_in>;
-};
-
-&usb_1_ss2 {
-	status = "okay";
-};
-
-&usb_1_ss2_dwc3 {
-	dr_mode = "host";
-	maximum-speed = "high-speed";
-	phys = <&usb_1_ss2_hsphy>;
-	phy-names = "usb2-phy";
-
-	status = "okay";
-};
-
-&usb_1_ss2_hsphy {
-	vdd-supply = <&vreg_l3j_0p8>;
-	vdda12-supply = <&vreg_l2j_1p2>;
-
-	phys = <&eusb5_repeater>;
-
-	status = "okay";
 };
 
 &usb_1_ss2_qmpphy {
