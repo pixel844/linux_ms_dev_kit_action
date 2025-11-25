@@ -1629,11 +1629,33 @@
 	remote-endpoint = <&pmic_glink_ss1_ss_in>;
 };
 
+&usb_1_ss2 {
+	status = "okay";
+};
+
+&usb_1_ss2_dwc3 {
+	dr_mode = "host";
+	maximum-speed = "high-speed";
+	phys = <&usb_1_ss2_hsphy>;
+	phy-names = "usb2-phy";
+
+	status = "okay";
+};
+
+&usb_1_ss2_hsphy {
+	vdd-supply = <&vreg_l3j_0p8>;
+	vdda12-supply = <&vreg_l2j_1p2>;
+
+	phys = <&eusb5_repeater>;
+
+	status = "okay";
+};
+
 &usb_1_ss2_qmpphy {
 	vdda-phy-supply = <&vreg_l2j_1p2>;
 	vdda-pll-supply = <&vreg_l2d_0p9>;
 
-	//qcom,combo-initial-mode = "dp";
+	qcom,combo-initial-mode = "usb3+dp";
 
 	/delete-property/ mode-switch;
 	/delete-property/ orientation-switch;
