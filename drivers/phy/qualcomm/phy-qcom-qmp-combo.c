@@ -4151,6 +4151,12 @@ static struct phy *qmp_combo_phy_xlate(struct device *dev, const struct of_phand
 	return ERR_PTR(-EINVAL);
 }
 
+static const char * const qmpphy_mode_str[] = {
+	[QMPPHY_MODE_USB3DP] = "usb3+dp",
+	[QMPPHY_MODE_DP_ONLY] = "dp",
+	[QMPPHY_MODE_USB3_ONLY] = "usb3",
+};
+
 static void qmp_combo_find_lanes_orientation(const struct qmp_combo_lane_mapping *mapping,
 					     unsigned int mapping_count,
 					     u32 *lanes, unsigned int lanes_count,
@@ -4235,7 +4241,13 @@ static int qmp_combo_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *dp_np, *usb_np;
 	struct phy_provider *phy_provider;
-	int ret;
+	int ret, i;
+	bool explicit_mode = false;
+
+/*!!! Debug */
+	const char *mode_str;
+	struct property *prop;
+	int len;
 
 	qmp = devm_kzalloc(dev, sizeof(*qmp), GFP_KERNEL);
 	if (!qmp)
@@ -4243,6 +4255,30 @@ static int qmp_combo_probe(struct platform_device *pdev)
 
 	qmp->dev = dev;
 	dev_set_drvdata(dev, qmp);
+
+/*!!! Debug */
+pr_info("QMP-DT: Node path: %pOFn\n", dev->of_node);  // Full node name
+
+pr_info("QMP-DT: ID - Path '%s', Reg 0x%lx, Compatible '%s'\n",
+        dev->of_node->full_name,
+        pdev->resource[0].start,
+        of_get_property(dev->of_node, "compatible", NULL) ?: "unknown");
+
+prop = of_find_property(dev->of_node, "qcom,combo-initial-mode", &len);
+pr_info("QMP-DT: combo-initial-mode present (len %d): %s\n", len,
+        prop ? "YES" : "NO");
+if (prop && len > 0) {
+    of_property_read_string(dev->of_node, "qcom,combo-initial-mode", &mode_str);
+    pr_info("QMP-DT: Read mode string: '%s'\n", mode_str ? mode_str : "NULL");
+}
+
+prop = of_find_property(dev->of_node, "mode-switch", &len);
+pr_info("QMP-DT: mode-switch present (len %d): %s\n", len,
+        prop ? "YES" : "NO");
+
+prop = of_find_property(dev->of_node, "orientation-switch", &len);
+pr_info("QMP-DT: orientation-switch present (len %d): %s\n", len,
+        prop ? "YES" : "NO");
 
 	qmp->orientation = TYPEC_ORIENTATION_NORMAL;
 
@@ -4281,14 +4317,41 @@ static int qmp_combo_probe(struct platform_device *pdev)
 
 	qmp->qmpphy_mode = QMPPHY_MODE_USB3DP;
 
+	/* Replace with DT provided mode */
+	if (of_find_property(dev->of_node, "qcom,combo-initial-mode", NULL)) {
+		for (i = 0; i < ARRAY_SIZE(qmpphy_mode_str); ++i) {
+			ret = of_property_match_string(dev->of_node, "qcom,combo-initial-mode",
+						       qmpphy_mode_str[i]);
+			if (!ret) {
+				qmp->qmpphy_mode = i;
+				explicit_mode = true;
+				break;
+			}
+		}
+	}
+
+/*!!! Debug */
+pr_info("QMP-DT: After parse - explicit_mode=%d, qmpphy_mode=%d (str: %s)\n",
+        explicit_mode, qmp->qmpphy_mode,
+        explicit_mode ? qmpphy_mode_str[qmp->qmpphy_mode] : "N/A");
+
 	if (of_property_present(dev->of_node, "mode-switch") ||
 	    of_property_present(dev->of_node, "orientation-switch")) {
 		ret = qmp_combo_typec_register(qmp);
 		if (ret)
 			goto err_node_put;
+	} else if (explicit_mode) {
+		pr_info("QMP-DT: Static explicit mode %s enabled\n", qmpphy_mode_str[qmp->qmpphy_mode]);
 	} else {
 		enum typec_orientation dp_orientation = TYPEC_ORIENTATION_NONE;
 		enum typec_orientation usb3_orientation = TYPEC_ORIENTATION_NONE;
+
+/*!!! Debug */
+// In the guarded if, before it
+bool has_mode = !!of_property_present(dev->of_node, "mode-switch");
+bool has_orient = !!of_property_present(dev->of_node, "orientation-switch");
+pr_info("QMP-DT: Branch check - has_mode=%d, has_orient=%d, explicit=%d\n",
+        has_mode, has_orient, explicit_mode);
 
 		ret = qmp_combo_get_dt_dp_orientation(dev, &dp_orientation);
 		if (ret)
