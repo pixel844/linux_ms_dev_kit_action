@@ -1,3 +1,12 @@
+linux-qcom-x1e (6.19.14-jg-0) resolute; urgency=medium
+
+  * rebase to 6.19.14
+  * arm64: dts: qcom: sc8280xp-blackrock: rework audio section
+  * ASoC: codecs: lpass-wsa-macro: Switch to PM clock framework for runtime PM [Ajay Kumar Nandam <ajay.nandam@oss.qualcomm.com>]
+  * clk: qcom: dispcc-sc8280xp: Don't park mdp_clk_src at registration time [Pengyu Luo <mitltlatltl@gmail.com>]
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Wed, 29 Apr 2026 09:10:33 +0200
+
 linux-qcom-x1e (6.19.13-jg-2) resolute; urgency=medium
 
   * arm64: dts: qcom: hamoa: add audio PD remote heap region [Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>]
