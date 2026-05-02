@@ -1,3 +1,10 @@
+linux-qcom-x1e (6.19.14-jg-1) resolute; urgency=medium
+
+  * NightLight patch
+  * x1e001de-devkit updates, dp sound update
+
+ -- Jens Glathe <jens.glathe@oldschoololutions.biz>  Sat, 02 May 2026 21:49:32 +0200
+
 linux-qcom-x1e (6.19.14-jg-0) resolute; urgency=medium
 
   * rebase to 6.19.14
