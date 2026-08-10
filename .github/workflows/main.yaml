@@ -1,0 +1,95 @@
+name: Build DTBs
+
+on:
+  # 1. Run on push/PR, but ONLY if relevant files changed
+  push:
+    branches: [ '**' ]
+    paths:
+      - 'arch/arm64/boot/dts/**'
+      - 'arch/arm64/configs/**'
+      - 'scripts/dtc/**'
+      - 'Makefile'
+  pull_request:
+    branches: [ '**' ]
+    paths:
+      - 'arch/arm64/boot/dts/**'
+      - 'arch/arm64/configs/**'
+
+  # 2. Allow manual runs with custom inputs
+  workflow_dispatch:
+    inputs:
+      defconfig_name:
+        description: 'Name of the defconfig to use (e.g. vendor_defconfig)'
+        required: true
+        default: 'defconfig'
+
+jobs:
+  build-dtbs:
+    runs-on: ubuntu-latest
+    env:
+      ARCH: arm64
+      CROSS_COMPILE: aarch64-linux-gnu-
+      # Use input if manual, otherwise default to 'defconfig'
+      KERNEL_DEFCONFIG: ${{ inputs.defconfig_name || 'defconfig' }}
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        # 3. Huge Speedup: Do not download the entire git history
+        fetch-depth: 1
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq \
+          build-essential \
+          bc \
+          bison \
+          flex \
+          libssl-dev \
+          libelf-dev \
+          device-tree-compiler \
+          gcc-aarch64-linux-gnu
+
+    - name: Configure Kernel
+      run: |
+        echo "Using config: ${KERNEL_DEFCONFIG}"
+        
+        # Verify config exists before running make
+        if [ "${KERNEL_DEFCONFIG}" != "defconfig" ] && [ ! -f "arch/${ARCH}/configs/${KERNEL_DEFCONFIG}" ]; then
+          echo "::error::Config file 'arch/${ARCH}/configs/${KERNEL_DEFCONFIG}' not found!"
+          exit 1
+        fi
+
+        # -s (silent) reduces log noise
+        make -s ${KERNEL_DEFCONFIG}
+
+    - name: Compile DTBs
+      run: |
+        echo "Starting DTB build on $(nproc) cores..."
+        # -j$(nproc): Use all cores
+        # -s: Silent mode (only show warnings/errors)
+        make -j$(nproc) -s dtbs
+
+    - name: Prepare Artifacts
+      run: |
+        # 4. Compression: Zip the DTBs. 
+        # Uploading 1 zip is much faster than uploading 500 small files.
+        echo "Compressing DTBs..."
+        
+        # Create a clean directory for artifacts
+        mkdir -p out_dtbs
+        
+        # Find and copy all dtb files, preserving structure
+        find arch/${ARCH}/boot/dts/ -name "*.dtb" -print0 | xargs -0 cp --parents -t out_dtbs/
+        
+        # Create the zip
+        zip -r dtbs-${{ env.KERNEL_DEFCONFIG }}.zip out_dtbs/arch/${ARCH}/boot/dts/
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dtbs-${{ env.KERNEL_DEFCONFIG }}
+        path: dtbs-${{ env.KERNEL_DEFCONFIG }}.zip
+        if-no-files-found: error
